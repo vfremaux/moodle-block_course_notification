@@ -18,7 +18,7 @@
  * @package block_course_notification
  * @category  block
  * @author Valery Fremaux (valery.fremaux@gmail.com)
- * @copyright (C) 2010 Valery Fremaux
+ * @copyright (C) 2019 onwards Valery Fremaux
  * @licence   http://www.gnu.org/copyleft/gpl.html GNU Public Licence
  */
 defined('MOODLE_INTERNAL') or die();

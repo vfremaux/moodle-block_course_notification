@@ -18,17 +18,17 @@
  * Version details
  *
  * @package    block_course_notification
- * @copyright  1999 onwards Martin Dougiamas (http://dougiamas.com)
+ * @copyright  2019 onwards Valery Fremaux (valery.fremaux@gmail.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->version   = 2019070300;        // The current plugin version (Date: YYYYMMDDXX)
-$plugin->requires  = 2018050800;        // Requires this Moodle version.
-$plugin->release = '3.5.0 (Build 2019070300)';
+$plugin->requires  = 2018112800;        // Requires this Moodle version.
+$plugin->release = '3.6.0 (Build 2019070300)';
 $plugin->component = 'block_course_notification'; // Full name of the plugin (used for diagnostics).
 $plugin->maturity = MATURITY_RC;
 
 // Non moodle attributes.
-$plugin->codeincrement = '3.5.0000';
+$plugin->codeincrement = '3.6.0000';
