@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="blocks/course_notification/db" VERSION="20151114" COMMENT="XMLDB file for Moodle blocks/course_notification"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="block_course_notification" COMMENT="Stores notification marks for users">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Course id"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="User id"/>
+        <FIELD NAME="firstassignnotified" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Marked if enrol message has been sent"/>
+        <FIELD NAME="firstassignnotedate" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of enrol message"/>
+        <FIELD NAME="firstcallnotified" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Marked if first call message has been sent"/>
+        <FIELD NAME="firstcallnotedate" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of first call message"/>
+        <FIELD NAME="secondcallnotified" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Marked if second call message has been sent"/>
+        <FIELD NAME="secondcallnotedate" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of second call message"/>
+        <FIELD NAME="twoweeksnearendnotified" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Marked if two weeks to end message has been sent"/>
+        <FIELD NAME="twoweeksnearendnotedate" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of two weeks to end message "/>
+        <FIELD NAME="oneweeknearendnotified" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Marked if one week to end message has been sent"/>
+        <FIELD NAME="oneweeknearendnotedate" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of one week to end message"/>
+        <FIELD NAME="fivedaystoendnotified" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Marked if five days to end message has been sent"/>
+        <FIELD NAME="fivedaystoendnotedate" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of five days to end message "/>
+        <FIELD NAME="threedaystoendnotified" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Marked if three days to end message has been sent"/>
+        <FIELD NAME="threedaystoendnotedate" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of three days to end message"/>
+        <FIELD NAME="onedaytoendnotifoneied" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Marked if one day to end message has been sent"/>
+        <FIELD NAME="onedaytoendnotedate" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of one day to end message"/>
+        <FIELD NAME="closednotified" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Marked if access ending message has been sent"/>
+        <FIELD NAME="closednotedate" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of access ending message"/>
+        <FIELD NAME="inactivenotified" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Counts inactive message sent"/>
+        <FIELD NAME="inactivenotedate" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of lat inactive message sent"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="ix_unique_course_user" UNIQUE="true" FIELDS="courseid, userid" COMMENT="Unique record for course per user "/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>
