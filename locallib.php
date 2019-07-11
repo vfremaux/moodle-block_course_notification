@@ -200,7 +200,7 @@ function bcn_get_end_event_users(&$blockinstance, &$course, $event, $ignoreduser
             $eventfield = 'threedaystoendnotified';
             break;
         }
-        case 'onedaystoend': {
+        case 'onedaytoend': {
             $eventendcourseoffset = DAYSECS * 1;
             $eventfield = 'onedaytoendnotified';
             break;
