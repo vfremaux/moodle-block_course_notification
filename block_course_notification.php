@@ -361,6 +361,10 @@ class block_course_notification extends block_list {
             if ($course->startdate < time() - DAYSECS * 15) {
                 // Do not process at all for this course when too new.
                 if ($secondcallusers = bcn_get_start_event_users($blockobj, $course, 'secondcall', $ignoreduserids)) {
+                    $count = count($secondcallusers);
+                    if ($verbose) {
+                        echo "\tSending $count users...\n";
+                    }
                     bcn_notify_users($blockobj, $course, $secondcallusers, 'secondcall');
                 } else {
                     if ($verbose) {
@@ -386,7 +390,17 @@ class block_course_notification extends block_list {
                     foreach ($secondcallusers as $u) {
                         unset($firstcallusers[$u->id]);
                     }
-                    bcn_notify_users($blockobj, $course, $firstcallusers, 'firstcall');
+                    if (!empty($firstcallusers)) {
+                        $count = count($firstcallusers);
+                        if ($verbose) {
+                            echo "\tSending $count users...\n";
+                        }
+                        bcn_notify_users($blockobj, $course, $firstcallusers, 'firstcall');
+                    } else {
+                        if ($verbose) {
+                            echo "\tNo users to send...\n";
+                        }
+                    }
                 } else {
                     if ($verbose) {
                         echo "\tNo users to send...\n";
@@ -415,7 +429,17 @@ class block_course_notification extends block_list {
                 foreach ($firstcallusers as $u) {
                     unset($inactiveusers[$u->id]);
                 }
-                bcn_notify_users($blockobj, $course, $inactiveusers, 'inactive');
+                if (!empty($inactiveusers)) {
+                    $count = count($inactiveusers);
+                    if ($verbose) {
+                        echo "\tSending $count users...\n";
+                    }
+                    bcn_notify_users($blockobj, $course, $inactiveusers, 'inactive');
+                } else {
+                    if ($verbose) {
+                        echo "\tNo users to send...\n";
+                    }
+                }
             } else {
                 if ($verbose) {
                     echo "\tNo users to send...\n";
@@ -429,10 +453,14 @@ class block_course_notification extends block_list {
                 debug_trace("\tClosed...");
             }
             if ($verbose) {
-                echo "\tOne week from end...\n";
+                echo "\tClosed courses...\n";
             }
-            if ($endusers = bcn_get_end_event_users($theblock, $course, 'oneweeknearend', $ignoreduserids)) {
-                bcn_notify_users($blockobj, $course, $endusers, 'oneweeknearend');
+            if ($endusers = bcn_get_end_event_users($theblock, $course, 'closed', $ignoreduserids)) {
+                $count = count($endusers);
+                if ($verbose) {
+                    echo "\tSending $count users...\n";
+                }
+                bcn_notify_users($blockobj, $course, $endusers, 'closed');
                 $ignoreduserids = self::add($ignoreduserids, array_keys($endusers));
             } else {
                 if ($verbose) {
@@ -450,6 +478,10 @@ class block_course_notification extends block_list {
                     echo "\tOne day from end...\n";
                 }
                 if ($endusers = bcn_get_end_event_users($theblock, $course, 'onedaytoend', $ignoreduserids)) {
+                    $count = count($endusers);
+                    if ($verbose) {
+                        echo "\tSending $count users...\n";
+                    }
                     bcn_notify_users($blockobj, $course, $endusers, 'onedaytoend');
                     $ignoreduserids = self::add($ignoreduserids, array_keys($endusers));
                 } else {
@@ -467,6 +499,10 @@ class block_course_notification extends block_list {
                     echo "\tThree days from end...\n";
                 }
                 if ($endusers = bcn_get_end_event_users($theblock, $course, 'threedaystoend', $ignoreduserids)) {
+                    $count = count($endusers);
+                    if ($verbose) {
+                        echo "\tSending $count users...\n";
+                    }
                     bcn_notify_users($blockobj, $course, $endusers, 'threedaystoend');
                     $ignoreduserids = self::add($ignoreduserids, array_keys($endusers));
                 } else {
@@ -484,6 +520,10 @@ class block_course_notification extends block_list {
                     echo "\tFive days from end...\n";
                 }
                 if ($endusers = bcn_get_end_event_users($theblock, $course, 'fivedaystoend', $ignoreduserids)) {
+                    $count = count($endusers);
+                    if ($verbose) {
+                        echo "\tSending $count users...\n";
+                    }
                     bcn_notify_users($blockobj, $course, $endusers, 'fivedaystoend');
                     $ignoreduserids = self::add($ignoreduserids, array_keys($endusers));
                 } else {
@@ -502,6 +542,10 @@ class block_course_notification extends block_list {
                 echo "\tOne week from end...\n";
             }
             if ($endusers = bcn_get_end_event_users($theblock, $course, 'oneweeknearend', $ignoreduserids)) {
+                $count = count($endusers);
+                if ($verbose) {
+                    echo "\tSending $count users...\n";
+                }
                 bcn_notify_users($blockobj, $course, $endusers, 'oneweeknearend');
                 $ignoreduserids = self::add($ignoreduserids, array_keys($endusers));
             } else {
@@ -518,8 +562,12 @@ class block_course_notification extends block_list {
             if ($verbose) {
                 echo "\tTwo weeks from end...\n";
             }
-            if ($users = bcn_get_end_event_users($theblock, $course, 'twoweeksnearend', $ignoreduserids)) {
-                bcn_notify_users($blockobj, $course, $users, 'twoweeksnearend');
+            if ($endusers = bcn_get_end_event_users($theblock, $course, 'twoweeksnearend', $ignoreduserids)) {
+                $count = count($endusers);
+                if ($verbose) {
+                    echo "\tSending $count users...\n";
+                }
+                bcn_notify_users($blockobj, $course, $endusers, 'twoweeksnearend');
             } else {
                 if ($verbose) {
                     echo "\tNo users to send...\n";
