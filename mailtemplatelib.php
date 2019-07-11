@@ -41,18 +41,21 @@ function bcn_compile_mail_template($template, $infomap, $blockconfig, $lang = nu
 
     // Extract eventtype and check overrides, but not for manager mails.
     if (strpos($template, 'manager') === false) {
-        $eventtype = str_replace('_mail_raw', '', str_replace('_mail_html', $template));
+        $eventtype = str_replace('_mail_raw', '', str_replace('_mail_html', '', $template));
 
         if (!is_null($blockconfig)) {
-            if (!empty($blockconfig->$eventtype)) {
+            $ovlkey = $eventtype.'_ovl';
+            if (!empty($blockconfig->$ovlkey)) {
                 // Take override.
-                $notification = format_text($blockconfig->$eventtype);
+                $notification = format_text($blockconfig->$ovlkey);
             } else {
-                $notification = new lang_string($template, 'block_course_notification', '', $lang);
+                $str = new lang_string($template, 'block_course_notification', null, $lang);
+                $notification = ''.$str;
             }
         }
     } else {
-        $notification = new lang_string($template, 'block_course_notification', '', $lang);
+        $str = new lang_string($template, 'block_course_notification', null, $lang);
+        $notification = ''.$str;
     }
 
     foreach ($infomap as $akey => $avalue) {

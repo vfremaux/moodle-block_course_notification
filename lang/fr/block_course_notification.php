@@ -63,6 +63,7 @@ $string['configinactivityfrequency'] = 'Cette valeur règle la fréquence à laq
 $string['configsupporturl'] = 'Une URL de service où le utilisateurs \"éloignés\" peuvent reprendre contact avec vous.';
 $string['configcoursenotificationenablecron'] = 'Activer les notifications de cours au niveau site.';
 $string['configclosed'] = ' A la fin de l\'accès';
+$string['configcompleted'] = 'Quand le cours est achevé';
 $string['configdefaultcompleted'] = 'Message à l\'achèvement du cours (défaut)';
 $string['course_notifications_enable_cron'] = 'Cron';
 $string['supporturl'] = 'Url du support';

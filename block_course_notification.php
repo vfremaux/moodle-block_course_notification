@@ -223,7 +223,7 @@ class block_course_notification extends block_list {
         $this->content->items[] = '<span title="'.$userlist.'">'.$str.' ('.$closedcount.')</span>';
 
         $str = get_string('completed', 'block_course_notification');
-        $this->content->items[] = '<span title="'.htmlentities(get_string('completionadvice', 'block_course_completion')).'">'.$str.' </span>';
+        $this->content->items[] = '<span title="'.htmlentities(get_string('completionadvice', 'block_course_notification')).'">'.$str.' </span>';
 
         $userlist = '';
         $inactivescount = 0;
