@@ -69,6 +69,20 @@ class block_course_notification extends block_list {
 
         if (empty($this->config)) {
             $this->config = new StdClass;
+            $config = get_config('block_course_notification');
+            $this->config->firstassign = $config->defaultfirstassign;
+            $this->config->firstcall = $config->defaultfirstcall;
+            $this->config->secondcall = $config->defaultsecondcall;
+            $this->config->twoweeksnearend = $config->defaulttwoweeksnearend;
+            $this->config->oneweeknearend = $config->defaultoneweeknearend;
+            $this->config->fivedaystoend = $config->defaultfivedaystoend;
+            $this->config->threedaystoend = $config->defaultthreedaystoend;
+            $this->config->onedaytoend = $config->defaultonedaytoend;
+            $this->config->closed = $config->defaultclosed;
+            $this->config->inactive = $config->defaultinactive;
+            $this->config->completed = $config->defaultcompleted;
+
+            $this->instance_config_save($this->config);
         }
 
         if (!isset($this->config->inactivitydelayindays)) {
@@ -116,6 +130,7 @@ class block_course_notification extends block_list {
         $this->content->icons[] = (strpos(@$this->config->courseeventsreminders, '1') !== false) ? $enabledicon : $disabledicon;
         $this->content->icons[] = (@$this->config->closed) ? $enabledicon : $disabledicon;
         $this->content->icons[] = (@$this->config->inactive) ? $enabledicon : $disabledicon;
+        $this->content->icons[] = (@$this->config->completed) ? $enabledicon : $disabledicon;
 
         $this->content->items[] = get_string('firstassign', 'block_course_notification').' ('.count($firstassigns).')';
 
@@ -206,6 +221,9 @@ class block_course_notification extends block_list {
         }
         $str = get_string('closed', 'block_course_notification');
         $this->content->items[] = '<span title="'.$userlist.'">'.$str.' ('.$closedcount.')</span>';
+
+        $str = get_string('completed', 'block_course_notification');
+        $this->content->items[] = '<span title="'.htmlentities(get_string('completionadvice', 'block_course_completion')).'">'.$str.' </span>';
 
         $userlist = '';
         $inactivescount = 0;

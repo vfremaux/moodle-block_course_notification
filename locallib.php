@@ -465,13 +465,13 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
         }
     }
 
-    $notification = bcn_compile_mail_template("{$eventtype}_mail_raw", $vars, 'block_course_notification', $user->lang);
+    $notification = bcn_compile_mail_template("{$eventtype}_mail_raw", $vars, 'block_course_notification', $blockinstance->config, $user->lang);
 
     $alternatetemplate = get_string("{$eventtype}_mail_html", 'block_course_notification');
     if (empty($alternatetemplate)) {
         $alternatetemplate = null;
     }
-    $notification_html = bcn_compile_mail_template("{$eventtype}_mail_html", $vars, 'block_course_notification', $user->lang);
+    $notification_html = bcn_compile_mail_template("{$eventtype}_mail_html", $vars, 'block_course_notification', $blockinstance->config, $user->lang);
 
     if ($CFG->debugsmtp || $verbose) {
         mtrace("\tSending $eventtype Mail Notification to " . fullname($user) . "\n####\n".$notification_html. "\n####");
@@ -522,22 +522,12 @@ function bcn_notify_manager(&$blockinstance, &$course, $notified, $eventtype) {
         'USERLIST' => implode(', ', $notified),
     );
 
-    $alternatetemplateraw = get_string("{$eventtype}_manager_raw", 'block_course_notification');
-    if (empty($alternatetemplateraw)) {
-        $alternatetemplateraw = null;
-    }
-
-    $alternatetemplate = get_string("{$eventtype}_manager_html", 'block_course_notification');
-    if (empty($alternatetemplate)) {
-        $alternatetemplate = null;
-    }
-
     $admin = get_admin();
 
     // todo : email to managers
     foreach ($managers as $manager) {
-        $notification = bcn_compile_mail_template($eventtype, $vars, 'block_course_notification', $manager->lang, $alternatetemplate);
-        $notification_html = bcn_compile_mail_template("{$eventtype}_html", $vars, 'block_course_notification', $manager->lang, $alternatetemplate);
+        $notification = bcn_compile_mail_template("{$eventtype}_manager_raw", $vars, 'block_course_notification', null, $manager->lang);
+        $notification_html = bcn_compile_mail_template("{$eventtype}_manager_html", $vars, 'block_course_notification', null, $manager->lang);
         if (!$CFG->debugsmtp) {
             $subject = 'ADMIN NOTIFY '.get_string("{$eventtype}_object", 'block_course_notification', $SITE->shortname);
             email_to_user($manager, $admin, $subject, $notification, $notification_html);
