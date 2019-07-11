@@ -51,6 +51,8 @@ class block_course_notification_edit_form extends block_edit_form {
 
         $mform->addElement('checkbox', 'config_inactive', get_string('configinactive', 'block_course_notification'));
 
+        $mform->addElement('checkbox', 'config_completed', get_string('configcompleted', 'block_course_notification'));
+
         $mform->addElement('checkbox', 'config_closed', get_string('configclosed', 'block_course_notification'));
 
         $eventoptions = array(0 => get_string('noreminders', 'block_course_notification'),
@@ -88,6 +90,9 @@ class block_course_notification_edit_form extends block_edit_form {
 
         $mform->addElement('editor', 'config_closed_ovl', get_string('configclosed', 'block_course_notification'), $editoroptions);
         $mform->setAdvanced('config_closed_ovl');
+
+        $mform->addElement('editor', 'config_completed_ovl', get_string('configcompleted', 'block_course_notification'), $editoroptions);
+        $mform->setAdvanced('config_completed_ovl');
 
         $mform->addElement('editor', 'config_inactive_ovl', get_string('configinactive', 'block_course_notification'), $editoroptions);
         $mform->setAdvanced('config_inactive_ovl');

@@ -65,6 +65,7 @@ $string['configonedaytoend'] = 'One day to end';
 $string['configcourseeventsreminders'] = 'Event reminders';
 $string['configinactive'] = 'Inactivity reminders';
 $string['configclosed'] = 'When access closes';
+$string['configcompleted'] = 'When course is completed';
 $string['noreminders'] = 'No remind mails';
 $string['configfirstassign_help'] = 'If enabled, a notification is sent to all participants when course opens (start date) or when further being enrolled in course.';
 $string['configfirstassign_help'] = 'If enabled, a notification is sent to all participants when course opens (start date) or when further being enrolled in course.';
