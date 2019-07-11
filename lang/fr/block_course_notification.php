@@ -42,12 +42,16 @@ $string['errorinstancenotfound'] = 'L\'instance de bloc n\'a pas pu être trouv�
 $string['inactivitydelay'] = 'Période inactive (jours)';
 $string['inactivityfrequency'] = 'Fréquence d\'émission';
 $string['task_notification'] = 'Tâche d\'émission des notifications';
+$string['completed'] = 'A chaque achèvement du cours';
 $string['configfirstassign'] = 'Si activé, une notification est envoyée à tous les inscrits lors de l\'ouverture du cours (date de début) ou, une fois le cours ouvert, lors de l\'arrivée de nouveaux enrollements manuel. ';
 $string['configfirstassign'] = 'Inscription';
 $string['configfirstcall'] = 'Premier rappel après inscription';
 $string['configsecondcall'] = 'Second rappel après inscription';
 $string['configoneweeknearend'] = 'Une semaine de la fin';
 $string['configtwoweeksnearend'] = 'Deux semaines de la fin';
+$string['configfivedaystoend'] = 'Cinq jours de la fin';
+$string['configthreedaystoend'] = 'Trois jours de la fin';
+$string['configonedaytoend'] = 'La veille de la fin';
 $string['configcourseeventsreminders'] = 'Signaux de rappel';
 $string['configoneweekfromstart'] = 'Si activé, une notification est envoyée en début de période de formation, si aucune activité dans le cours n\'a été détectée au bout d\'une semaine';
 $string['configtwoweeksfromstart'] = 'Si activé, une notification est envoyée en début de période de formation, si aucune activité dans le cours n\'a été détectée au bout de deux semaines';
@@ -59,6 +63,7 @@ $string['configinactivityfrequency'] = 'Cette valeur règle la fréquence à laq
 $string['configsupporturl'] = 'Une URL de service où le utilisateurs \"éloignés\" peuvent reprendre contact avec vous.';
 $string['configcoursenotificationenablecron'] = 'Activer les notifications de cours au niveau site.';
 $string['configclosed'] = ' A la fin de l\'accès';
+$string['configdefaultcompleted'] = 'Message à l\'achèvement du cours (défaut)';
 $string['course_notifications_enable_cron'] = 'Cron';
 $string['supporturl'] = 'Url du support';
 $string['siteenabled'] = 'Activé (site)';
@@ -67,48 +72,10 @@ $string['closed'] = 'Accès clôturés';
 $string['processnotifications'] = 'Procéder aux notifications pour le cours {$a}';
 $string['configsiteenabled'] = 'Si désactivé, aucun bloc de notification n\'émettra de signaux.';
 $string['process'] = 'Lancer les notifications';
+$string['mailoverrides'] = 'Surcharges locales des messages';
+$string['mailoverrides_help'] = 'Ces réglages remplacent les messages standard réglés dans l\'administration centrale.
+Vous pouvez y injecter les mêmes variables dynamiques avec les balises : {{WWWROOT}}, {{COURSE}}, {{COURSEID}}, {{SITENAME}},
+{{USERNAME}}, {{FIRSTNAME}}, {{LASTNAME}}, {{CONTACTURL}}';
 
+$string['completionadvice'] = 'Active l\'envoi de message sur chaque événement d\'achèvement de ce cours.';
 
-$string['unconnectedtoadmins_mail_raw'] = '
-{{SITENAME}}
----------------------------------
-Les utilisateurs suivants :
-
-Sont créés depuis 7 jours et ne se sont pas encore connectés :
---------------------
-{{UNCON7}}
-
-Sont inactifs depuis 7 jours :
---------------------
-{{INACTIVE7}}
-
-Sont inactifs depuis 15 jours :
---------------------
-{{INACTIVE15}}
-
-ne se sont pas encore connectés à 30 jours de leur échéance :
---------------------
-{{UNCON30LEFT}}
-';
-
-$string['unconnectedtoadmins_mail_html'] = '
-<hr/>
-<h3>{{SITENAME}}</h3>
-<hr/>
-Les utilisateurs suivants :
-
-<b>Sont créés depuis 7 jours et ne se sont pas encore connectés :</b>
-{{UNCON7}}
-
-<hr/>
-<b>Sont inactifs depuis 7 jours :</b>
-{{INACTIVE7}}
-
-<hr/>
-<b>Sont inactifs depuis 15 jours :</b>
-{{INACTIVE15}}
-
-<hr/>
-<b>ne se sont pas encore connectés à 30 jours de leur échéance :</b>
-{{UNCON30LEFT}}
-';

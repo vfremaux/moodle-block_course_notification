@@ -10,6 +10,7 @@ $string['threedaystoend_object'] = '$a : Course will finish soon. 5 days left.';
 $string['onedaytoend_object'] = '$a : Course will finish soon. 5 days left.';
 $string['closed_object'] = '$a : Your course access has been closed.';
 $string['inactive_object'] = '$a : You had no activity for a while';
+$string['completed_object'] = '$a : Congratulation ! You have completed a course';
 
 // Manager notifications.
 
@@ -502,6 +503,18 @@ $string['closed_mail_html'] = '
 <p>If this is not expected, may you contact us directly here:</p>
 
 <p><a href="{{CONTACTURL}}">Our support</a></p>
+';
+
+$string['completed_mail_raw'] = '
+Congratulations {{FIRSTNAME}} {{LASTNAME}} !
+
+You have completed the course "{{COURSE}}" on site {{SITENAME}} !
+';
+
+$string['completed_mail_html'] = '
+<p>Congratulations {{FIRSTNAME}} {{LASTNAME}} !</p>
+
+<p>You have completed the course "{{COURSE}}" on site {{SITENAME}} !</p>
 ';
 
 $string['inactive_mail_raw'] = '

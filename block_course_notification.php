@@ -18,7 +18,7 @@
  * @package block_course_notification
  * @category  block
  * @author Valery Fremaux (valery.fremaux@gmail.com)
- * @copyright (C) 2010 Valery Fremaux
+ * @copyright (C) 2019 onwards Valery Fremaux
  * @licence   http://www.gnu.org/copyleft/gpl.html GNU Public Licence
  */
 
@@ -69,6 +69,20 @@ class block_course_notification extends block_list {
 
         if (empty($this->config)) {
             $this->config = new StdClass;
+            $config = get_config('block_course_notification');
+            $this->config->firstassign = $config->defaultfirstassign;
+            $this->config->firstcall = $config->defaultfirstcall;
+            $this->config->secondcall = $config->defaultsecondcall;
+            $this->config->twoweeksnearend = $config->defaulttwoweeksnearend;
+            $this->config->oneweeknearend = $config->defaultoneweeknearend;
+            $this->config->fivedaystoend = $config->defaultfivedaystoend;
+            $this->config->threedaystoend = $config->defaultthreedaystoend;
+            $this->config->onedaytoend = $config->defaultonedaytoend;
+            $this->config->closed = $config->defaultclosed;
+            $this->config->inactive = $config->defaultinactive;
+            $this->config->completed = $config->defaultcompleted;
+
+            $this->instance_config_save($this->config);
         }
 
         if (!isset($this->config->inactivitydelayindays)) {
@@ -116,6 +130,7 @@ class block_course_notification extends block_list {
         $this->content->icons[] = (strpos(@$this->config->courseeventsreminders, '1') !== false) ? $enabledicon : $disabledicon;
         $this->content->icons[] = (@$this->config->closed) ? $enabledicon : $disabledicon;
         $this->content->icons[] = (@$this->config->inactive) ? $enabledicon : $disabledicon;
+        $this->content->icons[] = (@$this->config->completed) ? $enabledicon : $disabledicon;
 
         $this->content->items[] = get_string('firstassign', 'block_course_notification').' ('.count($firstassigns).')';
 
@@ -206,6 +221,9 @@ class block_course_notification extends block_list {
         }
         $str = get_string('closed', 'block_course_notification');
         $this->content->items[] = '<span title="'.$userlist.'">'.$str.' ('.$closedcount.')</span>';
+
+        $str = get_string('completed', 'block_course_notification');
+        $this->content->items[] = '<span title="'.htmlentities(get_string('completionadvice', 'block_course_completion')).'">'.$str.' </span>';
 
         $userlist = '';
         $inactivescount = 0;
@@ -389,40 +407,31 @@ class block_course_notification extends block_list {
             }
         }
 
-        if (@$blockobj->config->twoweeksnearend) {
+        $endusers = [];
+        if (@$blockobj->config->closed) {
             if ($CFG->debug == DEBUG_DEVELOPER) {
-                debug_trace("\tTwo weeks from end...");
-            }
-            if ($verbose) {
-                echo "\tTwo weeks from end...\n";
-            }
-            if ($users = bcn_get_end_event_users($theblock, $course, 'twoweeksnearend', [])) {
-                bcn_notify_users($blockobj, $course, $users, 'twoweeksnearend');
-            }
-        }
-
-        if (@$blockobj->config->oneweeknearend) {
-            if ($CFG->debug == DEBUG_DEVELOPER) {
-                debug_trace("\tOne week from end...");
+                debug_trace("\tClosed...");
             }
             if ($verbose) {
                 echo "\tOne week from end...";
             }
-            if ($users = bcn_get_end_event_users($theblock, $course, 'oneweeknearend', [])) {
-                bcn_notify_users($blockobj, $course, $users, 'oneweeknearend');
+            if ($endusers = bcn_get_end_event_users($theblock, $course, 'oneweeknearend', $ignoreduserids)) {
+                bcn_notify_users($blockobj, $course, $endusers, 'oneweeknearend');
+                $ignoreduserids = self::add($ignoreduserids, $endusers);
             }
         }
 
         if (!empty($blockobj->config->courseeventsreminders)) {
-            if (strpos($blockobj->config->courseeventsreminders, '5') !== false) {
+            if (strpos($blockobj->config->courseeventsreminders, '1') !== false) {
                 if ($CFG->debug == DEBUG_DEVELOPER) {
-                    debug_trace("\tFive days from end...");
+                    debug_trace("\tOne day from end...");
                 }
                 if ($verbose) {
-                    echo "\tFive days from end...";
+                    echo "\tOne day from end...";
                 }
-                if ($users = bcn_get_end_event_users($theblock, $course, 'fivedaystoend', [])) {
-                    bcn_notify_users($blockobj, $course, $users, 'fivedaystoend');
+                if ($endusers = bcn_get_end_event_users($theblock, $course, 'onedaytoend', $ignoreduserids)) {
+                    bcn_notify_users($blockobj, $course, $endusers, 'onedaytoend');
+                    $ignoreduserids = self::add($ignoreduserids, $endusers);
                 }
             }
 
@@ -433,38 +442,54 @@ class block_course_notification extends block_list {
                 if ($verbose) {
                     echo "\tThree days from end...";
                 }
-                if ($users = bcn_get_end_event_users($theblock, $course, 'threedaystoend', [])) {
-                    bcn_notify_users($blockobj, $course, $users, 'threedaystoend');
+                if ($endusers = bcn_get_end_event_users($theblock, $course, 'threedaystoend', $ignoreduserids)) {
+                    bcn_notify_users($blockobj, $course, $endusers, 'threedaystoend');
+                    $ignoreduserids = self::add($ignoreduserids, $endusers);
                 }
             }
 
-            if (strpos($blockobj->config->courseeventsreminders, '1') !== false) {
+            if (strpos($blockobj->config->courseeventsreminders, '5') !== false) {
                 if ($CFG->debug == DEBUG_DEVELOPER) {
-                    debug_trace("\tOne day from end...");
+                    debug_trace("\tFive days from end...");
                 }
                 if ($verbose) {
-                    echo "\tOne day from end...";
+                    echo "\tFive days from end...";
                 }
-                if ($users = bcn_get_end_event_users($theblock, $course, 'onedaytoend', [])) {
-                    bcn_notify_users($blockobj, $course, $users, 'onedaytoend');
-                }
-
-                if (@$blockobj->config->closed) {
-                    if ($CFG->debug == DEBUG_DEVELOPER) {
-                        debug_trace("\tClosed...");
-                    }
-                    if ($verbose) {
-                        echo "\tOne week from end...";
-                    }
-                    if ($users = bcn_get_end_event_users($theblock, $course, 'oneweeknearend', [])) {
-                        bcn_notify_users($blockobj, $course, $users, 'oneweeknearend');
-                    }
+                if ($endusers = bcn_get_end_event_users($theblock, $course, 'fivedaystoend', $ignoreduserids)) {
+                    bcn_notify_users($blockobj, $course, $endusers, 'fivedaystoend');
+                    $ignoreduserids = self::add($ignoreduserids, $endusers);
                 }
             }
         }
+
+        if (@$blockobj->config->oneweeknearend) {
+            if ($CFG->debug == DEBUG_DEVELOPER) {
+                debug_trace("\tOne week from end...");
+            }
+            if ($verbose) {
+                echo "\tOne week from end...";
+            }
+            if ($endusers = bcn_get_end_event_users($theblock, $course, 'oneweeknearend', $ignoreduserids)) {
+                bcn_notify_users($blockobj, $course, $endusers, 'oneweeknearend');
+                $ignoreduserids = self::add($ignoreduserids, $endusers);
+            }
+        }
+
+        if (@$blockobj->config->twoweeksnearend) {
+            if ($CFG->debug == DEBUG_DEVELOPER) {
+                debug_trace("\tTwo weeks from end...");
+            }
+            if ($verbose) {
+                echo "\tTwo weeks from end...\n";
+            }
+            if ($users = bcn_get_end_event_users($theblock, $course, 'twoweeksnearend', $ignoreduserids)) {
+                bcn_notify_users($blockobj, $course, $users, 'twoweeksnearend');
+            }
+        }
+
     }
 
-    protected function add($target, $source) {
+    protected static function add($target, $source) {
         foreach($source as $s) {
             if (!in_array($s, $target)) {
                 $target[] = $s;
