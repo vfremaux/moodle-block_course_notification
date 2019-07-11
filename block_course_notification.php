@@ -96,7 +96,7 @@ class block_course_notification extends block_list {
         $closedusers = bcn_get_end_event_users($this, $COURSE, 'closed', $ignoreduserids);
         $ignoreduserids = self::add($ignoreduserids, array_keys($closedusers));
 
-        $onedaytoend = bcn_get_end_event_users($this, $COURSE, 'onedaystoend', $ignoreduserids);
+        $onedaytoend = bcn_get_end_event_users($this, $COURSE, 'onedaytoend', $ignoreduserids);
         $ignoreduserids = self::add($ignoreduserids, array_keys($onedaytoend));
 
         $threedaystoend = bcn_get_end_event_users($this, $COURSE, 'threedaystoend', $ignoreduserids);
@@ -413,11 +413,11 @@ class block_course_notification extends block_list {
                 debug_trace("\tClosed...");
             }
             if ($verbose) {
-                echo "\tOne week from end...";
+                echo "\tOne week from end...\n";
             }
             if ($endusers = bcn_get_end_event_users($theblock, $course, 'oneweeknearend', $ignoreduserids)) {
                 bcn_notify_users($blockobj, $course, $endusers, 'oneweeknearend');
-                $ignoreduserids = self::add($ignoreduserids, $endusers);
+                $ignoreduserids = self::add($ignoreduserids, array_keys($endusers));
             }
         }
 
@@ -427,11 +427,11 @@ class block_course_notification extends block_list {
                     debug_trace("\tOne day from end...");
                 }
                 if ($verbose) {
-                    echo "\tOne day from end...";
+                    echo "\tOne day from end...\n";
                 }
                 if ($endusers = bcn_get_end_event_users($theblock, $course, 'onedaytoend', $ignoreduserids)) {
                     bcn_notify_users($blockobj, $course, $endusers, 'onedaytoend');
-                    $ignoreduserids = self::add($ignoreduserids, $endusers);
+                    $ignoreduserids = self::add($ignoreduserids, array_keys($endusers));
                 }
             }
 
@@ -440,11 +440,11 @@ class block_course_notification extends block_list {
                     debug_trace("\tThree days from end...");
                 }
                 if ($verbose) {
-                    echo "\tThree days from end...";
+                    echo "\tThree days from end...\n";
                 }
                 if ($endusers = bcn_get_end_event_users($theblock, $course, 'threedaystoend', $ignoreduserids)) {
                     bcn_notify_users($blockobj, $course, $endusers, 'threedaystoend');
-                    $ignoreduserids = self::add($ignoreduserids, $endusers);
+                    $ignoreduserids = self::add($ignoreduserids, array_keys($endusers));
                 }
             }
 
@@ -453,11 +453,11 @@ class block_course_notification extends block_list {
                     debug_trace("\tFive days from end...");
                 }
                 if ($verbose) {
-                    echo "\tFive days from end...";
+                    echo "\tFive days from end...\n";
                 }
                 if ($endusers = bcn_get_end_event_users($theblock, $course, 'fivedaystoend', $ignoreduserids)) {
                     bcn_notify_users($blockobj, $course, $endusers, 'fivedaystoend');
-                    $ignoreduserids = self::add($ignoreduserids, $endusers);
+                    $ignoreduserids = self::add($ignoreduserids, array_keys($endusers));
                 }
             }
         }
@@ -467,11 +467,11 @@ class block_course_notification extends block_list {
                 debug_trace("\tOne week from end...");
             }
             if ($verbose) {
-                echo "\tOne week from end...";
+                echo "\tOne week from end...\n";
             }
             if ($endusers = bcn_get_end_event_users($theblock, $course, 'oneweeknearend', $ignoreduserids)) {
                 bcn_notify_users($blockobj, $course, $endusers, 'oneweeknearend');
-                $ignoreduserids = self::add($ignoreduserids, $endusers);
+                $ignoreduserids = self::add($ignoreduserids, array_keys($endusers));
             }
         }
 

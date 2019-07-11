@@ -45,9 +45,9 @@ function bcn_compile_mail_template($template, $infomap, $blockconfig, $lang = nu
 
         if (!is_null($blockconfig)) {
             $ovlkey = $eventtype.'_ovl';
-            if (!empty($blockconfig->$ovlkey)) {
+            if (!empty($blockconfig->$ovlkey['text'])) {
                 // Take override.
-                $notification = format_text($blockconfig->$ovlkey);
+                $notification = format_text($blockconfig->$ovlkey['text'], $blockconfig->$ovlkey['format']);
             } else {
                 $str = new lang_string($template, 'block_course_notification', null, $lang);
                 $notification = ''.$str;
