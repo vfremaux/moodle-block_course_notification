@@ -75,6 +75,6 @@ require(dirname(dirname(dirname(dirname(dirname(__FILE__))))).'/config.php'); //
 require_once($CFG->dirroot.'/blocks/course_notification/locallib.php');
 echo('Config check : playing for '.$CFG->wwwroot."\n");
 
-block_course_notification_set_test_courses();
+bcn_set_test_courses();
 
 exit(0);

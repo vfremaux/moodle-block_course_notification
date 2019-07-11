@@ -86,6 +86,7 @@ $events = ['firstassign',
            'threedaystoend',
            'onedaytoend',
            'closed',
+           'completed',
            'inactive'];
 
 $blockinstance = new StdClass;
