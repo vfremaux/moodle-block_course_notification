@@ -31,6 +31,12 @@ class block_course_notification_edit_form extends block_edit_form {
     function specific_definition($mform) {
         global $CFG, $DB, $COURSE;
 
+        $editoroptions = array('trusttext' => true,
+                                 'subdirs' => false,
+                                 'maxfiles' => 0,
+                                 'maxbytes' => 0,
+                                 'noclean' => true);
+
         $mform->addElement('header', 'configheader', get_string('blocksettings', 'block'));
 
         $mform->addElement('checkbox', 'config_firstassign', get_string('configfirstassign', 'block_course_notification'));
@@ -45,6 +51,8 @@ class block_course_notification_edit_form extends block_edit_form {
 
         $mform->addElement('checkbox', 'config_inactive', get_string('configinactive', 'block_course_notification'));
 
+        $mform->addElement('checkbox', 'config_completed', get_string('configcompleted', 'block_course_notification'));
+
         $mform->addElement('checkbox', 'config_closed', get_string('configclosed', 'block_course_notification'));
 
         $eventoptions = array(0 => get_string('noreminders', 'block_course_notification'),
@@ -52,6 +60,42 @@ class block_course_notification_edit_form extends block_edit_form {
             13 => '1,3 '.get_string('days'),
             135 => '1,3,5 '.get_string('days'));
         $mform->addElement('select', 'config_courseeventsreminders', get_string('configcourseeventsreminders', 'block_course_notification'), $eventoptions);
+
+        $mform->addElement('header', 'configmailheader', get_string('mailoverrides', 'block_course_notification'));
+        $mform->addHelpButton('configmailheader', 'mailoverrides', 'block_course_notification');
+
+        $mform->addElement('editor', 'config_firstassign_ovl', get_string('configfirstassign', 'block_course_notification'), $editoroptions);
+        $mform->setAdvanced('config_firstassign_ovl');
+
+        $mform->addElement('editor', 'config_firstcall_ovl', get_string('configfirstcall', 'block_course_notification'), $editoroptions);
+        $mform->setAdvanced('config_firstcall_ovl');
+
+        $mform->addElement('editor', 'config_secondcall_ovl', get_string('configsecondcall', 'block_course_notification'), $editoroptions);
+        $mform->setAdvanced('config_secondcall_ovl');
+
+        $mform->addElement('editor', 'config_twoweeksnearend_ovl', get_string('configtwoweeksnearend', 'block_course_notification'), $editoroptions);
+        $mform->setAdvanced('config_twoweeksnearend_ovl');
+
+        $mform->addElement('editor', 'config_oneweeknearend_ovl', get_string('configoneweeknearend', 'block_course_notification'), $editoroptions);
+        $mform->setAdvanced('config_oneweeknearend_ovl');
+
+        $mform->addElement('editor', 'config_fivedaystoend_ovl', get_string('configfivedaystoend', 'block_course_notification'), $editoroptions);
+        $mform->setAdvanced('config_fivedaystoend_ovl');
+
+        $mform->addElement('editor', 'config_threedaystoend_ovl', get_string('configthreedaystoend', 'block_course_notification'), $editoroptions);
+        $mform->setAdvanced('config_threedaystoend_ovl');
+
+        $mform->addElement('editor', 'config_onedaytoend_ovl', get_string('configonedaytoend', 'block_course_notification'), $editoroptions);
+        $mform->setAdvanced('config_onedaytoend_ovl');
+
+        $mform->addElement('editor', 'config_closed_ovl', get_string('configclosed', 'block_course_notification'), $editoroptions);
+        $mform->setAdvanced('config_closed_ovl');
+
+        $mform->addElement('editor', 'config_completed_ovl', get_string('configcompleted', 'block_course_notification'), $editoroptions);
+        $mform->setAdvanced('config_completed_ovl');
+
+        $mform->addElement('editor', 'config_inactive_ovl', get_string('configinactive', 'block_course_notification'), $editoroptions);
+        $mform->setAdvanced('config_inactive_ovl');
 
     }
 }

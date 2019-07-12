@@ -1,14 +1,16 @@
 <?php
 
-$string['firstassign_object'] = 'Un cours où vous êtes inscrit commence sur $a';
-$string['firstcall_object'] = '¨Premier appel pour votre cours sur $a';
-$string['secondcall_object'] = 'Deuxième appel pour votre cours sur $a';
-$string['twoweeksnearend_object'] = 'Votre cours sur $a va bientôt se terminer';
-$string['oneweeknearend_object'] = 'Votre cours sur $a va bientôt se terminer';
-$string['fivedaystoend_object'] = 'Votre cours sur $a va bientôt se terminer';
-$string['threedaystoend_object'] = 'Votre cours sur $a va bientôt se terminer';
-$string['onedaytoend_object'] = 'Votre cours sur $a va bientôt se terminer';
-$string['inactive_object'] = 'Vous n\'avez pas eu d\'activité depuis un moment sur $a';
+$string['firstassign_object'] = 'Un cours où vous êtes inscrit commence sur {$a}';
+$string['firstcall_object'] = '¨Premier appel pour votre cours sur {$a}';
+$string['secondcall_object'] = 'Deuxième appel pour votre cours sur {$a}';
+$string['twoweeksnearend_object'] = 'Votre cours sur {$a} va bientôt se terminer';
+$string['oneweeknearend_object'] = 'Votre cours sur {$a} va bientôt se terminer';
+$string['fivedaystoend_object'] = 'Votre cours sur {$a} va bientôt se terminer';
+$string['threedaystoend_object'] = 'Votre cours sur {$a} va bientôt se terminer';
+$string['onedaytoend_object'] = 'Votre cours sur {$a} va bientôt se terminer';
+$string['inactive_object'] = 'Vous n\'avez pas eu d\'activité depuis un moment sur {$a}';
+$string['closed_object'] = '{$a} : Votre accès au cours est échu.';
+$string['completed_object'] = '{$a} : Vous avez terminé un cours';
 
 // Modèles administrateur
 
@@ -509,6 +511,18 @@ $string['closed_mail_html'] = '
 <hr/>
 ';
 
+$string['completed_mail_raw'] = '
+Féliciations {{FIRSTNAME}} {{LASTNAME}} !
+
+Vous avez terminé le cours "{{COURSE}}" sur le site {{SITENAME}} !
+';
+
+$string['completed_mail_html'] = '
+<p>Félicitations {{FIRSTNAME}} {{LASTNAME}} !</p>
+
+<p>Vous avez terminé le cours "{{COURSE}}" sur le site {{SITENAME}} !</p>
+';
+
 $string['inactive_mail_raw'] = '
 Bonjour {{FIRSTNAME}} {{LASTNAME}},
 
@@ -540,4 +554,48 @@ utile d\'aller voir dans un déali raisonnable quels engagements vous ont été 
 le support à l\'adresse suivante :</p>
 
 <p><a href="{{CONTACTURL}}">Contact</a></p>
+';
+
+$string['unconnectedtoadmins_mail_raw'] = '
+{{SITENAME}}
+---------------------------------
+Les utilisateurs suivants :
+
+Sont créés depuis 7 jours et ne se sont pas encore connectés :
+--------------------
+{{UNCON7}}
+
+Sont inactifs depuis 7 jours :
+--------------------
+{{INACTIVE7}}
+
+Sont inactifs depuis 15 jours :
+--------------------
+{{INACTIVE15}}
+
+ne se sont pas encore connectés à 30 jours de leur échéance :
+--------------------
+{{UNCON30LEFT}}
+';
+
+$string['unconnectedtoadmins_mail_html'] = '
+<hr/>
+<h3>{{SITENAME}}</h3>
+<hr/>
+Les utilisateurs suivants :
+
+<b>Sont créés depuis 7 jours et ne se sont pas encore connectés :</b>
+{{UNCON7}}
+
+<hr/>
+<b>Sont inactifs depuis 7 jours :</b>
+{{INACTIVE7}}
+
+<hr/>
+<b>Sont inactifs depuis 15 jours :</b>
+{{INACTIVE15}}
+
+<hr/>
+<b>ne se sont pas encore connectés à 30 jours de leur échéance :</b>
+{{UNCON30LEFT}}
 ';

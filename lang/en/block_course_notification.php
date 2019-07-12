@@ -36,6 +36,7 @@ $string['onedaytoend'] = 'One day to end';
 $string['inactive'] = 'Inactivity';
 $string['status'] = 'User states';
 $string['closed'] = 'Terminated users';
+$string['completed'] = 'On course completion';
 $string['pending'] = 'Pending';
 $string['sent'] = 'Sent';
 $string['disabled'] = 'Disabled';
@@ -58,9 +59,13 @@ $string['configfirstcall'] = 'First call after assign';
 $string['configsecondcall'] = 'Second call after assign';
 $string['configoneweeknearend'] = 'One week near end';
 $string['configtwoweeksnearend'] = 'Two weeks near end';
+$string['configfivedaystoend'] = 'Five days to end';
+$string['configthreedaystoend'] = 'Three days to end';
+$string['configonedaytoend'] = 'One day to end';
 $string['configcourseeventsreminders'] = 'Event reminders';
 $string['configinactive'] = 'Inactivity reminders';
 $string['configclosed'] = 'When access closes';
+$string['configcompleted'] = 'When course is completed';
 $string['noreminders'] = 'No remind mails';
 $string['configfirstassign_help'] = 'If enabled, a notification is sent to all participants when course opens (start date) or when further being enrolled in course.';
 $string['configfirstassign_help'] = 'If enabled, a notification is sent to all participants when course opens (start date) or when further being enrolled in course.';
@@ -75,9 +80,25 @@ $string['configsupporturl'] = 'An URL the user can use to rebind contact with th
 $string['configcoursenotificationenablecron'] = 'Enable cron for all course notifications.';
 $string['course_notifications_enable_cron'] = 'Cron enable';
 $string['supporturl'] = 'Support/contact URL';
+$string['configdefaultfirstassign'] = 'First assign signal (default state)';
+$string['configdefaultfirstcall'] = 'First call signal (default state)';
+$string['configdefaultsecondcall'] = 'Second call signal (default state)';
+$string['configdefaulttwoweeksnearend'] = 'Two weeks near end signal (default state)';
+$string['configdefaultoneweeknearend'] = 'One week near end signal (default state)';
+$string['configdefaultfivedaystoend'] = 'Five days to end signal (default state)';
+$string['configdefaultthreedaystoend'] = 'three days to end signal (default state)';
+$string['configdefaultonedaytoend'] = 'One day to end signal (default state)';
+$string['configdefaultcompleted'] = 'Course completed message (default state)';
+$string['configdefaultclosed'] = 'Closed access signal (default state)';
+$string['configdefaultinactive'] = 'Inactive signal (default state)';
 $string['processnotifications'] = 'Process notifications for the course {$a}';
 $string['siteenabled'] = 'Enabled (site level)';
 $string['configsiteenabled'] = 'If enabled, all notification blocks in Moodle will be active.';
 $string['process'] = 'Process notifications';
+$string['mailoverrides'] = 'Mail message overrides';
+$string['mailoverrides_help'] = 'these settings will override mail content for each event.
+You may use the same placeholders you use in central configuration: {{WWWROOT}}, {{COURSE}}, {{COURSEID}}, {{SITENAME}},
+{{USERNAME}}, {{FIRSTNAME}}, {{LASTNAME}}, {{CONTACTURL}}';
+$string['completionadvice'] = 'Enables message sending on each completion event';
 
 include ($CFG->dirroot.'/blocks/course_notification/lang/en/mailtemplates.php');
