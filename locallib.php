@@ -488,7 +488,7 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
             'context' => $context,
             'courseid' => $course->id,
         );
-        $eventclass = "\\block_course_notification\\event\\user_notified_{$eventype}";
+        $eventclass = "\\block_course_notification\\event\\user_notified_{$eventtype}";
         $event = $eventclass::create($eventparams);
         $event->trigger();
 
