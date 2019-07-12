@@ -15,11 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package block_course_notification
- * @category  block
- * @author Valery Fremaux (valery.fremaux@gmail.com)
- * @copyright (C) 2010 Valery Fremaux
- * @licence   http://www.gnu.org/copyleft/gpl.html GNU Public Licence
+ * This file contains an event for when a feedback activity is viewed.
+ *
+ * @package    block_course_notification
+ * @copyright  2019 Valery Fremaux
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 namespace block_course_notification\event;
@@ -28,7 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Event for when a notification mail is sent.
  */
-class user_notified_firstcall extends \core\event\base {
+class user_notified_threedaystoend extends \core\event\base {
 
     /**
      * Init method.
