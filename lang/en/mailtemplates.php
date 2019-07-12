@@ -1,16 +1,16 @@
 <?php
 
-$string['firstassign_object'] = '$a : A course id open for you';
-$string['firstcall_object'] = '$a : Course has started one week ago !';
-$string['secondcall_object'] = '$a : Course has started two weeks ago !';
-$string['twoweeksnearend_object'] = '$a : Course will finish soon. 2 weeks left.';
-$string['oneweeknearend_object'] = '$a : Course will finish soon. 1 week left.';
-$string['fivedaystoend_object'] = '$a : Course will finish soon. 5 days left.';
-$string['threedaystoend_object'] = '$a : Course will finish soon. 5 days left.';
-$string['onedaytoend_object'] = '$a : Course will finish soon. 5 days left.';
-$string['closed_object'] = '$a : Your course access has been closed.';
-$string['inactive_object'] = '$a : You had no activity for a while';
-$string['completed_object'] = '$a : Congratulation ! You have completed a course';
+$string['firstassign_object'] = '{$a} : A course id open for you';
+$string['firstcall_object'] = '{$a} : Course has started one week ago !';
+$string['secondcall_object'] = '{$a} : Course has started two weeks ago !';
+$string['twoweeksnearend_object'] = '{$a} : Course will finish soon. 2 weeks left.';
+$string['oneweeknearend_object'] = '{$a} : Course will finish soon. 1 week left.';
+$string['fivedaystoend_object'] = '{$a} : Course will finish soon. 5 days left.';
+$string['threedaystoend_object'] = '{$a} : Course will finish soon. 5 days left.';
+$string['onedaytoend_object'] = '{$a} : Course will finish soon. 5 days left.';
+$string['closed_object'] = '{$a} : Your course access has been closed.';
+$string['inactive_object'] = '{$a} : You had no activity for a while';
+$string['completed_object'] = '{$a} : Congratulation ! You have completed a course';
 
 // Manager notifications.
 

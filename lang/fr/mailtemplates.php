@@ -1,16 +1,16 @@
 <?php
 
-$string['firstassign_object'] = 'Un cours où vous êtes inscrit commence sur $a';
-$string['firstcall_object'] = '¨Premier appel pour votre cours sur $a';
-$string['secondcall_object'] = 'Deuxième appel pour votre cours sur $a';
-$string['twoweeksnearend_object'] = 'Votre cours sur $a va bientôt se terminer';
-$string['oneweeknearend_object'] = 'Votre cours sur $a va bientôt se terminer';
-$string['fivedaystoend_object'] = 'Votre cours sur $a va bientôt se terminer';
-$string['threedaystoend_object'] = 'Votre cours sur $a va bientôt se terminer';
-$string['onedaytoend_object'] = 'Votre cours sur $a va bientôt se terminer';
-$string['inactive_object'] = 'Vous n\'avez pas eu d\'activité depuis un moment sur $a';
-$string['closed_object'] = '$a: Votre accès au cours est échu.';
-$string['completed_object'] = '$a : Vous avez terminé un cours';
+$string['firstassign_object'] = 'Un cours où vous êtes inscrit commence sur {$a}';
+$string['firstcall_object'] = '¨Premier appel pour votre cours sur {$a}';
+$string['secondcall_object'] = 'Deuxième appel pour votre cours sur {$a}';
+$string['twoweeksnearend_object'] = 'Votre cours sur {$a} va bientôt se terminer';
+$string['oneweeknearend_object'] = 'Votre cours sur {$a} va bientôt se terminer';
+$string['fivedaystoend_object'] = 'Votre cours sur {$a} va bientôt se terminer';
+$string['threedaystoend_object'] = 'Votre cours sur {$a} va bientôt se terminer';
+$string['onedaytoend_object'] = 'Votre cours sur {$a} va bientôt se terminer';
+$string['inactive_object'] = 'Vous n\'avez pas eu d\'activité depuis un moment sur {$a}';
+$string['closed_object'] = '{$a} : Votre accès au cours est échu.';
+$string['completed_object'] = '{$a} : Vous avez terminé un cours';
 
 // Modèles administrateur
 

@@ -426,7 +426,7 @@ function bcn_notify_users(&$blockinstance, &$course, $users, $eventtype, $data =
 * @param object $blockinstance
 * @param object $course
 * @param object $user
-* @param string $eventtype 
+* @param string $eventtype
 * @param array $data additional data to display in notifications as DATA_<N> tags
 * @param boolean $allowiterate if true, the same notification can be sent several time, counting iterations
 */
@@ -448,6 +448,7 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
     $vars = array(
         'WWWROOT' => $CFG->wwwroot,
         'COURSE' => $course->fullname,
+        'COURSESHORT' => $course->shortname,
         'COURSEID' => $course->id,
         'SITENAME' => $SITE->fullname,
         'USERNAME' => $user->username,
@@ -474,7 +475,7 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
     $notification_html = bcn_compile_mail_template("{$eventtype}_mail_html", $vars, $blockinstance->config, $user->lang);
 
     if ($CFG->debugsmtp || $verbose) {
-        mtrace("\tSending $eventtype Mail Notification to " . fullname($user) . "\n####\n".$notification_html. "\n####");
+        mtrace("\tSending {$eventtype} Mail Notification to " . fullname($user) . "\n####\n".$notification_html. "\n####");
     }
 
     $admin = get_admin();
@@ -487,7 +488,7 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
             'context' => $context,
             'courseid' => $course->id,
         );
-        $eventclass = "\\block_course_notification\\event\\user_notified_$eventype";
+        $eventclass = "\\block_course_notification\\event\\user_notified_{$eventype}";
         $event = $eventclass::create($eventparams);
         $event->trigger();
 
