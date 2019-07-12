@@ -32,15 +32,31 @@
  * @param text $alternatetemplate when provided, this content will override the file hardlinked template. 
  * @return a fully resolved template where all data has been injected
  */
-function bcn_compile_mail_template($template, $infomap, $lang = null) {
+function bcn_compile_mail_template($template, $infomap, $blockconfig, $lang = null) {
     global $USER;
 
     if (!$lang) {
         $lang = $USER->lang;
     }
 
-    // TODO : Solve lang
-   $notification = get_string($template, 'block_course_notification');
+    // Extract eventtype and check overrides, but not for manager mails.
+    if (strpos($template, 'manager') === false) {
+        $eventtype = str_replace('_mail_raw', '', str_replace('_mail_html', '', $template));
+
+        if (!is_null($blockconfig)) {
+            $ovlkey = $eventtype.'_ovl';
+            if (!empty($blockconfig->$ovlkey['text'])) {
+                // Take override.
+                $notification = format_text($blockconfig->$ovlkey['text'], $blockconfig->$ovlkey['format']);
+            } else {
+                $str = new lang_string($template, 'block_course_notification', null, $lang);
+                $notification = ''.$str;
+            }
+        }
+    } else {
+        $str = new lang_string($template, 'block_course_notification', null, $lang);
+        $notification = ''.$str;
+    }
 
     foreach ($infomap as $akey => $avalue) {
         $notification = str_replace('{{'.$akey.'}}', $avalue, $notification);
