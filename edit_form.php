@@ -39,21 +39,21 @@ class block_course_notification_edit_form extends block_edit_form {
 
         $mform->addElement('header', 'configheader', get_string('blocksettings', 'block'));
 
-        $mform->addElement('checkbox', 'config_firstassign', get_string('configfirstassign', 'block_course_notification'));
+        $mform->addElement('advcheckbox', 'config_firstassign', get_string('configfirstassign', 'block_course_notification'));
 
-        $mform->addElement('checkbox', 'config_firstcall', get_string('configfirstcall', 'block_course_notification'));
+        $mform->addElement('advcheckbox', 'config_firstcall', get_string('configfirstcall', 'block_course_notification'));
 
-        $mform->addElement('checkbox', 'config_secondcall', get_string('configsecondcall', 'block_course_notification'));
+        $mform->addElement('advcheckbox', 'config_secondcall', get_string('configsecondcall', 'block_course_notification'));
 
-        $mform->addElement('checkbox', 'config_twoweeksnearend', get_string('configtwoweeksnearend', 'block_course_notification'));
+        $mform->addElement('advcheckbox', 'config_twoweeksnearend', get_string('configtwoweeksnearend', 'block_course_notification'));
 
-        $mform->addElement('checkbox', 'config_oneweeknearend', get_string('configoneweeknearend', 'block_course_notification'));
+        $mform->addElement('advcheckbox', 'config_oneweeknearend', get_string('configoneweeknearend', 'block_course_notification'));
 
-        $mform->addElement('checkbox', 'config_inactive', get_string('configinactive', 'block_course_notification'));
+        $mform->addElement('advcheckbox', 'config_inactive', get_string('configinactive', 'block_course_notification'));
 
-        $mform->addElement('checkbox', 'config_completed', get_string('configcompleted', 'block_course_notification'));
+        $mform->addElement('advcheckbox', 'config_completed', get_string('configcompleted', 'block_course_notification'));
 
-        $mform->addElement('checkbox', 'config_closed', get_string('configclosed', 'block_course_notification'));
+        $mform->addElement('advcheckbox', 'config_closed', get_string('configclosed', 'block_course_notification'));
 
         $eventoptions = array(0 => get_string('noreminders', 'block_course_notification'),
             1 => '1 '.get_string('day'),
