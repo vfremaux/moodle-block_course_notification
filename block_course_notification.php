@@ -23,6 +23,7 @@
  */
 
 require_once($CFG->dirroot.'/blocks/course_notification/locallib.php');
+require_once($CFG->dirroot.'/blocks/moodleblock.class.php');
 
 if (!function_exists('debug_trace')) {
     function debug_trace() {

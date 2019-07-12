@@ -482,7 +482,7 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
 
     $subject = get_string("{$eventtype}_object", 'block_course_notification', $SITE->shortname);
     if (email_to_user($user, $admin, $subject, $notification, $notification_html)) {
-        $context = context_user::instance($user->id);
+        $context = context_course::instance($course->id);
         $eventparams = array(
             'objectid' => $user->id,
             'context' => $context,
