@@ -52,6 +52,19 @@ $string['configtwoweeksnearend'] = 'Deux semaines de la fin';
 $string['configfivedaystoend'] = 'Cinq jours de la fin';
 $string['configthreedaystoend'] = 'Trois jours de la fin';
 $string['configonedaytoend'] = 'La veille de la fin';
+
+$string['configfirstassignobject'] = 'Inscription (sujet)';
+$string['configfirstcallobject'] = 'Premier rappel après inscription (sujet)';
+$string['configsecondcallobject'] = 'Second rappel après inscription (sujet)';
+$string['configoneweeknearendobject'] = 'Une semaine de la fin (sujet)';
+$string['configtwoweeksnearendobject'] = 'Deux semaines de la fin (sujet)';
+$string['configfivedaystoendobject'] = 'Cinq jours de la fin (sujet)';
+$string['configthreedaystoendobject'] = 'Trois jours de la fin (sujet)';
+$string['configonedaytoendobject'] = 'La veille de la fin (sujet)';
+$string['configinactiveobject'] = 'Inactivité (sujet)';
+$string['configclosedobject'] = 'A la fermeture de l\'accès (sujet)';
+$string['configcompletedobject'] = 'A chaque achèvement du cours (sujet)';
+
 $string['configcourseeventsreminders'] = 'Signaux de rappel';
 $string['configoneweekfromstart'] = 'Si activé, une notification est envoyée en début de période de formation, si aucune activité dans le cours n\'a été détectée au bout d\'une semaine';
 $string['configtwoweeksfromstart'] = 'Si activé, une notification est envoyée en début de période de formation, si aucune activité dans le cours n\'a été détectée au bout de deux semaines';
