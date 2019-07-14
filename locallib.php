@@ -476,7 +476,7 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
     $admin = get_admin();
 
     $subject = get_string("{$eventtype}_object", 'block_course_notification', $SITE->shortname);
-    $objectconfigkey = $eventtype.'object';
+    $objectconfigkey = $eventtype.'_object_ovl';
     if (!empty($blockinstance->config->$objectconfigkey)) {
         $subject = $blockinstance->config->$objectconfigkey;
         foreach ($vars as $key => $value) {
