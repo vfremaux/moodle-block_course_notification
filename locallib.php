@@ -470,6 +470,7 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
     $notification_html = bcn_compile_mail_template("{$eventtype}_mail_html", $vars, $blockinstance->config, $user->lang);
 
     if ($CFG->debugsmtp || $verbose) {
+        mtrace("\tSending {$eventtype} Text Mail Notification to " . fullname($user) . "\n####\n".$notification. "\n####");
         mtrace("\tSending {$eventtype} Mail Notification to " . fullname($user) . "\n####\n".$notification_html. "\n####");
     }
 
