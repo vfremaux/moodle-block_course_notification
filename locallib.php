@@ -470,17 +470,18 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
     $notification_html = bcn_compile_mail_template("{$eventtype}_mail_html", $vars, $blockinstance->config, $user->lang);
 
     if ($CFG->debugsmtp || $verbose) {
+        mtrace("\tSending {$eventtype} Text Mail Notification to " . fullname($user) . "\n####\n".$notification. "\n####");
         mtrace("\tSending {$eventtype} Mail Notification to " . fullname($user) . "\n####\n".$notification_html. "\n####");
     }
 
     $admin = get_admin();
 
     $subject = get_string("{$eventtype}_object", 'block_course_notification', $SITE->shortname);
-    $objectconfigkey = $eventtype.'object';
+    $objectconfigkey = $eventtype.'_object_ovl';
     if (!empty($blockinstance->config->$objectconfigkey)) {
         $subject = $blockinstance->config->$objectconfigkey;
         foreach ($vars as $key => $value) {
-            $subject = str_replace($key, $value, $subject);
+            $subject = str_replace("{{$key}}", $value, $subject);
         }
     }
 
