@@ -73,6 +73,7 @@ $string['closed'] = 'Accès clôturés';
 $string['processnotifications'] = 'Procéder aux notifications pour le cours {$a}';
 $string['configsiteenabled'] = 'Si désactivé, aucun bloc de notification n\'émettra de signaux.';
 $string['process'] = 'Lancer les notifications';
+$string['reset'] = 'Réinitialiszer';
 $string['mailoverrides'] = 'Surcharges locales des messages';
 $string['mailoverrides_help'] = 'Ces réglages remplacent les messages standard réglés dans l\'administration centrale.
 Vous pouvez y injecter les mêmes variables dynamiques avec les balises : {{WWWROOT}}, {{COURSE}}, {{COURSEID}}, {{SITENAME}},

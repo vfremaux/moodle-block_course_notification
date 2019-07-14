@@ -95,6 +95,7 @@ $string['processnotifications'] = 'Process notifications for the course {$a}';
 $string['siteenabled'] = 'Enabled (site level)';
 $string['configsiteenabled'] = 'If enabled, all notification blocks in Moodle will be active.';
 $string['process'] = 'Process notifications';
+$string['reset'] = 'Reset events';
 $string['mailoverrides'] = 'Mail message overrides';
 $string['mailoverrides_help'] = 'these settings will override mail content for each event.
 You may use the same placeholders you use in central configuration: {{WWWROOT}}, {{COURSE}}, {{COURSEID}}, {{SITENAME}},
