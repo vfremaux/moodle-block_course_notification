@@ -662,7 +662,7 @@ function bcn_set_test_courses() {
         $course->enddate = $end;
         $DB->update_record('course', $course);
 
-        $firstgroup = ['aa1', 'aa2', 'aa3', 'aa4', 'aa5'];
+        $firstgroup = ['aa1', 'aa2', 'aa3', 'aa4'];
         $secondgroup = ['bb1', 'bb2', 'bb3', 'bb4'];
         $thirdgroup = ['cc1', 'cc2'];
 
