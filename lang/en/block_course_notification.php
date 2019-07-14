@@ -66,6 +66,20 @@ $string['configcourseeventsreminders'] = 'Event reminders';
 $string['configinactive'] = 'Inactivity reminders';
 $string['configclosed'] = 'When access closes';
 $string['configcompleted'] = 'When course is completed';
+
+$string['configfirstassignobject'] = 'Notify on assign (object)';
+$string['configfirstcallobject'] = 'First call after assign (object)';
+$string['configsecondcallobject'] = 'Second call after assign (object)';
+$string['configoneweeknearendobject'] = 'One week near end (object)';
+$string['configtwoweeksnearendobject'] = 'Two weeks near end (object)';
+$string['configfivedaystoendobject'] = 'Five days to end (object)';
+$string['configthreedaystoendobject'] = 'Three days to end (object)';
+$string['configonedaytoendobject'] = 'One day to end (object)';
+$string['configcourseeventsremindersobject'] = 'Event reminders (object)';
+$string['configinactiveobject'] = 'Inactivity reminders (object)';
+$string['configclosedobject'] = 'When access closes (object)';
+$string['configcompletedobject'] = 'When course is completed (object)';
+
 $string['noreminders'] = 'No remind mails';
 $string['configfirstassign_help'] = 'If enabled, a notification is sent to all participants when course opens (start date) or when further being enrolled in course.';
 $string['configfirstassign_help'] = 'If enabled, a notification is sent to all participants when course opens (start date) or when further being enrolled in course.';

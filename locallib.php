@@ -467,11 +467,6 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
     }
 
     $notification = bcn_compile_mail_template("{$eventtype}_mail_raw", $vars, $blockinstance->config, $user->lang);
-
-    $alternatetemplate = get_string("{$eventtype}_mail_html", 'block_course_notification');
-    if (empty($alternatetemplate)) {
-        $alternatetemplate = null;
-    }
     $notification_html = bcn_compile_mail_template("{$eventtype}_mail_html", $vars, $blockinstance->config, $user->lang);
 
     if ($CFG->debugsmtp || $verbose) {
@@ -481,6 +476,14 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
     $admin = get_admin();
 
     $subject = get_string("{$eventtype}_object", 'block_course_notification', $SITE->shortname);
+    $objectconfigkey = $eventtype.'object';
+    if (!empty($blockinstance->config->$objectconfigkey)) {
+        $subject = $blockinstance->config->$objectconfigkey;
+        foreach ($vars as $key => $value) {
+            $subject = str_replace($key, $value, $subject);
+        }
+    }
+
     if (email_to_user($user, $admin, $subject, $notification, $notification_html)) {
         $context = context_course::instance($course->id);
         $eventparams = array(
