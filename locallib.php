@@ -480,7 +480,7 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
     if (!empty($blockinstance->config->$objectconfigkey)) {
         $subject = $blockinstance->config->$objectconfigkey;
         foreach ($vars as $key => $value) {
-            $subject = str_replace($key, $value, $subject);
+            $subject = str_replace("{{$key}}", $value, $subject);
         }
     }
 
