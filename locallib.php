@@ -661,7 +661,6 @@ function bcn_set_test_courses() {
         $course->startdate = $start;
         $course->enddate = $end;
         $DB->update_record('course', $course);
-        echo "$tc updated\n";
 
         $firstgroup = ['aa1', 'aa2', 'aa3', 'aa4'];
         $secondgroup = ['bb1', 'bb2', 'bb3', 'bb4'];
@@ -676,7 +675,8 @@ function bcn_set_test_courses() {
 
             $u = $DB->get_record('user', ['username' => $uname]);
             if (!$u) {
-                throw new Exception("Test user ".$uname." not found");
+                mtrace("Test user ".$uname." not found");
+                continue;
             }
             $ue = $DB->get_record('user_enrolments', ['enrolid' => $enrol->id, 'status' => 0, 'userid' => $u->id]);
 
@@ -698,7 +698,8 @@ function bcn_set_test_courses() {
         foreach ($secondgroup as $uname) {
             $u = $DB->get_record('user', ['username' => $uname]);
             if (!$u) {
-                throw new Exception("Tedst user ".$uname." not found");
+                mtrace("Test user ".$uname." not found");
+                continue;
             }
             $ue = $DB->get_record('user_enrolments', ['enrolid' => $enrol->id, 'status' => 0, 'userid' => $u->id]);
 
@@ -719,7 +720,8 @@ function bcn_set_test_courses() {
         foreach ($thirdgroup as $uname) {
             $u = $DB->get_record('user', ['username' => $uname]);
             if (!$u) {
-                throw new Exception("Tedst user ".$uname." not found");
+                mtrace("Test user ".$uname." not found");
+                continue;
             }
             $ue = $DB->get_record('user_enrolments', ['enrolid' => $enrol->id, 'status' => 0, 'userid' => $u->id]);
 
