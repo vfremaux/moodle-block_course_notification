@@ -359,7 +359,8 @@ class block_course_notification extends block_list {
             if ($verbose) {
                 echo "\tSecond calls...\n";
             }
-            if ($course->startdate < time() - DAYSECS * 15) {
+            $daysback14 = time() - DAYSECS * 14;
+            if ($course->startdate < $daysback14) {
                 // Do not process at all for this course when too new.
                 if ($secondcallusers = bcn_get_start_event_users($blockobj, $course, 'secondcall', $ignoreduserids)) {
                     $count = count($secondcallusers);

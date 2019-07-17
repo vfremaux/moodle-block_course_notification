@@ -52,6 +52,19 @@ $string['configtwoweeksnearend'] = 'Deux semaines de la fin';
 $string['configfivedaystoend'] = 'Cinq jours de la fin';
 $string['configthreedaystoend'] = 'Trois jours de la fin';
 $string['configonedaytoend'] = 'La veille de la fin';
+
+$string['configfirstassignobject'] = 'Inscription (sujet)';
+$string['configfirstcallobject'] = 'Premier rappel après inscription (sujet)';
+$string['configsecondcallobject'] = 'Second rappel après inscription (sujet)';
+$string['configoneweeknearendobject'] = 'Une semaine de la fin (sujet)';
+$string['configtwoweeksnearendobject'] = 'Deux semaines de la fin (sujet)';
+$string['configfivedaystoendobject'] = 'Cinq jours de la fin (sujet)';
+$string['configthreedaystoendobject'] = 'Trois jours de la fin (sujet)';
+$string['configonedaytoendobject'] = 'La veille de la fin (sujet)';
+$string['configinactiveobject'] = 'Inactivité (sujet)';
+$string['configclosedobject'] = 'A la fermeture de l\'accès (sujet)';
+$string['configcompletedobject'] = 'A chaque achèvement du cours (sujet)';
+
 $string['configcourseeventsreminders'] = 'Signaux de rappel';
 $string['configoneweekfromstart'] = 'Si activé, une notification est envoyée en début de période de formation, si aucune activité dans le cours n\'a été détectée au bout d\'une semaine';
 $string['configtwoweeksfromstart'] = 'Si activé, une notification est envoyée en début de période de formation, si aucune activité dans le cours n\'a été détectée au bout de deux semaines';
@@ -73,6 +86,7 @@ $string['closed'] = 'Accès clôturés';
 $string['processnotifications'] = 'Procéder aux notifications pour le cours {$a}';
 $string['configsiteenabled'] = 'Si désactivé, aucun bloc de notification n\'émettra de signaux.';
 $string['process'] = 'Lancer les notifications';
+$string['reset'] = 'Réinitialiszer';
 $string['mailoverrides'] = 'Surcharges locales des messages';
 $string['mailoverrides_help'] = 'Ces réglages remplacent les messages standard réglés dans l\'administration centrale.
 Vous pouvez y injecter les mêmes variables dynamiques avec les balises : {{WWWROOT}}, {{COURSE}}, {{COURSEID}}, {{SITENAME}},
