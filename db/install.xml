@@ -23,7 +23,7 @@
         <FIELD NAME="fivedaystoendnotedate" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of five days to end message "/>
         <FIELD NAME="threedaystoendnotified" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Marked if three days to end message has been sent"/>
         <FIELD NAME="threedaystoendnotedate" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of three days to end message"/>
-        <FIELD NAME="onedaytoendnotifoneied" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Marked if one day to end message has been sent"/>
+        <FIELD NAME="onedaytoendnotified" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Marked if one day to end message has been sent"/>
         <FIELD NAME="onedaytoendnotedate" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of one day to end message"/>
         <FIELD NAME="closednotified" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Marked if access ending message has been sent"/>
         <FIELD NAME="closednotedate" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of access ending message"/>
