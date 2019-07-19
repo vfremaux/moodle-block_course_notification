@@ -20,6 +20,9 @@ $string['course_notification:benotified'] = 'Can be  notified';
 $string['course_notification:excludefromnotification'] = 'Can NOT Be notified';
 $string['course_notification:setup'] = 'Configure notification';
 
+// Privacy.
+$string['privacy:metadata'] = 'The Course Notification block does not directly store any personal data about any user.';
+
 $string['pluginname'] = 'Course notifications';
 $string['backtocourse'] = 'Back to course';
 $string['enabled'] = 'Enabled';
@@ -100,7 +103,7 @@ $string['configdefaultsecondcall'] = 'Second call signal (default state)';
 $string['configdefaulttwoweeksnearend'] = 'Two weeks near end signal (default state)';
 $string['configdefaultoneweeknearend'] = 'One week near end signal (default state)';
 $string['configdefaultfivedaystoend'] = 'Five days to end signal (default state)';
-$string['configdefaultthreedaystoend'] = 'three days to end signal (default state)';
+$string['configdefaultthreedaystoend'] = 'Three days to end signal (default state)';
 $string['configdefaultonedaytoend'] = 'One day to end signal (default state)';
 $string['configdefaultcompleted'] = 'Course completed message (default state)';
 $string['configdefaultclosed'] = 'Closed access signal (default state)';
