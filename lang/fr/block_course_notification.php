@@ -90,6 +90,7 @@ $string['configcoursenotificationenablecron'] = 'Activer les notifications de co
 $string['configclosed'] = ' A la fin de l\'accès';
 $string['configcompleted'] = 'Quand le cours est achevé';
 $string['configdefaultcompleted'] = 'Message à l\'achèvement du cours (défaut)';
+$string['configdefaultinactivitydelayindays'] = 'Longueur (en jours) de la période d\'inactivité ';
 $string['course_notifications_enable_cron'] = 'Cron';
 $string['supporturl'] = 'Url du support';
 $string['siteenabled'] = 'Activé (site)';
