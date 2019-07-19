@@ -66,6 +66,20 @@ $string['configcourseeventsreminders'] = 'Event reminders';
 $string['configinactive'] = 'Inactivity reminders';
 $string['configclosed'] = 'When access closes';
 $string['configcompleted'] = 'When course is completed';
+
+$string['configfirstassignobject'] = 'Notify on assign (object)';
+$string['configfirstcallobject'] = 'First call after assign (object)';
+$string['configsecondcallobject'] = 'Second call after assign (object)';
+$string['configoneweeknearendobject'] = 'One week near end (object)';
+$string['configtwoweeksnearendobject'] = 'Two weeks near end (object)';
+$string['configfivedaystoendobject'] = 'Five days to end (object)';
+$string['configthreedaystoendobject'] = 'Three days to end (object)';
+$string['configonedaytoendobject'] = 'One day to end (object)';
+$string['configcourseeventsremindersobject'] = 'Event reminders (object)';
+$string['configinactiveobject'] = 'Inactivity reminders (object)';
+$string['configclosedobject'] = 'When access closes (object)';
+$string['configcompletedobject'] = 'When course is completed (object)';
+
 $string['noreminders'] = 'No remind mails';
 $string['configfirstassign_help'] = 'If enabled, a notification is sent to all participants when course opens (start date) or when further being enrolled in course.';
 $string['configfirstassign_help'] = 'If enabled, a notification is sent to all participants when course opens (start date) or when further being enrolled in course.';
@@ -86,7 +100,7 @@ $string['configdefaultsecondcall'] = 'Second call signal (default state)';
 $string['configdefaulttwoweeksnearend'] = 'Two weeks near end signal (default state)';
 $string['configdefaultoneweeknearend'] = 'One week near end signal (default state)';
 $string['configdefaultfivedaystoend'] = 'Five days to end signal (default state)';
-$string['configdefaultthreedaystoend'] = 'three days to end signal (default state)';
+$string['configdefaultthreedaystoend'] = 'Three days to end signal (default state)';
 $string['configdefaultonedaytoend'] = 'One day to end signal (default state)';
 $string['configdefaultcompleted'] = 'Course completed message (default state)';
 $string['configdefaultclosed'] = 'Closed access signal (default state)';
@@ -95,6 +109,7 @@ $string['processnotifications'] = 'Process notifications for the course {$a}';
 $string['siteenabled'] = 'Enabled (site level)';
 $string['configsiteenabled'] = 'If enabled, all notification blocks in Moodle will be active.';
 $string['process'] = 'Process notifications';
+$string['reset'] = 'Reset events';
 $string['mailoverrides'] = 'Mail message overrides';
 $string['mailoverrides_help'] = 'these settings will override mail content for each event.
 You may use the same placeholders you use in central configuration: {{WWWROOT}}, {{COURSE}}, {{COURSEID}}, {{SITENAME}},
