@@ -467,20 +467,24 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
     }
 
     $notification = bcn_compile_mail_template("{$eventtype}_mail_raw", $vars, $blockinstance->config, $user->lang);
-
-    $alternatetemplate = get_string("{$eventtype}_mail_html", 'block_course_notification');
-    if (empty($alternatetemplate)) {
-        $alternatetemplate = null;
-    }
     $notification_html = bcn_compile_mail_template("{$eventtype}_mail_html", $vars, $blockinstance->config, $user->lang);
 
     if ($CFG->debugsmtp || $verbose) {
+        mtrace("\tSending {$eventtype} Text Mail Notification to " . fullname($user) . "\n####\n".$notification. "\n####");
         mtrace("\tSending {$eventtype} Mail Notification to " . fullname($user) . "\n####\n".$notification_html. "\n####");
     }
 
     $admin = get_admin();
 
     $subject = get_string("{$eventtype}_object", 'block_course_notification', $SITE->shortname);
+    $objectconfigkey = $eventtype.'_object_ovl';
+    if (!empty($blockinstance->config->$objectconfigkey)) {
+        $subject = $blockinstance->config->$objectconfigkey;
+        foreach ($vars as $key => $value) {
+            $subject = str_replace("{{$key}}", $value, $subject);
+        }
+    }
+
     if (email_to_user($user, $admin, $subject, $notification, $notification_html)) {
         $context = context_course::instance($course->id);
         $eventparams = array(
@@ -578,8 +582,8 @@ function bcn_set_test_courses() {
         'NOTSTARTED',
         'JUSTSTARTED',
         'STARTED7DAYS',
-        'STARTED15DAYS',
-        '15DAYSTOEND',
+        'STARTED14DAYS',
+        '14DAYSTOEND',
         '7DAYSTOEND',
         '5DAYSTOEND',
         '3DAYSTOEND',
@@ -661,7 +665,6 @@ function bcn_set_test_courses() {
         $course->startdate = $start;
         $course->enddate = $end;
         $DB->update_record('course', $course);
-        echo "$tc updated\n";
 
         $firstgroup = ['aa1', 'aa2', 'aa3', 'aa4'];
         $secondgroup = ['bb1', 'bb2', 'bb3', 'bb4'];
@@ -676,7 +679,8 @@ function bcn_set_test_courses() {
 
             $u = $DB->get_record('user', ['username' => $uname]);
             if (!$u) {
-                throw new Exception("Test user ".$uname." not found");
+                mtrace("Test user ".$uname." not found");
+                continue;
             }
             $ue = $DB->get_record('user_enrolments', ['enrolid' => $enrol->id, 'status' => 0, 'userid' => $u->id]);
 
@@ -698,7 +702,8 @@ function bcn_set_test_courses() {
         foreach ($secondgroup as $uname) {
             $u = $DB->get_record('user', ['username' => $uname]);
             if (!$u) {
-                throw new Exception("Tedst user ".$uname." not found");
+                mtrace("Test user ".$uname." not found");
+                continue;
             }
             $ue = $DB->get_record('user_enrolments', ['enrolid' => $enrol->id, 'status' => 0, 'userid' => $u->id]);
 
@@ -719,7 +724,8 @@ function bcn_set_test_courses() {
         foreach ($thirdgroup as $uname) {
             $u = $DB->get_record('user', ['username' => $uname]);
             if (!$u) {
-                throw new Exception("Tedst user ".$uname." not found");
+                mtrace("Test user ".$uname." not found");
+                continue;
             }
             $ue = $DB->get_record('user_enrolments', ['enrolid' => $enrol->id, 'status' => 0, 'userid' => $u->id]);
 
