@@ -105,6 +105,7 @@ $string['configdefaultonedaytoend'] = 'One day to end signal (default state)';
 $string['configdefaultcompleted'] = 'Course completed message (default state)';
 $string['configdefaultclosed'] = 'Closed access signal (default state)';
 $string['configdefaultinactive'] = 'Inactive signal (default state)';
+$string['configdefaultinactivitydelayindays'] = 'Default inactive delay period (in days)';
 $string['processnotifications'] = 'Process notifications for the course {$a}';
 $string['siteenabled'] = 'Enabled (site level)';
 $string['configsiteenabled'] = 'If enabled, all notification blocks in Moodle will be active.';
