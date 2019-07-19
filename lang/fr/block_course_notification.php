@@ -53,11 +53,23 @@ $string['configfivedaystoend'] = 'Cinq jours de la fin';
 $string['configthreedaystoend'] = 'Trois jours de la fin';
 $string['configonedaytoend'] = 'La veille de la fin';
 
+$string['configdefaultfirstassign'] = 'Inscription (défaut)';
+$string['configdefaultfirstcall'] = 'Premier rappel après inscription (défaut)';
+$string['configdefaultsecondcall'] = 'Second rappel après inscription (défaut)';
+$string['configdefaulttwoweeksnearend'] = 'Deux semaines de la fin (défaut)';
+$string['configdefaultoneweeknearend'] = 'Une semaine de la fin (défault)';
+$string['configdefaultfivedaystoend'] = 'Cinq jours de la fin (défaut)';
+$string['configdefaultthreedaystoend'] = 'Trois jours de la fin (défaut)';
+$string['configdefaultonedaytoend'] = 'La veille de la fin(défaut)';
+$string['configdefaultcompleted'] = 'Signal d\'achèvement (défaut)';
+$string['configdefaultclosed'] = 'Fermeture de l\'accès (défaut)';
+$string['configdefaultinactive'] = 'Inactivité (défaut)';
+
 $string['configfirstassignobject'] = 'Inscription (sujet)';
 $string['configfirstcallobject'] = 'Premier rappel après inscription (sujet)';
 $string['configsecondcallobject'] = 'Second rappel après inscription (sujet)';
-$string['configoneweeknearendobject'] = 'Une semaine de la fin (sujet)';
 $string['configtwoweeksnearendobject'] = 'Deux semaines de la fin (sujet)';
+$string['configoneweeknearendobject'] = 'Une semaine de la fin (sujet)';
 $string['configfivedaystoendobject'] = 'Cinq jours de la fin (sujet)';
 $string['configthreedaystoendobject'] = 'Trois jours de la fin (sujet)';
 $string['configonedaytoendobject'] = 'La veille de la fin (sujet)';
