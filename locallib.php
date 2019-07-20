@@ -100,7 +100,7 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
     // Get all active enrollement records.
     $sql = "
         SELECT
-            u.id as id,
+            u.id,
             u.username,
             ".get_all_user_name_fields(true, 'u').",
             u.email,
