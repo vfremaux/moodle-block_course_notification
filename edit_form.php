@@ -56,6 +56,7 @@ class block_course_notification_edit_form extends block_edit_form {
         $mform->addElement('advcheckbox', 'config_closed', get_string('configclosed', 'block_course_notification'));
 
         $mform->addElement('text', 'config_inactivitydelayindays', get_string('configinactivitydelayindays', 'block_course_notification'));
+        $mform->setType('config_inactivitydelayindays', PARAM_INT);
 
         $eventoptions = array(0 => get_string('noreminders', 'block_course_notification'),
             1 => '1 '.get_string('day'),

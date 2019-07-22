@@ -513,29 +513,10 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
         bcn_mark_event($eventtype, $user->id, $course->id);
     }
 
-    /*
-    $eventdata = new \core\message\message();
-    $eventdata->courseid          = $course->id;
-    $eventdata->component         = 'block_course_notification';
-    $eventdata->name              = 'user_notified_'.$eventtype;
-    $eventdata->userfrom          = $admin;
-    $eventdata->userto            = $user;
-    $eventdata->subject           = $subject;
-    $eventdata->fullmessage       = $notification;
-    $eventdata->fullmessageformat = FORMAT_PLAIN;
-    $eventdata->fullmessagehtml   = $notification_html;
-    $eventdata->notification      = 1;
-
-    $mailresult = message_send($eventdata);
-    if (!$mailresult) {
-        mtrace("Error: blocks/course_notification/locallib.php notify_users: Could not send out mail for id {$user->id()} ");
-    } else {
-        bcn_mark_event($eventtype, $user->id, $course->id);
-        if ($CFG->debugsmtp || $verbose) {
-            mtrace("\tSent to user {$user->id} for event 'notify $eventtype' for course {$course->id} ");
-        }
+    if ($CFG->debugsmtp || $verbose) {
+        mtrace("\tSent to user {$user->id} for event 'notify $eventtype' for course {$course->id} ");
     }
-    */
+
     return true;
 }
 
