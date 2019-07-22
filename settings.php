@@ -90,3 +90,9 @@ $label = get_string('configdefaultcompleted', 'block_course_notification');
 $desc = '';
 $default = 1;
 $settings->add(new admin_setting_configcheckbox($key, $label, $desc, $default));
+
+$key = 'block_course_notification/defaultinactivitydelayindays';
+$label = get_string('configdefaultinactivitydelay', 'block_course_notification');
+$desc = '';
+$default = 14;
+$settings->add(new admin_setting_configtext($key, $label, $desc, $default));
