@@ -487,6 +487,7 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
 
     $options = array('filter' => false);
     $notification_html = format_text($notification_html, FORMAT_HTML, $options);
+    $notification = format_text_email($notification, FORMAT_HTML, $options);
 
     if (email_to_user($user, $admin, $subject, $notification, $notification_html)) {
         $context = context_course::instance($course->id);
