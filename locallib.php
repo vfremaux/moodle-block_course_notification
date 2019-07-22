@@ -485,7 +485,9 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
         }
     }
 
-    /*
+    $options = array('filter' => false);
+    $notification_html = format_text($notification_html, FORMAT_HTML, $options);
+
     if (email_to_user($user, $admin, $subject, $notification, $notification_html)) {
         $context = context_course::instance($course->id);
         $eventparams = array(
@@ -497,9 +499,10 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
         $event = $eventclass::create($eventparams);
         $event->trigger();
 
+        bcn_mark_event($eventtype, $user->id, $course->id);
     }
-    */
 
+    /*
     $eventdata = new \core\message\message();
     $eventdata->courseid          = $course->id;
     $eventdata->component         = 'block_course_notification';
@@ -521,6 +524,7 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
             mtrace("\tSent to user {$user->id} for event 'notify $eventtype' for course {$course->id} ");
         }
     }
+    */
     return true;
 }
 
