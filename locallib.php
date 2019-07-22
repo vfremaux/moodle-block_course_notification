@@ -104,6 +104,9 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
             u.username,
             ".get_all_user_name_fields(true, 'u').",
             u.email,
+            u.emailstop,
+            u.deleted,
+            u.suspended,
             u.lang,
             ue.timestart,
             ue.timeend
@@ -231,6 +234,9 @@ function bcn_get_end_event_users(&$blockinstance, &$course, $event, $ignoreduser
             ".get_all_user_name_fields(true, 'u').",
             u.email,
             u.lang,
+            u.emailstop,
+            u.deleted,
+            u.suspended,
             ue.timestart,
             ue.timeend
         FROM
@@ -348,12 +354,14 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
             u.id,
             u.username,
             ".get_all_user_name_fields(true, 'u').",
-            email,
-            emailstop,
-            mailformat,
-            maildigest,
-            maildisplay,
-            lang,
+            u.email,
+            u.emailstop,
+            u.mailformat,
+            u.maildigest,
+            u.maildisplay,
+            u.deleted,
+            u.suspended,
+            u.lang,
             MAX(l.timecreated) as lastlog,
             MIN(ue.timestart) as earlyassign
         FROM
@@ -469,6 +477,10 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
     $notification = bcn_compile_mail_template("{$eventtype}_mail_raw", $vars, $blockinstance->config, $user->lang);
     $notification_html = bcn_compile_mail_template("{$eventtype}_mail_html", $vars, $blockinstance->config, $user->lang);
 
+    $options = array('filter' => false);
+    $notification_html = format_text($notification_html, FORMAT_HTML, $options);
+    // $notification = format_text_email($notification, FORMAT_HTML, $options);
+
     if ($CFG->debugsmtp || $verbose) {
         mtrace("\tSending {$eventtype} Text Mail Notification to " . fullname($user) . "\n####\n".$notification. "\n####");
         mtrace("\tSending {$eventtype} Mail Notification to " . fullname($user) . "\n####\n".$notification_html. "\n####");
@@ -484,9 +496,6 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
             $subject = str_replace("{{$key}}", $value, $subject);
         }
     }
-
-    $options = array('filter' => false);
-    $notification_html = format_text($notification_html, FORMAT_HTML, $options);
 
     if (email_to_user($user, $admin, $subject, $notification, $notification_html)) {
         $context = context_course::instance($course->id);
