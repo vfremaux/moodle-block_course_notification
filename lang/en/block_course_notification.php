@@ -21,7 +21,7 @@ $string['course_notification:excludefromnotification'] = 'Can NOT Be notified';
 $string['course_notification:setup'] = 'Configure notification';
 
 // Privacy.
-$string['privacy:metadata'] = 'The Course Notification block does not directly store any personal data about any user.';
+$string['privacy:metadata'] = 'The Course Notification provider needs to be implemented.';
 
 $string['pluginname'] = 'Course notifications';
 $string['backtocourse'] = 'Back to course';
@@ -108,6 +108,8 @@ $string['configdefaultonedaytoend'] = 'One day to end signal (default state)';
 $string['configdefaultcompleted'] = 'Course completed message (default state)';
 $string['configdefaultclosed'] = 'Closed access signal (default state)';
 $string['configdefaultinactive'] = 'Inactive signal (default state)';
+$string['configdefaultinactivitydelay'] = 'Default inactive delay period (in days)';
+$string['configinactivitydelayindays'] = 'Inactivity delay (in days)';
 $string['processnotifications'] = 'Process notifications for the course {$a}';
 $string['siteenabled'] = 'Enabled (site level)';
 $string['configsiteenabled'] = 'If enabled, all notification blocks in Moodle will be active.';
