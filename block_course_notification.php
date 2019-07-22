@@ -82,6 +82,7 @@ class block_course_notification extends block_list {
             $this->config->closed = $config->defaultclosed;
             $this->config->inactive = $config->defaultinactive;
             $this->config->completed = $config->defaultcompleted;
+            $this->config->inactivitydelayindays = $config->defaultinactivitydelayindays;
 
             $this->instance_config_save($this->config);
         }

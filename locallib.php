@@ -100,10 +100,14 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
     // Get all active enrollement records.
     $sql = "
         SELECT
-            u.id as id,
+            u.id,
             u.username,
             ".get_all_user_name_fields(true, 'u').",
             u.email,
+            u.emailstop,
+            u.mailformat,
+            u.deleted,
+            u.suspended,
             u.lang,
             ue.timestart,
             ue.timeend
@@ -231,6 +235,10 @@ function bcn_get_end_event_users(&$blockinstance, &$course, $event, $ignoreduser
             ".get_all_user_name_fields(true, 'u').",
             u.email,
             u.lang,
+            u.emailstop,
+            u.mailformat,
+            u.deleted,
+            u.suspended,
             ue.timestart,
             ue.timeend
         FROM
@@ -348,12 +356,14 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
             u.id,
             u.username,
             ".get_all_user_name_fields(true, 'u').",
-            email,
-            emailstop,
-            mailformat,
-            maildigest,
-            maildisplay,
-            lang,
+            u.email,
+            u.emailstop,
+            u.mailformat,
+            u.maildigest,
+            u.maildisplay,
+            u.deleted,
+            u.suspended,
+            u.lang,
             MAX(l.timecreated) as lastlog,
             MIN(ue.timestart) as earlyassign
         FROM
@@ -469,6 +479,10 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
     $notification = bcn_compile_mail_template("{$eventtype}_mail_raw", $vars, $blockinstance->config, $user->lang);
     $notification_html = bcn_compile_mail_template("{$eventtype}_mail_html", $vars, $blockinstance->config, $user->lang);
 
+    $options = array('filter' => false);
+    $notification_html = format_text($notification_html, FORMAT_HTML, $options);
+    // $notification = format_text_email($notification, FORMAT_HTML, $options);
+
     if ($CFG->debugsmtp || $verbose) {
         mtrace("\tSending {$eventtype} Text Mail Notification to " . fullname($user) . "\n####\n".$notification. "\n####");
         mtrace("\tSending {$eventtype} Mail Notification to " . fullname($user) . "\n####\n".$notification_html. "\n####");
@@ -496,18 +510,39 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
         $event = $eventclass::create($eventparams);
         $event->trigger();
 
+        bcn_mark_event($eventtype, $user->id, $course->id);
     }
-    bcn_mark_event($eventtype, $user->id, $course->id);
-    if ($CFG->debugsmtp || $verbose) {
-        mtrace("\tSent to user {$user->id} for event 'notify $eventtype' for course {$course->id} ");
+
+    /*
+    $eventdata = new \core\message\message();
+    $eventdata->courseid          = $course->id;
+    $eventdata->component         = 'block_course_notification';
+    $eventdata->name              = 'user_notified_'.$eventtype;
+    $eventdata->userfrom          = $admin;
+    $eventdata->userto            = $user;
+    $eventdata->subject           = $subject;
+    $eventdata->fullmessage       = $notification;
+    $eventdata->fullmessageformat = FORMAT_PLAIN;
+    $eventdata->fullmessagehtml   = $notification_html;
+    $eventdata->notification      = 1;
+
+    $mailresult = message_send($eventdata);
+    if (!$mailresult) {
+        mtrace("Error: blocks/course_notification/locallib.php notify_users: Could not send out mail for id {$user->id()} ");
+    } else {
+        bcn_mark_event($eventtype, $user->id, $course->id);
+        if ($CFG->debugsmtp || $verbose) {
+            mtrace("\tSent to user {$user->id} for event 'notify $eventtype' for course {$course->id} ");
+        }
     }
+    */
     return true;
 }
 
 /**
  * notify managers of notification bulk.
- * @param object $blockinstance 
- * @param object $course 
+ * @param object $blockinstance
+ * @param object $course
  * @param array $notified array of user's names
  * @param string $eventtype the notification type
  */
