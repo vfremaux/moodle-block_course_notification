@@ -65,6 +65,7 @@ $string['configdefaultcompleted'] = 'Signal d\'achèvement (défaut)';
 $string['configdefaultclosed'] = 'Fermeture de l\'accès (défaut)';
 $string['configdefaultinactive'] = 'Inactivité (défaut)';
 $string['configdefaultinactivitydelay'] = 'Longueur d\'inactivité (jours)';
+$string['configinactivitydelayindays'] = 'Délai d\'inactivité (en jours)';
 
 $string['configfirstassignobject'] = 'Inscription (sujet)';
 $string['configfirstcallobject'] = 'Premier rappel après inscription (sujet)';
