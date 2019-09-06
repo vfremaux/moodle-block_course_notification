@@ -131,8 +131,8 @@ class block_course_notification extends block_list {
         $this->content->icons[] = (strpos(@$this->config->courseeventsreminders, '3') !== false) ? $enabledicon : $disabledicon;
         $this->content->icons[] = (strpos(@$this->config->courseeventsreminders, '1') !== false) ? $enabledicon : $disabledicon;
         $this->content->icons[] = (@$this->config->closed) ? $enabledicon : $disabledicon;
-        $this->content->icons[] = (@$this->config->inactive) ? $enabledicon : $disabledicon;
         $this->content->icons[] = (@$this->config->completed) ? $enabledicon : $disabledicon;
+        $this->content->icons[] = (@$this->config->inactive) ? $enabledicon : $disabledicon;
 
         $this->content->items[] = get_string('firstassign', 'block_course_notification').' ('.count($firstassigns).')';
 
