@@ -239,6 +239,7 @@ if (has_capability('moodle/site:config', $systemcontext)) {
     echo $OUTPUT->single_button($buttonurl, get_string('reset', 'block_course_notification'));
 }
 
+
 $buttonurl = new moodle_url('/course/view.php', array('id' => $courseid));
 echo $OUTPUT->single_button($buttonurl, get_string('backtocourse', 'block_course_notification'));
 echo '</center>';
