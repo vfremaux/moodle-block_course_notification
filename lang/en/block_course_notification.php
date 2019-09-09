@@ -20,9 +20,6 @@ $string['course_notification:benotified'] = 'Can be  notified';
 $string['course_notification:excludefromnotification'] = 'Can NOT Be notified';
 $string['course_notification:setup'] = 'Configure notification';
 
-// Privacy.
-$string['privacy:metadata'] = 'The Course Notification provider needs to be implemented.';
-
 $string['pluginname'] = 'Course notifications';
 $string['backtocourse'] = 'Back to course';
 $string['enabled'] = 'Enabled';
