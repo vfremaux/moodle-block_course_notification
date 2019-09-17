@@ -253,7 +253,7 @@ class block_course_notification extends block_list {
         return $this->content;
     }
 
-    public function crontask() {
+    public static function crontask() {
         global $CFG, $DB;
 
         $config = get_config('block_course_notification');
@@ -272,7 +272,7 @@ class block_course_notification extends block_list {
 
                 // Parent context is course context.
                 $parentcontext = $DB->get_record('context', ['id' => $instance->parentcontextid]);
-                $courseid = $parentcontext->intanceid;
+                $courseid = $parentcontext->instanceid;
                 if (!$course = $DB->get_record('course', array('id' => $courseid))) {
                     if ($verbose) {
                         echo "Skipping course $courseid because missing\n";
@@ -280,7 +280,7 @@ class block_course_notification extends block_list {
                     continue;
                 }
 
-                self::process_course_notifications($course, $instance);
+                self::process_course_notification($course, $instance);
 
             }
         }

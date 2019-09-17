@@ -23,6 +23,8 @@
 
 namespace block_course_notification\task;
 
+require_once($CFG->dirroot.'/blocks/course_notification/block_course_notification.php');
+
 /**
  * Scheduled task to handle notifications
  */
