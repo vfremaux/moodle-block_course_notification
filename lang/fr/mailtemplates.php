@@ -394,7 +394,11 @@ $string['fivedaystoend_mail_html'] = '
 <p>Bonjour {{FIRSTNAME}} {{LASTNAME}},</p>
 
 <p>Votre compte est activé sur le site {{SITENAME}}.
+<<<<<<< HEAD
 Votre inscription au cours "{{COURSE}}" va se terminer dans 1 semaine.
+=======
+Votre inscription au cours "{{COURSE}}" va se terminer dans 5 jours.
+>>>>>>> MOODLE_37_STABLE
 Il est possible que vous ne puissiez plus accéder à ce cours et y avoir des activités à partir de cette date.</p>
 
 <p>Si vous éprouvez des difficultés de connexion, ou pour toute autre
@@ -461,6 +465,7 @@ Si vous éprouvez des difficultés de connexion, ou pour toute autre
 information sur votre participation, contactez nous ici :
 
 {{CONTACTURL}}
+<<<<<<< HEAD
 
 Si vous ne vous souvenez plus de votre mot de passe,
 vous pouvez le réactiver ici :
@@ -468,6 +473,8 @@ vous pouvez le réactiver ici :
 {{WWWROOT}}/login/forgot_password.php
 
 Pour rappel, votre identifiant est : {{USERNAME}}
+=======
+>>>>>>> MOODLE_37_STABLE
 ';
 
 $string['onedaytoend_mail_html'] = '
@@ -482,12 +489,15 @@ information sur votre participation, contactez nous ici :</p>
 
 <p><a href="{{CONTACTURL}}">Nous contacter</a></p>
 <hr/>
+<<<<<<< HEAD
 <p>Si vous ne vous souvenez plus de votre mot de passe,
 vous pouvez le réactiver ici :</p>
 
 <p><a href="{{WWWROOT}}/login/forgot_password.php">Récupérer un mot de passe</a></p>
 
 <p>Pour rappel, votre identifiant est : <b>{{USERNAME}}</b></p>
+=======
+>>>>>>> MOODLE_37_STABLE
 ';
 
 $string['closed_mail_raw'] = '

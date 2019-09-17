@@ -52,6 +52,36 @@ $string['configtwoweeksnearend'] = 'Deux semaines de la fin';
 $string['configfivedaystoend'] = 'Cinq jours de la fin';
 $string['configthreedaystoend'] = 'Trois jours de la fin';
 $string['configonedaytoend'] = 'La veille de la fin';
+<<<<<<< HEAD
+=======
+
+$string['configdefaultfirstassign'] = 'Inscription (défaut)';
+$string['configdefaultfirstcall'] = 'Premier rappel après inscription (défaut)';
+$string['configdefaultsecondcall'] = 'Second rappel après inscription (défaut)';
+$string['configdefaulttwoweeksnearend'] = 'Deux semaines de la fin (défaut)';
+$string['configdefaultoneweeknearend'] = 'Une semaine de la fin (défault)';
+$string['configdefaultfivedaystoend'] = 'Cinq jours de la fin (défaut)';
+$string['configdefaultthreedaystoend'] = 'Trois jours de la fin (défaut)';
+$string['configdefaultonedaytoend'] = 'La veille de la fin(défaut)';
+$string['configdefaultcompleted'] = 'Signal d\'achèvement (défaut)';
+$string['configdefaultclosed'] = 'Fermeture de l\'accès (défaut)';
+$string['configdefaultinactive'] = 'Inactivité (défaut)';
+$string['configdefaultinactivitydelay'] = 'Longueur d\'inactivité (jours)';
+$string['configinactivitydelayindays'] = 'Délai d\'inactivité (en jours)';
+
+$string['configfirstassignobject'] = 'Inscription (sujet)';
+$string['configfirstcallobject'] = 'Premier rappel après inscription (sujet)';
+$string['configsecondcallobject'] = 'Second rappel après inscription (sujet)';
+$string['configtwoweeksnearendobject'] = 'Deux semaines de la fin (sujet)';
+$string['configoneweeknearendobject'] = 'Une semaine de la fin (sujet)';
+$string['configfivedaystoendobject'] = 'Cinq jours de la fin (sujet)';
+$string['configthreedaystoendobject'] = 'Trois jours de la fin (sujet)';
+$string['configonedaytoendobject'] = 'La veille de la fin (sujet)';
+$string['configinactiveobject'] = 'Inactivité (sujet)';
+$string['configclosedobject'] = 'A la fermeture de l\'accès (sujet)';
+$string['configcompletedobject'] = 'A chaque achèvement du cours (sujet)';
+
+>>>>>>> MOODLE_37_STABLE
 $string['configcourseeventsreminders'] = 'Signaux de rappel';
 $string['configoneweekfromstart'] = 'Si activé, une notification est envoyée en début de période de formation, si aucune activité dans le cours n\'a été détectée au bout d\'une semaine';
 $string['configtwoweeksfromstart'] = 'Si activé, une notification est envoyée en début de période de formation, si aucune activité dans le cours n\'a été détectée au bout de deux semaines';
@@ -65,6 +95,10 @@ $string['configcoursenotificationenablecron'] = 'Activer les notifications de co
 $string['configclosed'] = ' A la fin de l\'accès';
 $string['configcompleted'] = 'Quand le cours est achevé';
 $string['configdefaultcompleted'] = 'Message à l\'achèvement du cours (défaut)';
+<<<<<<< HEAD
+=======
+$string['configdefaultinactivitydelayindays'] = 'Longueur (en jours) de la période d\'inactivité ';
+>>>>>>> MOODLE_37_STABLE
 $string['course_notifications_enable_cron'] = 'Cron';
 $string['supporturl'] = 'Url du support';
 $string['siteenabled'] = 'Activé (site)';
@@ -73,6 +107,10 @@ $string['closed'] = 'Accès clôturés';
 $string['processnotifications'] = 'Procéder aux notifications pour le cours {$a}';
 $string['configsiteenabled'] = 'Si désactivé, aucun bloc de notification n\'émettra de signaux.';
 $string['process'] = 'Lancer les notifications';
+<<<<<<< HEAD
+=======
+$string['reset'] = 'Réinitialiszer';
+>>>>>>> MOODLE_37_STABLE
 $string['mailoverrides'] = 'Surcharges locales des messages';
 $string['mailoverrides_help'] = 'Ces réglages remplacent les messages standard réglés dans l\'administration centrale.
 Vous pouvez y injecter les mêmes variables dynamiques avec les balises : {{WWWROOT}}, {{COURSE}}, {{COURSEID}}, {{SITENAME}},

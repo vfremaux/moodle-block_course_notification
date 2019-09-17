@@ -100,10 +100,14 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
     // Get all active enrollement records.
     $sql = "
         SELECT
-            u.id as id,
+            u.id,
             u.username,
             ".get_all_user_name_fields(true, 'u').",
             u.email,
+            u.emailstop,
+            u.mailformat,
+            u.deleted,
+            u.suspended,
             u.lang,
             ue.timestart,
             ue.timeend
@@ -231,6 +235,10 @@ function bcn_get_end_event_users(&$blockinstance, &$course, $event, $ignoreduser
             ".get_all_user_name_fields(true, 'u').",
             u.email,
             u.lang,
+            u.emailstop,
+            u.mailformat,
+            u.deleted,
+            u.suspended,
             ue.timestart,
             ue.timeend
         FROM
@@ -348,12 +356,14 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
             u.id,
             u.username,
             ".get_all_user_name_fields(true, 'u').",
-            email,
-            emailstop,
-            mailformat,
-            maildigest,
-            maildisplay,
-            lang,
+            u.email,
+            u.emailstop,
+            u.mailformat,
+            u.maildigest,
+            u.maildisplay,
+            u.deleted,
+            u.suspended,
+            u.lang,
             MAX(l.timecreated) as lastlog,
             MIN(ue.timestart) as earlyassign
         FROM
@@ -467,6 +477,7 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
     }
 
     $notification = bcn_compile_mail_template("{$eventtype}_mail_raw", $vars, $blockinstance->config, $user->lang);
+<<<<<<< HEAD
 
     $alternatetemplate = get_string("{$eventtype}_mail_html", 'block_course_notification');
     if (empty($alternatetemplate)) {
@@ -475,13 +486,35 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
     $notification_html = bcn_compile_mail_template("{$eventtype}_mail_html", $vars, $blockinstance->config, $user->lang);
 
     if ($CFG->debugsmtp || $verbose) {
+=======
+    $notification_html = bcn_compile_mail_template("{$eventtype}_mail_html", $vars, $blockinstance->config, $user->lang);
+
+    $options = array('filter' => false);
+    $notification_html = format_text($notification_html, FORMAT_HTML, $options);
+    // $notification = format_text_email($notification, FORMAT_HTML, $options);
+
+    if ($CFG->debugsmtp || $verbose) {
+        mtrace("\tSending {$eventtype} Text Mail Notification to " . fullname($user) . "\n####\n".$notification. "\n####");
+>>>>>>> MOODLE_37_STABLE
         mtrace("\tSending {$eventtype} Mail Notification to " . fullname($user) . "\n####\n".$notification_html. "\n####");
     }
 
     $admin = get_admin();
 
     $subject = get_string("{$eventtype}_object", 'block_course_notification', $SITE->shortname);
+<<<<<<< HEAD
     if (email_to_user($user, $admin, $subject, $notification, $notification_html)) {
+=======
+    $objectconfigkey = $eventtype.'_object_ovl';
+    if (!empty($blockinstance->config->$objectconfigkey)) {
+        $subject = $blockinstance->config->$objectconfigkey;
+        foreach ($vars as $key => $value) {
+            $subject = str_replace("{{$key}}", $value, $subject);
+        }
+    }
+
+    if (email_to_user($user, $admin, $subject, $notification, $notification_html, '', '', false)) {
+>>>>>>> MOODLE_37_STABLE
         $context = context_course::instance($course->id);
         $eventparams = array(
             'objectid' => $user->id,
@@ -492,18 +525,20 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
         $event = $eventclass::create($eventparams);
         $event->trigger();
 
+        bcn_mark_event($eventtype, $user->id, $course->id);
     }
-    bcn_mark_event($eventtype, $user->id, $course->id);
+
     if ($CFG->debugsmtp || $verbose) {
         mtrace("\tSent to user {$user->id} for event 'notify $eventtype' for course {$course->id} ");
     }
+
     return true;
 }
 
 /**
  * notify managers of notification bulk.
- * @param object $blockinstance 
- * @param object $course 
+ * @param object $blockinstance
+ * @param object $course
  * @param array $notified array of user's names
  * @param string $eventtype the notification type
  */
@@ -578,8 +613,8 @@ function bcn_set_test_courses() {
         'NOTSTARTED',
         'JUSTSTARTED',
         'STARTED7DAYS',
-        'STARTED15DAYS',
-        '15DAYSTOEND',
+        'STARTED14DAYS',
+        '14DAYSTOEND',
         '7DAYSTOEND',
         '5DAYSTOEND',
         '3DAYSTOEND',
@@ -661,7 +696,6 @@ function bcn_set_test_courses() {
         $course->startdate = $start;
         $course->enddate = $end;
         $DB->update_record('course', $course);
-        echo "$tc updated\n";
 
         $firstgroup = ['aa1', 'aa2', 'aa3', 'aa4'];
         $secondgroup = ['bb1', 'bb2', 'bb3', 'bb4'];
@@ -676,7 +710,8 @@ function bcn_set_test_courses() {
 
             $u = $DB->get_record('user', ['username' => $uname]);
             if (!$u) {
-                throw new Exception("Test user ".$uname." not found");
+                mtrace("Test user ".$uname." not found");
+                continue;
             }
             $ue = $DB->get_record('user_enrolments', ['enrolid' => $enrol->id, 'status' => 0, 'userid' => $u->id]);
 
@@ -698,7 +733,8 @@ function bcn_set_test_courses() {
         foreach ($secondgroup as $uname) {
             $u = $DB->get_record('user', ['username' => $uname]);
             if (!$u) {
-                throw new Exception("Tedst user ".$uname." not found");
+                mtrace("Test user ".$uname." not found");
+                continue;
             }
             $ue = $DB->get_record('user_enrolments', ['enrolid' => $enrol->id, 'status' => 0, 'userid' => $u->id]);
 
@@ -719,7 +755,8 @@ function bcn_set_test_courses() {
         foreach ($thirdgroup as $uname) {
             $u = $DB->get_record('user', ['username' => $uname]);
             if (!$u) {
-                throw new Exception("Tedst user ".$uname." not found");
+                mtrace("Test user ".$uname." not found");
+                continue;
             }
             $ue = $DB->get_record('user_enrolments', ['enrolid' => $enrol->id, 'status' => 0, 'userid' => $u->id]);
 

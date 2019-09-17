@@ -82,6 +82,10 @@ class block_course_notification extends block_list {
             $this->config->closed = $config->defaultclosed;
             $this->config->inactive = $config->defaultinactive;
             $this->config->completed = $config->defaultcompleted;
+<<<<<<< HEAD
+=======
+            $this->config->inactivitydelayindays = $config->defaultinactivitydelayindays;
+>>>>>>> MOODLE_37_STABLE
 
             $this->instance_config_save($this->config);
         }
@@ -130,6 +134,7 @@ class block_course_notification extends block_list {
         $this->content->icons[] = (strpos(@$this->config->courseeventsreminders, '3') !== false) ? $enabledicon : $disabledicon;
         $this->content->icons[] = (strpos(@$this->config->courseeventsreminders, '1') !== false) ? $enabledicon : $disabledicon;
         $this->content->icons[] = (@$this->config->closed) ? $enabledicon : $disabledicon;
+        $this->content->icons[] = (@$this->config->completed) ? $enabledicon : $disabledicon;
         $this->content->icons[] = (@$this->config->inactive) ? $enabledicon : $disabledicon;
         $this->content->icons[] = (@$this->config->completed) ? $enabledicon : $disabledicon;
 
@@ -359,7 +364,8 @@ class block_course_notification extends block_list {
             if ($verbose) {
                 echo "\tSecond calls...\n";
             }
-            if ($course->startdate < time() - DAYSECS * 15) {
+            $daysback14 = time() - DAYSECS * 14;
+            if ($course->startdate < $daysback14) {
                 // Do not process at all for this course when too new.
                 if ($secondcallusers = bcn_get_start_event_users($blockobj, $course, 'secondcall', $ignoreduserids)) {
                     $count = count($secondcallusers);
