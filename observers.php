@@ -51,7 +51,7 @@ class block_course_notification_observer {
         }
 
         // Should be one only. Take first that comes.
-        $record = array_shift($blockinstances);
+        $record = array_shift($blockrecords);
         $instance = block_instance('course_notification', $record);
 
         if (empty($instance->config->completed)) {
