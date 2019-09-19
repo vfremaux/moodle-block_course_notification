@@ -62,7 +62,7 @@ class block_course_notification_observer {
             debug_trace("Course Notification observer : Send completion message");
         }
 
-        $user = $DB->get_record('user', ['id' => $event->userid]);
+        $user = $DB->get_record('user', ['id' => $event->relateduserid]);
         if (!empty($user)) {
             bcn_notify_user($instance, $course, $user, 'completed', null, false, false);
         }
