@@ -40,6 +40,7 @@ function bcn_compile_mail_template($template, $infomap, $blockconfig, $lang = nu
     }
 
     // Extract eventtype and check overrides, but not for manager mails.
+    $notification = '';
     if (strpos($template, 'manager') === false) {
         $eventtype = str_replace('_mail_raw', '', str_replace('_mail_html', '', $template));
 
