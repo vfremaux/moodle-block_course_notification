@@ -1,0 +1,246 @@
+Arming for 1
+Config check : playing for http://dev.moodle36.fr
+Testing firstassign
+	Sending firstassign Mail Notification to Admin Utilisateur
+####
+
+<p>Hello Admin Utilisateur,</p>
+
+<p>The course MOODLE 36 DEV on MOODLE 36 DEV is now open and
+you have been registered in participants.</p>
+
+<p>You may enter in this course following the following link: </p>
+
+<a href="http://dev.moodle36.fr/course/view.php?id=1">Enter the course</a>
+
+<p>Welcome aboard !</p>
+<hr/>
+<p>If you do not remind your password we have sent to you
+you may browse to:</p>
+
+<p><a href="http://dev.moodle36.fr/login/forgot_password.php">Récupération du mot de passe</a></p>
+
+<p>As a reminder your username is: <b>admin</b></p>
+
+<p>If you encounter some difficulties to connect, 
+may you contact us directly here:</p>
+
+<p><a href="">Contact support</a></p>
+
+####
+Error: lib/moodlelib.php email_to_user(): Could not instantiate mail function.
+	Sent to user 2 for event 'notify firstassign' for course 1 
+Testing firstcall
+	Sending firstcall Mail Notification to Admin Utilisateur
+####
+
+<p>Hello Admin Utilisateur,</p>
+
+<p>Your account has been activate on site MOODLE 36 DEV
+and you still be unconnected for 7 days now.</p>
+
+<p>If you do not remind your password wehave sent to you
+you may browse to:</p>
+
+<p><a href="http://dev.moodle36.fr/login/forgot_password.php">Récupération du mot de passe</a></p>
+
+<p>As a reminder your username is: <b>admin</b></p>
+
+<p>If you encounter some difficulties to connect, 
+may you contact us directly here:</p>
+
+<p><a href="">Contact</a></p>
+
+####
+Error: lib/moodlelib.php email_to_user(): Could not instantiate mail function.
+	Sent to user 2 for event 'notify firstcall' for course 1 
+Testing secondcall
+	Sending secondcall Mail Notification to Admin Utilisateur
+####
+
+<p>Hello Admin Utilisateur,</p>
+
+<p>Your account has been activate on site MOODLE 36 DEV
+and you did not come in for two weeks now.</p>
+
+<p>If you do not remind your password wehave sent to you
+you may browse to:</p>
+
+<p><a href="http://dev.moodle36.fr/login/forgot_password.php">Forgot my password</a></p>
+
+<p>As a reminder your username is: <b>admin</b></p>
+
+<p>If you encounter some difficulties to connect,
+may you contact us directly here:</p>
+
+<p><a href="">Contact the support</a></p>
+
+####
+Error: lib/moodlelib.php email_to_user(): Could not instantiate mail function.
+	Sent to user 2 for event 'notify secondcall' for course 1 
+Testing twoweeksnearend
+	Sending twoweeksnearend Mail Notification to Admin Utilisateur
+####
+
+<p>Hello Admin Utilisateur,</p>
+
+<p>Your enrollement in course "MOODLE 36 DEV" on site MOODLE 36 DEV is about to end 14 days ahead.
+You may not be able to have access nor activities in this course at this time.</p>
+
+<p>If you encounter some difficulties to connect, or do not
+plan use this service, or need to reconsider the scheduling,
+may you contact us directly here:</p>
+
+<p><a href="">Contact us</a></p>
+
+<p>If you do not remind your password we have sent to you
+you may browse to:</p>
+
+<p><a href="http://dev.moodle36.fr/login/forgot_password.php">Recover your password</a></p>
+
+<p>As a reminder your username is: <b>admin</b></p>
+
+####
+Error: lib/moodlelib.php email_to_user(): Could not instantiate mail function.
+	Sent to user 2 for event 'notify twoweeksnearend' for course 1 
+Testing oneweeknearend
+	Sending oneweeknearend Mail Notification to Admin Utilisateur
+####
+
+<p>Hello Admin Utilisateur,</p>
+
+<p>Your enrollement in course "MOODLE 36 DEV" on site MOODLE 36 DEV is about to end 7 days ahead.
+You may not be able to have access nor activities in this course at this time.</p>
+
+<p>If you encounter some difficulties to connect, or do not
+plan use this service, or need to reconsider the scheduling,
+may you contact us directly here:</p>
+
+<p><a href="">Contact us</a></p>
+
+<p>If you do not remind your password we have sent to you
+you may browse to:</p>
+
+<p><a href="http://dev.moodle36.fr/login/forgot_password.php">Recover your password</a></p>
+
+<p>As a reminder your username is: <b>admin</b></p>
+
+####
+Error: lib/moodlelib.php email_to_user(): Could not instantiate mail function.
+	Sent to user 2 for event 'notify oneweeknearend' for course 1 
+Testing fivedaystoend
+	Sending fivedaystoend Mail Notification to Admin Utilisateur
+####
+
+<p>Hello Admin Utilisateur,</p>
+
+<p>Your enrollement in course "MOODLE 36 DEV" on site MOODLE 36 DEV is about to end 5 days ahead.
+You may not be able to have access nor activities in this course at this time.</p>
+
+<p>If you encounter some difficulties to connect, or do not
+plan use this service, or need to reconsider the scheduling,
+may you contact us directly here:</p>
+
+<p><a href="">Contact us</a></p>
+
+<p>If you do not remind your password we have sent to you
+you may browse to:</p>
+
+<p><a href="http://dev.moodle36.fr/login/forgot_password.php">Recover your password</a></p>
+
+<p>As a reminder your username is: <b>admin</b></p>
+
+####
+Error: lib/moodlelib.php email_to_user(): Could not instantiate mail function.
+	Sent to user 2 for event 'notify fivedaystoend' for course 1 
+Testing threedaystoend
+	Sending threedaystoend Mail Notification to Admin Utilisateur
+####
+
+<p>Hello Admin Utilisateur,</p>
+
+<p>Your enrollement in course "MOODLE 36 DEV" on site MOODLE 36 DEV is about to end 3 days ahead.
+You may not be able to have access nor activities in this course at this time.</p>
+
+<p>If you encounter some difficulties to connect, or do not
+plan use this service, or need to reconsider the scheduling,
+may you contact us directly here:</p>
+
+<p><a href="">Contact us</a></p>
+
+<p>If you do not remind your password we have sent to you
+you may browse to:</p>
+
+<p><a href="http://dev.moodle36.fr/login/forgot_password.php">Recover your password</a></p>
+
+<p>As a reminder your username is: <b>admin</b></p>
+
+####
+Error: lib/moodlelib.php email_to_user(): Could not instantiate mail function.
+	Sent to user 2 for event 'notify threedaystoend' for course 1 
+Testing onedaytoend
+	Sending onedaytoend Mail Notification to Admin Utilisateur
+####
+
+<p>Hello Admin Utilisateur,</p>
+
+<p>Your enrollement in course "MOODLE 36 DEV" on site MOODLE 36 DEV is about to end tomorrow !
+You may not be able to have access nor activities in this course at this time.</p>
+
+<p>If you encounter some difficulties to connect, or do not
+plan use this service, or need to reconsider the scheduling,
+may you contact us directly here:</p>
+
+<p><a href="">Contact us</a></p>
+
+<p>If you do not remind your password we have sent to you
+you may browse to:</p>
+
+<p><a href="http://dev.moodle36.fr/login/forgot_password.php">Recover your password</a></p>
+
+<p>As a reminder your username is: <b>admin</b></p>
+
+####
+Error: lib/moodlelib.php email_to_user(): Could not instantiate mail function.
+	Sent to user 2 for event 'notify onedaytoend' for course 1 
+Testing closed
+	Sending closed Mail Notification to Admin Utilisateur
+####
+
+<p>Hello Admin Utilisateur,</p>
+
+<p>Your enrollement in course "MOODLE 36 DEV" on site MOODLE 36 DEV is over !</p>
+
+<p>If this is not expected, may you contact us directly here:</p>
+
+<p><a href="">Our support</a></p>
+
+####
+Error: lib/moodlelib.php email_to_user(): Could not instantiate mail function.
+	Sent to user 2 for event 'notify closed' for course 1 
+Testing inactive
+	Sending inactive Mail Notification to Admin Utilisateur
+####
+
+<p>Hello Admin Utilisateur,</p>
+
+<p>You have been inactive in the course "MOODLE 36 DEV" at MOODLE 36 DEV
+for more than {{DATA_0}} days. Maybe your teachers are expecting some work or participation
+from you in this workplace. It might be worth you check pending requirements in this course
+in a next future.</p>
+
+<p>If you do not remind your password wehave sent to you
+you may browse to:</p>
+
+<p><a href="http://dev.moodle36.fr/login/forgot_password.php">Recovering your password</a></p>
+
+<p>As a reminder your username is: <b>admin</b></p>
+
+<p>If you encounter some difficulties to connect,
+may you contact us directly here:</p>
+
+<p><a href="">Contact</a></p>
+
+####
+Error: lib/moodlelib.php email_to_user(): Could not instantiate mail function.
+	Sent to user 2 for event 'notify inactive' for course 1 
