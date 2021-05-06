@@ -23,6 +23,7 @@
  */
 
 require_once($CFG->dirroot.'/blocks/course_notification/locallib.php');
+require_once($CFG->dirroot.'/blocks/course_notification/lib.php');
 require_once($CFG->dirroot.'/blocks/moodleblock.class.php');
 
 if (!function_exists('debug_trace')) {
@@ -125,6 +126,7 @@ class block_course_notification extends block_list {
         $enabledicon = $OUTPUT->pix_icon('i/checked', get_string('enabled', 'block_course_notification'), 'core');
         $disabledicon = $OUTPUT->pix_icon('i/invalid', get_string('disabled', 'block_course_notification'), 'core');
 
+<<<<<<< HEAD
         $this->content->icons[] = (@$this->config->firstassign) ? $enabledicon : $disabledicon;
         $this->content->icons[] = (@$this->config->firstcall) ? $enabledicon : $disabledicon;
         $this->content->icons[] = (@$this->config->secondcall) ? $enabledicon : $disabledicon;
@@ -139,116 +141,164 @@ class block_course_notification extends block_list {
         $this->content->icons[] = (@$this->config->completed) ? $enabledicon : $disabledicon;
 
         $this->content->items[] = get_string('firstassign', 'block_course_notification').' ('.count($firstassigns).')';
+=======
+        if (!empty($this->config->firstassign)) {
+            $this->content->icons[] = $enabledicon;
+            $this->content->items[] = get_string('firstassign', 'block_course_notification').' ('.count($firstassigns).')';
+        }
+>>>>>>> MOODLE_39_STABLE
 
-        $userlist = '';
-        $oneweekinactivescount = 0;
-        if ($oneweekinactives) {
-            foreach ($oneweekinactives as $u) {
-                $userlist .= ', '.fullname($u);
-                $oneweekinactivescount++;
+        if (!empty($this->config->firstcall)) {
+            $userlist = '';
+            $oneweekinactivescount = 0;
+            if ($oneweekinactives) {
+                foreach ($oneweekinactives as $u) {
+                    $userlist .= ', '.fullname($u);
+                    $oneweekinactivescount++;
+                }
+            }
+            $owfsstr = get_string('configoneweekfromstart', 'block_course_notification');
+            $this->content->icons[] = $enabledicon;
+            $this->content->items[] = '<span title="'.$userlist.'">'.$owfsstr.' ('.$oneweekinactivescount.')</span>';
+        }
+
+        if (!empty($this->config->secondcall)) {
+            $userlist = '';
+            $twoweeksinactivescount = 0;
+            if ($twoweeksinactives) {
+                foreach ($twoweeksinactives as $u) {
+                    $userlist .= ', '.fullname($u);
+                    $twoweeksinactivescount++;
+                }
+            }
+            $twfsstr = get_string('configtwoweeksfromstart', 'block_course_notification');
+            $this->content->icons[] = $enabledicon;
+            $this->content->items[] = '<span title="'.$userlist.'">'.$twfsstr.' ('.$twoweeksinactivescount.')</span>';
+        }
+
+        if (!empty($this->config->twoweeksnearend)) {
+            $userlist = '';
+            $twoweeksnearendcount = 0;
+            if ($twoweeksnearend) {
+                foreach ($twoweeksnearend as $u) {
+                    $userlist .= ', '.fullname($u);
+                    $twoweeksnearendcount++;
+                }
+            }
+            $twfestr = get_string('configtwoweeksnearend', 'block_course_notification');
+            $this->content->icons[] = $enabledicon;
+            $this->content->items[] = '<span title="'.$userlist.'">'.$twfestr.' ('.$twoweeksnearendcount.')</span>';
+        }
+
+        if (!empty($this->config->oneweeknearend)) {
+            $userlist = '';
+            $oneweeknearendcount = 0;
+            if ($oneweeknearend) {
+                foreach ($oneweeknearend as $u) {
+                    $userlist .= ', '.fullname($u);
+                    $oneweeknearendcount++;
+                }
+            }
+            $owfestr = get_string('configoneweeknearend', 'block_course_notification');
+            $this->content->icons[] = $enabledicon;
+            $this->content->items[] = '<span title="'.$userlist.'">'.$owfestr.' ('.$oneweeknearendcount.')</span>';
+        }
+
+        if (!empty($this->config->courseeventsreminders) && (strpos($this->config->courseeventsreminders, '5') !== false)) {
+            $userlist = '';
+            $fivedaystoendcount = 0;
+            if ($fivedaystoend) {
+                foreach ($fivedaystoend as $u) {
+                    $userlist .= ', '.fullname($u);
+                    $fivedaystoendcount++;
+                }
+            }
+            $str = get_string('configfivedaystoend', 'block_course_notification');
+            $this->content->icons[] = $enabledicon;
+            $this->content->items[] = '<span title="'.$userlist.'">'.$str.' ('.$fivedaystoendcount.')</span>';
+        }
+
+        if (!empty($this->config->courseeventsreminders) && (strpos($this->config->courseeventsreminders, '3') !== false)) {
+            $userlist = '';
+            $threedaystoendcount = 0;
+            if ($threedaystoend) {
+                foreach ($threedaystoend as $u) {
+                    $userlist .= ', '.fullname($u);
+                    $threedaystoendcount++;
+                }
+            }
+            $str = get_string('configthreedaystoend', 'block_course_notification');
+            $this->content->icons[] =  $enabledicon;
+            $this->content->items[] = '<span title="'.$userlist.'">'.$str.' ('.$threedaystoendcount.')</span>';
+        }
+
+        if (!empty($this->config->courseeventsreminders) && (strpos($this->config->courseeventsreminders, '1') !== false)) {
+            $userlist = '';
+            $onedaytoendcount = 0;
+            if ($onedaytoend) {
+                foreach ($onedaytoend as $u) {
+                    $userlist .= ', '.fullname($u);
+                    $onedaytoendcount++;
+                }
+            }
+            $str = get_string('configonedaytoend', 'block_course_notification');
+            $this->content->icons[] = $enabledicon;
+            $this->content->items[] = '<span title="'.$userlist.'">'.$str.' ('.$onedaytoendcount.')</span>';
+        }
+
+        if (!empty($this->config->closed)) {
+            $userlist = '';
+            $closedcount = 0;
+            if ($closedusers) {
+                foreach ($closedusers as $u) {
+                    $userlist .= ', '.fullname($u);
+                    $closedcount++;
+                }
+            }
+            $str = get_string('configclosed', 'block_course_notification');
+            $this->content->icons[] = (@$this->config->closed) ? $enabledicon : $disabledicon;
+            $this->content->items[] = '<span title="'.$userlist.'">'.$str.' ('.$closedcount.')</span>';
+        }
+
+        if (!empty($this->config->completed)) {
+            $str = get_string('configcompleted', 'block_course_notification');
+            $this->content->icons[] = $enabledicon;
+            $this->content->items[] = '<span title="'.htmlentities(get_string('completionadvice', 'block_course_notification')).'">'.$str.' </span>';
+        }
+
+        if (!empty($this->config->inactive)) {
+            $userlist = '';
+            $inactivescount = 0;
+            if ($inactives) {
+                foreach ($inactives as $u) {
+                    $userlist .= ', '.fullname($u);
+                    $inactivescount++;
+                }
+            }
+            $istr = get_string('inactive', 'block_course_notification');
+            $this->content->icons[] = $enabledicon;
+            $this->content->items[] = '<span title="'.$userlist.'">'.$istr.' ('.$inactivescount.')</span>';
+        }
+
+        if (block_course_notification_supports_feature('coldfeedback/mail')) {
+            include_once($CFG->dirroot.'/blocks/course_notification/pro/lib.php');
+            $items = bcn_get_block_content_additions($this);
+            if (!empty($items)) {
+                foreach ($items as $it) {
+                    $this->content->items[] = $it;
+                }
             }
         }
-        $owfsstr = get_string('oneweekfromstart', 'block_course_notification');
-        $this->content->items[] = '<span title="'.$userlist.'">'.$owfsstr.' ('.$oneweekinactivescount.')</span>';
-
-        $userlist = '';
-        $twoweeksinactivescount = 0;
-        if ($twoweeksinactives) {
-            foreach ($twoweeksinactives as $u) {
-                $userlist .= ', '.fullname($u);
-                $twoweeksinactivescount++;
-            }
-        }
-        $twfsstr = get_string('twoweeksfromstart', 'block_course_notification');
-        $this->content->items[] = '<span title="'.$userlist.'">'.$twfsstr.' ('.$twoweeksinactivescount.')</span>';
-
-        $userlist = '';
-        $twoweeksnearendcount = 0;
-        if ($twoweeksnearend) {
-            foreach ($twoweeksnearend as $u) {
-                $userlist .= ', '.fullname($u);
-                $twoweeksnearendcount++;
-            }
-        }
-        $twfestr = get_string('twoweeksnearend', 'block_course_notification');
-        $this->content->items[] = '<span title="'.$userlist.'">'.$twfestr.' ('.$twoweeksnearendcount.')</span>';
-
-        $userlist = '';
-        $oneweeknearendcount = 0;
-        if ($oneweeknearend) {
-            foreach ($oneweeknearend as $u) {
-                $userlist .= ', '.fullname($u);
-                $oneweeknearendcount++;
-            }
-        }
-        $owfestr = get_string('oneweeknearend', 'block_course_notification');
-        $this->content->items[] = '<span title="'.$userlist.'">'.$owfestr.' ('.$oneweeknearendcount.')</span>';
-
-        $userlist = '';
-        $fivedaystoendcount = 0;
-        if ($fivedaystoend) {
-            foreach ($fivedaystoend as $u) {
-                $userlist .= ', '.fullname($u);
-                $fivedaystoendcount++;
-            }
-        }
-        $str = get_string('fivedaystoend', 'block_course_notification');
-        $this->content->items[] = '<span title="'.$userlist.'">'.$str.' ('.$fivedaystoendcount.')</span>';
-
-        $userlist = '';
-        $threedaystoendcount = 0;
-        if ($threedaystoend) {
-            foreach ($threedaystoend as $u) {
-                $userlist .= ', '.fullname($u);
-                $threedaystoendcount++;
-            }
-        }
-        $str = get_string('threedaystoend', 'block_course_notification');
-        $this->content->items[] = '<span title="'.$userlist.'">'.$str.' ('.$threedaystoendcount.')</span>';
-
-        $userlist = '';
-        $onedaytoendcount = 0;
-        if ($onedaytoend) {
-            foreach ($onedaytoend as $u) {
-                $userlist .= ', '.fullname($u);
-                $onedaytoendcount++;
-            }
-        }
-        $str = get_string('onedaytoend', 'block_course_notification');
-        $this->content->items[] = '<span title="'.$userlist.'">'.$str.' ('.$onedaytoendcount.')</span>';
-
-        $userlist = '';
-        $closedcount = 0;
-        if ($closedusers) {
-            foreach ($closedusers as $u) {
-                $userlist .= ', '.fullname($u);
-                $closedcount++;
-            }
-        }
-        $str = get_string('closed', 'block_course_notification');
-        $this->content->items[] = '<span title="'.$userlist.'">'.$str.' ('.$closedcount.')</span>';
-
-        $str = get_string('completed', 'block_course_notification');
-        $this->content->items[] = '<span title="'.htmlentities(get_string('completionadvice', 'block_course_notification')).'">'.$str.' </span>';
-
-        $userlist = '';
-        $inactivescount = 0;
-        if ($inactives) {
-            foreach ($inactives as $u) {
-                $userlist .= ', '.fullname($u);
-                $inactivescount++;
-            }
-        }
-        $istr = get_string('inactive', 'block_course_notification');
-        $this->content->items[] = '<span title="'.$userlist.'">'.$istr.' ('.$inactivescount.')</span>';
 
         $this->content->footer = '';
 
-        if (has_capability('block/course_notification:setup', $blockcontext)) {
+        if (has_capability('block/course_notification:setup', $blockcontext) && $CFG->debug == DEBUG_DEVELOPER) {
             $params = ['id' => $COURSE->id, 'blockid' => $this->instance->id];
             $indexurl = new moodle_url('/blocks/course_notification/index.php', $params);
             $this->content->footer .= '<a href="'.$indexurl.'" class="smalltext">'.get_string('process', 'block_course_notification').'</a>';
+        }
 
+        if (has_capability('block/course_notification:setup', $blockcontext)) {
             $params = ['id' => $COURSE->id, 'blockid' => $this->instance->id];
             $reporturl = new moodle_url('/blocks/course_notification/report.php', $params);
             $this->content->footer .= '<br/><a href="'.$reporturl.'" class="smalltext">'.get_string('status', 'block_course_notification').'</a>';
@@ -591,5 +641,18 @@ class block_course_notification extends block_list {
         }
         sort($target);
         return $target;
+    }
+
+    /**
+     * Checks the availability of the cold feedback supportable instances.
+     */
+    public static function is_cold_feedback_available() {
+        global $CFG;
+        if (!block_course_notification_supports_feature('notifications/coldfeedback')) {
+            return;
+        }
+
+        include_once($CFG->dirroot.'/blocks/course_notification/pro/block_course_notification.php');
+        return block_course_notification_extended::is_cold_feedback_available();
     }
 }

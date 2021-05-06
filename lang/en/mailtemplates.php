@@ -16,6 +16,7 @@ $string['onedaytoend_object'] = '{$a} : Course will finish tomorrow.';
 $string['closed_object'] = '{$a} : Your course access has been closed.';
 $string['inactive_object'] = '{$a} : You had no activity for a while';
 $string['completed_object'] = '{$a} : Congratulation ! You have completed a course';
+$string['coldfeedback_object'] = '{$a} : We need your feedback';
 
 // Manager notifications.
 
@@ -612,4 +613,28 @@ Following users:
 
 <hr/>
 <a href="{{URL}}">{{SITENAME}}</a>
+';
+
+$string['coldfeedback_mail_html'] = '
+<p>Hello {{FIRSTNAME}} {{LASTNAME}},</p>
+
+<p>This is time to give us a quiet feedback on your passed course {{COURSENAME}}</p>
+
+<p>This survey is not mandatory to be answered, although our teaching process is asked to
+submit it to you. No need to connect back to our learning facility. Just fill the form and submit it.</p>
+
+{{FORM}}
+
+';
+
+$string['coldfeedback_mail_raw'] = '
+Hello {{FIRSTNAME}} {{LASTNAME}},
+
+This is time to give us a quiet feedback on your passed course {{COURSENAME}}
+
+This survey is not mandatory to be answered, although our teaching process is asked to
+submit it to you. No need to connect back to our learning facility. The following link will connect you automatically to the form.
+
+{{FORMURL}}
+
 ';

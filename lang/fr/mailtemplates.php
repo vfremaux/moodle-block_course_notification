@@ -11,6 +11,7 @@ $string['onedaytoend_object'] = 'Votre cours sur {$a} va bientôt se terminer';
 $string['inactive_object'] = 'Vous n\'avez pas eu d\'activité depuis un moment sur {$a}';
 $string['closed_object'] = '{$a} : Votre accès au cours est échu.';
 $string['completed_object'] = '{$a} : Vous avez terminé un cours';
+$string['coldfeedback_object'] = '{$a} : Nous avons besoin de votre retour';
 
 // Modèles administrateur
 
@@ -608,4 +609,30 @@ Les utilisateurs suivants :
 <hr/>
 <b>ne se sont pas encore connectés à 30 jours de leur échéance :</b>
 {{UNCON30LEFT}}
+';
+
+$string['coldfeedback_mail_html'] = '
+<p>Bonjour {{FIRSTNAME}} {{LASTNAME}},</p>
+
+<p>Il est temps de nous donner votre avis "à froid" sur votre formation {{COURSENAME}}</p>
+
+<p>Vous n\'avez aucune obligation de répondre à ce formulaire, mais notre processus pédagogique nous
+oblige de vous le soumettre pour remplir les obligations d\'évaluation des fournisseurs de formation. Vous n\'avez pas à vous reconnecter à la
+plate-forme de formation pour répondre. Remplissez seulement le questionnaire ci-dessous et soumettez-le.</p>
+
+{{FORM}}
+
+';
+
+$string['coldfeedback_mail_raw'] = '
+Bonjour {{FIRSTNAME}} {{LASTNAME}},
+
+Il est temps de nous donner votre avis "à froid" sur votre formation {{COURSENAME}}
+
+Vous n\'avez aucune obligation de répondre à ce formulaire, mais notre processus pédagogique nous
+oblige de vous le soumettre pour remplir les obligations d\'évaluation des fournisseurs de formation. Vous n\'avez pas à vous reconnecter à la
+plate-forme de formation pour répondre. Le lien suivant vous achemine directement au questionnaire.
+
+{{FORMURL}}
+
 ';

@@ -24,6 +24,7 @@
 defined('MOODLE_INTERNAL') or die();
 
 require_once($CFG->dirroot.'/blocks/course_notification/mailtemplatelib.php');
+require_once($CFG->libdir . '/completionlib.php');
 
 /**
  * get list of users matching the event rule condition at start of the course.
@@ -775,3 +776,4 @@ function bcn_set_test_courses() {
         }
     }
 }
+
