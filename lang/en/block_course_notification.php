@@ -23,28 +23,50 @@ $string['course_notification:setup'] = 'Configure notification';
 // Privacy.
 $string['privacy:metadata'] = 'The Course Notification provider needs to be implemented.';
 
-$string['pluginname'] = 'Course notifications';
 $string['backtocourse'] = 'Back to course';
-$string['enabled'] = 'Enabled';
+$string['closed'] = 'Terminated users';
+$string['coldfeedback'] = 'Cold feedback';
+$string['coldfeedbackdelay'] = 'Cold feedback delay';
+$string['coldfeedbackmodule'] = 'Instance';
+$string['coldfeedbackmodtype'] = 'Feedack module type';
+$string['coldfeedbackmodtype_desc'] = '';
+$string['coldfeedbacktriggerson'] = 'Cold feedback triggers on';
+$string['coursestart'] = 'When course starts';
+$string['incourse'] = 'In course';
+$string['courseend'] = 'At course end';
+$string['completed'] = 'On course completion';
 $string['disabled'] = 'Disabled';
 $string['doprocess'] = 'Send the notifications';
-$string['firstassign'] = 'First invite';
-$string['oneweekfromstart'] = 'One week miss (start)';
-$string['twoweeksfromstart'] = 'Two weeks miss (start)';
-$string['oneweeknearend'] = 'One week enrol end';
-$string['twoweeksnearend'] = 'Two weeks enrol end';
-$string['fivedaystoend'] = 'Five days to end';
-$string['threedaystoend'] = 'three days to end';
-$string['onedaytoend'] = 'One day to end';
-$string['inactive'] = 'Inactivity';
-$string['status'] = 'User states';
-$string['closed'] = 'Terminated users';
-$string['completed'] = 'On course completion';
-$string['pending'] = 'Pending';
-$string['sent'] = 'Sent';
-$string['disabled'] = 'Disabled';
+$string['enabled'] = 'Enabled';
 $string['errorinstancenotfound'] = 'Block instance does not exist';
+$string['firstassign'] = 'First invite';
+$string['fivedaystoend'] = 'Five days to end';
+$string['inactive'] = 'Inactivity';
+$string['onedaytoend'] = 'One day to end';
+$string['oneweekfromstart'] = 'One week miss (start)';
+$string['oneweeknearend'] = 'One week enrol end';
+$string['pending'] = 'Pending';
+$string['pluginname'] = 'Course notifications';
+$string['sent'] = 'Sent';
+$string['status'] = 'User states';
 $string['task_notification'] = 'Notification emission task';
+$string['threedaystoend'] = 'three days to end';
+$string['twoweeksfromstart'] = 'Two weeks miss (start)';
+$string['twoweeksnearend'] = 'Two weeks enrol end';
+$string['nocoldfeedbackmodules'] = 'No Questionnaire nor Feedback modules in this course';
+$string['coursecompletion'] = 'Course completion';
+$string['coursemodulecompletion'] = 'Course module completion';
+$string['messages'] = 'Notification messages';
+$string['message'] = 'Notification message';
+$string['messagestosendhelp'] = 'Setting up these texts will override the default message defined in the plugin\'s stringset';
+$string['messagestosend'] = 'Messages content';
+$string['emissionreport'] = 'Notification emission report';
+
+$string['unset'] = '--  Not set --';
+$string['oneday'] = 'One day';
+$string['threedays'] = 'Three days';
+$string['oneweek'] = 'One week';
+$string['onemonth'] = 'One month';
 
 $string['firstassign_raw'] = ''; // for mail template customisation. Use local overrides to change text
 $string['inactive_raw'] = ''; // for mail template customisation. Use local overrides to change text
@@ -121,4 +143,5 @@ You may use the same placeholders you use in central configuration: {{WWWROOT}},
 {{USERNAME}}, {{FIRSTNAME}}, {{LASTNAME}}, {{CONTACTURL}}';
 $string['completionadvice'] = 'Enables message sending on each completion event';
 
-include ($CFG->dirroot.'/blocks/course_notification/lang/en/mailtemplates.php');
+include(__DIR__.'/mailtemplates.php');
+include(__DIR__.'/pro_additional_strings.php');

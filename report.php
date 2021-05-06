@@ -59,8 +59,8 @@ if (!empty($action)) {
     $controller->process($action);
 }
 
-$PAGE->set_heading(get_string('pluginname', 'block_course_notification'));
-$PAGE->set_title(get_string('pluginname', 'block_course_notification'));
+$PAGE->set_heading(get_string('emissionreport', 'block_course_notification'));
+$PAGE->set_title(get_string('emissionreport', 'block_course_notification'));
 $PAGE->set_pagelayout('admin');
 
 $userstr = get_string('user');
@@ -72,7 +72,7 @@ $oneweeknearendstr = get_string('oneweeknearend', 'block_course_notification');
 $fivedaystoendstr = get_string('fivedaystoend', 'block_course_notification');
 $threedaystoendstr = get_string('threedaystoend', 'block_course_notification');
 $onedaytoendstr = get_string('onedaytoend', 'block_course_notification');
-$closedstr = get_string('closed', 'block_course_notification');
+$closedstr = get_string('configclosed', 'block_course_notification');
 $inactivesstr = get_string('inactive', 'block_course_notification');
 
 $sentstr = get_string('sent', 'block_course_notification');
@@ -80,6 +80,8 @@ $pendingstr = get_string('pending', 'block_course_notification');
 $disabledstr = get_string('disabled', 'block_course_notification');
 
 echo $OUTPUT->header();
+
+echo $OUTPUT->heading(get_string('emissionreport', 'block_course_notification'));
 
 // Get enrolled users having states and make a table.
 

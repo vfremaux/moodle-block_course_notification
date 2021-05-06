@@ -761,3 +761,4 @@ function bcn_set_test_courses() {
         }
     }
 }
+
