@@ -30,5 +30,11 @@ $observers = array (
         'internal'    => true,
         'priority'    => 9999,
     ),
-
+    array(
+        'eventname'   => '\core\event\course_module_completion_updated',
+        'callback'    => 'block_course_notification_observer::on_course_module_completion_updated',
+        'includefile' => '/blocks/course_notification/observers.php',
+        'internal'    => true,
+        'priority'    => 9999,
+    ),
 );
