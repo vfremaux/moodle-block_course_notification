@@ -100,13 +100,13 @@ class block_course_notification_observer {
 
         debug_trace($instance->config, TRACE_DATA);
 
-        if (empty($instance->config->coldfeedback) || ($instance->config->coldfeebacktriggerson != 'cm')) {
+        if (empty($instance->config->coldfeedback) || ($instance->config->coldfeedbacktriggerson != 'cm')) {
             debug_trace('No triggering conditions for coldfeedback', TRACE_DEBUG_FINE);
             return;
         }
 
-        if ($instance->config->coldfeebacktriggermodule != $event->contextinstanceid) {
-            debug_trace("Not the triggering expected module {$instance->config->coldfeebacktriggermodule} : event module : {$event->contextinstanceid} ", TRACE_DEBUG_FINE);
+        if ($instance->config->coldfeedbacktriggermodule != $event->contextinstanceid) {
+            debug_trace("Not the triggering expected module {$instance->config->coldfeedbacktriggermodule} : event module : {$event->contextinstanceid} ", TRACE_DEBUG_FINE);
             return;
         }
 

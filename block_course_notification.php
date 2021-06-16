@@ -284,6 +284,10 @@ class block_course_notification extends block_list {
             $this->content->footer .= '<br/><a href="'.$reporturl.'" class="smalltext">'.get_string('status', 'block_course_notification').'</a>';
         }
 
+        if (block_course_notification_supports_feature('coldfeedback/mail')) {
+            bcn_get_block_footer_pro_additions($this);
+        }
+
         return $this->content;
     }
 

@@ -82,6 +82,7 @@ $string['inactivityfrequency'] = 'Inactive notification frequ.';
 $string['configfirstassign'] = 'Notify on assign';
 $string['configfirstcall'] = 'First call after assign';
 $string['configsecondcall'] = 'Second call after assign';
+$string['configoneweekfromstart'] = 'One week from start';
 $string['configoneweeknearend'] = 'One week near end';
 $string['configtwoweeksnearend'] = 'Two weeks near end';
 $string['configfivedaystoend'] = 'Five days to end';
