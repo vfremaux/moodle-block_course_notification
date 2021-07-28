@@ -100,7 +100,7 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
 
     // Get all active enrollement records.
     $sql = "
-        SELECT
+        SELECT DISTINCT
             u.id,
             u.username,
             ".get_all_user_name_fields(true, 'u').",
@@ -110,8 +110,8 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
             u.deleted,
             u.suspended,
             u.lang,
-            ue.timestart,
-            ue.timeend
+            MIN(ue.timestart),
+            MAX(ue.timeend)
        FROM
             {user} u,
             {enrol} e,
@@ -125,6 +125,8 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
             u.suspended = 0 AND
             e.courseid = ?
             $ignoreclause
+         GROUP BY
+            u.id
     ";
     $params = [$course->id];
     $potentials = $DB->get_records_sql($sql, $params);
@@ -230,7 +232,7 @@ function bcn_get_end_event_users(&$blockinstance, &$course, $event, $ignoreduser
     // Get all enrolled users not already notified, and having end date soon,
     // These notifications will be sent to all active or inactive users but not to completed users.
     $sql = "
-        SELECT
+        SELECT DISTINCT
             u.id,
             u.username,
             ".get_all_user_name_fields(true, 'u').",
@@ -240,8 +242,8 @@ function bcn_get_end_event_users(&$blockinstance, &$course, $event, $ignoreduser
             u.mailformat,
             u.deleted,
             u.suspended,
-            ue.timestart,
-            ue.timeend
+            MIN(ue.timestart),
+            MAX(ue.timeend)
         FROM
             {user} u,
             {enrol} e,
@@ -255,6 +257,8 @@ function bcn_get_end_event_users(&$blockinstance, &$course, $event, $ignoreduser
             u.deleted = 0 AND
             u.suspended = 0
             $ignoreclause
+        GROUP BY
+            u.id
     ";
 
     $potentials = $DB->get_records_sql($sql, [$course->id]);
@@ -444,6 +448,8 @@ function bcn_notify_users(&$blockinstance, &$course, $users, $eventtype, $data =
 function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = null, $allowiterate = false, $verbose = false) {
     global $CFG, $SITE, $DB;
 
+    debug_trace("Notify user $user->username with $eventtype ", TRACE_DEBUG);
+
     // check if this mail has already been sent; do not send twice....
     // security
     $select = " courseid = ? AND userid = ? ";
@@ -453,6 +459,7 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
 
     if ($bcn && ($bcn->$eventmarkfield == 1) && !$allowiterate) {
         // If there is already a bcn record and event is marked do nothing.
+        debug_trace("Skip as already marked for this event", TRACE_DEBUG);
         return false;
     }
 
@@ -514,8 +521,14 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
         }
     }
 
+<<<<<<< HEAD
     if (email_to_user($user, $admin, $subject, $notification, $notification_html, '', '', false)) {
 >>>>>>> MOODLE_37_STABLE
+=======
+    $success = email_to_user($user, null, $subject, $notification, $notification_html, '', '', false);
+
+    if ($success) {
+>>>>>>> MOODLE_39_STABLE
         $context = context_course::instance($course->id);
         $eventparams = array(
             'objectid' => $user->id,
@@ -527,10 +540,11 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
         $event->trigger();
 
         bcn_mark_event($eventtype, $user->id, $course->id);
-    }
-
-    if ($CFG->debugsmtp || $verbose) {
-        mtrace("\tSent to user {$user->id} for event 'notify $eventtype' for course {$course->id} ");
+        if ($CFG->debugsmtp || $verbose) {
+            mtrace("\tSent to user {$user->id} for event 'notify $eventtype' for course {$course->id} ");
+        }
+    } else {
+        debug_trace("Failed sending mail to {$user->username} ", TRACE_DEBUG);
     }
 
     return true;

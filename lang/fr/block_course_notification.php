@@ -56,6 +56,8 @@ $string['configfirstassign_desc'] = 'Si activé, une notification est envoyée �
 $string['configfirstassign'] = 'Inscription';
 $string['configfirstcall'] = 'Premier rappel après inscription';
 $string['configsecondcall'] = 'Second rappel après inscription';
+$string['configoneweekfromstart'] = 'A une semaine du début';
+$string['configtwoweeksfromstart'] = 'A deux semaines du début';
 $string['configoneweeknearend'] = 'Une semaine de la fin';
 $string['configtwoweeksnearend'] = 'Deux semaines de la fin';
 $string['configfivedaystoend'] = 'Cinq jours de la fin';
@@ -76,7 +78,11 @@ $string['unset'] = '--  Aucun --';
 $string['oneday'] = 'Un jour';
 $string['threedays'] = 'Trois jours';
 $string['oneweek'] = 'Une semaine';
+<<<<<<< HEAD
 $string['onemonth'] = 'Une mois';
+>>>>>>> MOODLE_39_STABLE
+=======
+$string['onemonth'] = 'Un mois';
 >>>>>>> MOODLE_39_STABLE
 
 $string['configdefaultfirstassign'] = 'Inscription (défaut)';
