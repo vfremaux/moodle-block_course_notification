@@ -57,6 +57,7 @@ $string['configfirstassign'] = 'Inscription';
 $string['configfirstcall'] = 'Premier rappel après inscription';
 $string['configsecondcall'] = 'Second rappel après inscription';
 $string['configoneweekfromstart'] = 'A une semaine du début';
+$string['configtwoweeksfromstart'] = 'A deux semaines du début';
 $string['configoneweeknearend'] = 'Une semaine de la fin';
 $string['configtwoweeksnearend'] = 'Deux semaines de la fin';
 $string['configfivedaystoend'] = 'Cinq jours de la fin';
