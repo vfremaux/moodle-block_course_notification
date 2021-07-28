@@ -46,7 +46,7 @@ class send_cold_feedback_form_task extends adhoc_task {
      * Run the task to refresh calendar events.
      */
     public function execute() {
-        global $CFG, $DB, $SITE;
+        global $CFG;
 
         if (!block_course_notification_supports_feature('coldfeedback/mail')) {
             mtrace('Unsupported coldform task');

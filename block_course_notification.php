@@ -284,6 +284,10 @@ class block_course_notification extends block_list {
             $this->content->footer .= '<br/><a href="'.$reporturl.'" class="smalltext">'.get_string('status', 'block_course_notification').'</a>';
         }
 
+        if (block_course_notification_supports_feature('coldfeedback/mail')) {
+            bcn_get_block_footer_pro_additions($this);
+        }
+
         return $this->content;
     }
 
@@ -291,6 +295,11 @@ class block_course_notification extends block_list {
         global $CFG, $DB;
 
         $config = get_config('block_course_notification');
+        $verbose = false;
+
+        if ($CFG->debug == DEBUG_DEVELOPER) {
+            $verbose = true;
+        }
 
         if (empty($config->enable)) {
             mtrace("\nCourse Notifications cron disabled at site level");
@@ -299,10 +308,12 @@ class block_course_notification extends block_list {
 
         // foreach instance of course_notification block.
 
-        mtrace("\ncourse notifications start");
+        mtrace("\nCourse notifications start");
 
         if ($instances = $DB->get_records('block_instances', ['blockname' => 'course_notification'])) {
             foreach ($instances as $instance) {
+
+                mtrace("\nCourse notifications processing {$instance->id}");
 
                 // Parent context is course context.
                 $parentcontext = $DB->get_record('context', ['id' => $instance->parentcontextid]);
@@ -315,6 +326,7 @@ class block_course_notification extends block_list {
                 }
 
                 self::process_course_notification($course, $instance);
+                mtrace("\nCourse notifications {$instance->id} processed");
 
             }
         }
@@ -363,14 +375,13 @@ class block_course_notification extends block_list {
         $blockobj = block_instance('course_notification', $instance);
 
         if (empty($blockobj->config)) {
-            echo "Block not configured\n";
+            mtrace("Block not configured\n");
             return;
         }
 
+        debug_trace("First assigns... ", TRACE_DEBUG);
         if (@$blockobj->config->firstassign) {
-            if ($CFG->debug == DEBUG_DEVELOPER) {
-                debug_trace("\tFirst assigns...");
-            }
+            debug_trace(" ... processing ... ", TRACE_DEBUG);
             if ($verbose) {
                 echo "\tFirst assigns...\n";
             }
@@ -384,13 +395,13 @@ class block_course_notification extends block_list {
                     }
                 }
             }
+            debug_trace(" ... done !", TRACE_DEBUG);
         }
 
         // Course has started more than 15 days ago.
+        debug_trace("Second calls... ", TRACE_DEBUG);
         if (@$blockobj->config->secondcall) {
-            if ($CFG->debug == DEBUG_DEVELOPER) {
-                debug_trace("\tSecond calls...");
-            }
+            debug_trace("... processing ...", TRACE_DEBUG);
             if ($verbose) {
                 echo "\tSecond calls...\n";
             }
@@ -409,13 +420,13 @@ class block_course_notification extends block_list {
                     }
                 }
             }
+            debug_trace(" ... done !", TRACE_DEBUG);
         }
 
         // Course has started more than 7 days ago.
+        debug_trace("First calls...", TRACE_DEBUG);
         if (@$blockobj->config->firstcall) {
-            if ($CFG->debug == DEBUG_DEVELOPER) {
-                debug_trace("\tFirst calls...");
-            }
+            debug_trace(" ... processing ...", TRACE_DEBUG);
             if ($verbose) {
                 echo "\tFirst calls...\n";
             }
@@ -444,14 +455,14 @@ class block_course_notification extends block_list {
                     }
                 }
             }
+            debug_trace(" ... done !", TRACE_DEBUG);
         }
 
+        debug_trace("Inactives... ", TRACE_DEBUG);
         if (@$blockobj->config->inactive) {
+            debug_trace(" ... processing... ", TRACE_DEBUG);
             if (empty($blockobj->config->inactivitydelayindays)) {
                 $blockobj->config->inactivitydelayindays = 7;
-            }
-            if ($CFG->debug == DEBUG_DEVELOPER) {
-                debug_trace("\tInactives...");
             }
             if ($verbose) {
                 echo ("\tInactives...\n");
@@ -482,13 +493,13 @@ class block_course_notification extends block_list {
                     echo "\tNo users to send...\n";
                 }
             }
+            debug_trace(" ... done !", TRACE_DEBUG);
         }
 
         $endusers = [];
+        debug_trace("Closed...", TRACE_DEBUG);
         if (@$blockobj->config->closed) {
-            if ($CFG->debug == DEBUG_DEVELOPER) {
-                debug_trace("\tClosed...");
-            }
+            debug_trace(" ... processing ...", TRACE_DEBUG);
             if ($verbose) {
                 echo "\tClosed courses...\n";
             }
@@ -504,17 +515,18 @@ class block_course_notification extends block_list {
                     echo "\tNo users to send...\n";
                 }
             }
+            debug_trace(" ... done !", TRACE_DEBUG);
         }
 
         if (!empty($blockobj->config->courseeventsreminders)) {
+            debug_trace("Course event reminders...");
             if (strpos($blockobj->config->courseeventsreminders, '1') !== false) {
-                if ($CFG->debug == DEBUG_DEVELOPER) {
-                    debug_trace("\tOne day from end...");
-                }
                 if ($verbose) {
-                    echo "\tOne day from end...\n";
+                    echo "One day from end...\n";
                 }
+                debug_trace("One day from end...", TRACE_DEBUG);
                 if ($endusers = bcn_get_end_event_users($theblock, $course, 'onedaytoend', $ignoreduserids)) {
+                    debug_trace("... processing ...", TRACE_DEBUG);
                     $count = count($endusers);
                     if ($verbose) {
                         echo "\tSending $count users...\n";
@@ -526,16 +538,15 @@ class block_course_notification extends block_list {
                         echo "\tNo users to send...\n";
                     }
                 }
+                debug_trace(" ... done !", TRACE_DEBUG);
             }
 
             if (strpos($blockobj->config->courseeventsreminders, '3') !== false) {
-                if ($CFG->debug == DEBUG_DEVELOPER) {
-                    debug_trace("\tThree days from end...");
-                }
                 if ($verbose) {
                     echo "\tThree days from end...\n";
                 }
                 if ($endusers = bcn_get_end_event_users($theblock, $course, 'threedaystoend', $ignoreduserids)) {
+                    debug_trace(" ... processing ...", TRACE_DEBUG);
                     $count = count($endusers);
                     if ($verbose) {
                         echo "\tSending $count users...\n";
@@ -547,16 +558,16 @@ class block_course_notification extends block_list {
                         echo "\tNo users to send...\n";
                     }
                 }
+                debug_trace(" ... done !", TRACE_DEBUG);
             }
 
             if (strpos($blockobj->config->courseeventsreminders, '5') !== false) {
-                if ($CFG->debug == DEBUG_DEVELOPER) {
-                    debug_trace("\tFive days from end...");
-                }
+                debug_trace("\tFive days from end...", TRACE_DEBUG);
                 if ($verbose) {
                     echo "\tFive days from end...\n";
                 }
                 if ($endusers = bcn_get_end_event_users($theblock, $course, 'fivedaystoend', $ignoreduserids)) {
+                    debug_trace(" ... processing ...", TRACE_DEBUG);
                     $count = count($endusers);
                     if ($verbose) {
                         echo "\tSending $count users...\n";
@@ -568,13 +579,12 @@ class block_course_notification extends block_list {
                         echo "\tNo users to send...\n";
                     }
                 }
+                debug_trace(" ... done !", TRACE_DEBUG);
             }
         }
 
         if (@$blockobj->config->oneweeknearend) {
-            if ($CFG->debug == DEBUG_DEVELOPER) {
-                debug_trace("\tOne week from end...");
-            }
+            debug_trace("\tOne week from end...", TRACE_DEBUG);
             if ($verbose) {
                 echo "\tOne week from end...\n";
             }
@@ -583,6 +593,7 @@ class block_course_notification extends block_list {
                 if ($verbose) {
                     echo "\tSending $count users...\n";
                 }
+                debug_trace(" ... processing $count users ...", TRACE_DEBUG);
                 bcn_notify_users($blockobj, $course, $endusers, 'oneweeknearend');
                 $ignoreduserids = self::add($ignoreduserids, array_keys($endusers));
             } else {
@@ -590,12 +601,11 @@ class block_course_notification extends block_list {
                     echo "\tNo users to send...\n";
                 }
             }
+            debug_trace(" ... done !", TRACE_DEBUG);
         }
 
         if (@$blockobj->config->twoweeksnearend) {
-            if ($CFG->debug == DEBUG_DEVELOPER) {
-                debug_trace("\tTwo weeks from end...");
-            }
+            debug_trace("Two weeks from end...", TRACE_DEBUG);
             if ($verbose) {
                 echo "\tTwo weeks from end...\n";
             }
@@ -604,13 +614,17 @@ class block_course_notification extends block_list {
                 if ($verbose) {
                     echo "\tSending $count users...\n";
                 }
+                debug_trace(" ... processing $count users ...", TRACE_DEBUG);
                 bcn_notify_users($blockobj, $course, $endusers, 'twoweeksnearend');
             } else {
                 if ($verbose) {
                     echo "\tNo users to send...\n";
                 }
             }
+            debug_trace(" ... done !", TRACE_DEBUG);
         }
+
+        debug_trace("Finished !", TRACE_DEBUG);
     }
 
     protected static function add($target, $source) {
