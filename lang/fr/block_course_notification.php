@@ -63,10 +63,6 @@ $string['configtwoweeksnearend'] = 'Deux semaines de la fin';
 $string['configfivedaystoend'] = 'Cinq jours de la fin';
 $string['configthreedaystoend'] = 'Trois jours de la fin';
 $string['configonedaytoend'] = 'La veille de la fin';
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
 $string['nocoldfeedbackmodules'] = 'Il n\'y a aucun module de questionnaire dans ce cours';
 $string['messages'] = 'Messages de notification';
 $string['message'] = 'Message';
@@ -78,12 +74,7 @@ $string['unset'] = '--  Aucun --';
 $string['oneday'] = 'Un jour';
 $string['threedays'] = 'Trois jours';
 $string['oneweek'] = 'Une semaine';
-<<<<<<< HEAD
-$string['onemonth'] = 'Une mois';
->>>>>>> MOODLE_39_STABLE
-=======
 $string['onemonth'] = 'Un mois';
->>>>>>> MOODLE_39_STABLE
 
 $string['configdefaultfirstassign'] = 'Inscription (défaut)';
 $string['configdefaultfirstcall'] = 'Premier rappel après inscription (défaut)';
@@ -111,12 +102,7 @@ $string['configinactiveobject'] = 'Inactivité (sujet)';
 $string['configclosedobject'] = 'A la fermeture de l\'accès (sujet)';
 $string['configcompletedobject'] = 'A chaque achèvement du cours (sujet)';
 
-<<<<<<< HEAD
->>>>>>> MOODLE_37_STABLE
-$string['configcourseeventsreminders'] = 'Signaux de rappel';
-=======
 $string['configcourseeventsreminders'] = 'Rappels supplémentaires';
->>>>>>> MOODLE_39_STABLE
 $string['configoneweekfromstart'] = 'Si activé, une notification est envoyée en début de période de formation, si aucune activité dans le cours n\'a été détectée au bout d\'une semaine';
 $string['configtwoweeksfromstart'] = 'Si activé, une notification est envoyée en début de période de formation, si aucune activité dans le cours n\'a été détectée au bout de deux semaines';
 $string['configoneweekfromend'] = 'Si activé, une notification est envoyée à tout utilisateur dont l\'enrollement prend fin une semaine plus tard';
@@ -130,10 +116,7 @@ $string['configcoursenotificationenablecron'] = 'Activer les notifications de co
 $string['configclosed'] = ' A la fin de l\'accès';
 $string['configcompleted'] = 'A l\'achévement du cours';
 $string['configdefaultcompleted'] = 'Message à l\'achèvement du cours (défaut)';
-<<<<<<< HEAD
-=======
 $string['configdefaultinactivitydelayindays'] = 'Longueur (en jours) de la période d\'inactivité ';
->>>>>>> MOODLE_37_STABLE
 $string['course_notifications_enable_cron'] = 'Cron';
 $string['supporturl'] = 'Url du support';
 $string['siteenabled'] = 'Activé (site)';
@@ -142,10 +125,7 @@ $string['closed'] = 'Accès clôturés';
 $string['processnotifications'] = 'Procéder aux notifications pour le cours {$a}';
 $string['configsiteenabled'] = 'Si désactivé, aucun bloc de notification n\'émettra de signaux.';
 $string['process'] = 'Lancer les notifications';
-<<<<<<< HEAD
-=======
 $string['reset'] = 'Réinitialiszer';
->>>>>>> MOODLE_37_STABLE
 $string['mailoverrides'] = 'Surcharges locales des messages';
 
 $string['mailoverrides_help'] = 'Ces réglages remplacent les messages standard réglés dans l\'administration centrale.

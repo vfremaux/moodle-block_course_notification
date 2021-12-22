@@ -22,85 +22,6 @@
  * @licence   http://www.gnu.org/copyleft/gpl.html GNU Public Licence
  */
 
-<<<<<<< HEAD
-$settings->add(new admin_setting_configcheckbox('block_course_notification/enable', get_string('siteenabled', 'block_course_notification'),
-                   get_string('configsiteenabled', 'block_course_notification'), 0));
-
-$key = 'block_course_notification/defaultfirstassign';
-$label = get_string('configdefaultfirstassign', 'block_course_notification');
-$desc = '';
-$default = 1;
-$settings->add(new admin_setting_configcheckbox($key, $label, $desc, $default));
-
-$key = 'block_course_notification/defaultfirstcall';
-$label = get_string('configdefaultfirstcall', 'block_course_notification');
-$desc = '';
-$default = 1;
-$settings->add(new admin_setting_configcheckbox($key, $label, $desc, $default));
-
-$key = 'block_course_notification/defaultsecondcall';
-$label = get_string('configdefaultsecondcall', 'block_course_notification');
-$desc = '';
-$default = 1;
-$settings->add(new admin_setting_configcheckbox($key, $label, $desc, $default));
-
-$key = 'block_course_notification/defaulttwoweeksnearend';
-$label = get_string('configdefaulttwoweeksnearend', 'block_course_notification');
-$desc = '';
-$default = 1;
-$settings->add(new admin_setting_configcheckbox($key, $label, $desc, $default));
-
-$key = 'block_course_notification/defaultoneweeknearend';
-$label = get_string('configdefaultoneweeknearend', 'block_course_notification');
-$desc = '';
-$default = 1;
-$settings->add(new admin_setting_configcheckbox($key, $label, $desc, $default));
-
-$key = 'block_course_notification/defaultfivedaystoend';
-$label = get_string('configdefaultfivedaystoend', 'block_course_notification');
-$desc = '';
-$default = 1;
-$settings->add(new admin_setting_configcheckbox($key, $label, $desc, $default));
-
-$key = 'block_course_notification/defaultthreedaystoend';
-$label = get_string('configdefaultthreedaystoend', 'block_course_notification');
-$desc = '';
-$default = 1;
-$settings->add(new admin_setting_configcheckbox($key, $label, $desc, $default));
-
-$key = 'block_course_notification/defaultonedaytoend';
-$label = get_string('configdefaultonedaytoend', 'block_course_notification');
-$desc = '';
-$default = 1;
-$settings->add(new admin_setting_configcheckbox($key, $label, $desc, $default));
-
-$key = 'block_course_notification/defaultclosed';
-$label = get_string('configdefaultclosed', 'block_course_notification');
-$desc = '';
-$default = 1;
-$settings->add(new admin_setting_configcheckbox($key, $label, $desc, $default));
-
-$key = 'block_course_notification/defaultinactive';
-$label = get_string('configdefaultinactive', 'block_course_notification');
-$desc = '';
-$default = 1;
-$settings->add(new admin_setting_configcheckbox($key, $label, $desc, $default));
-
-$key = 'block_course_notification/defaultcompleted';
-$label = get_string('configdefaultcompleted', 'block_course_notification');
-$desc = '';
-$default = 1;
-$settings->add(new admin_setting_configcheckbox($key, $label, $desc, $default));
-<<<<<<< HEAD
-=======
-
-$key = 'block_course_notification/defaultinactivitydelayindays';
-$label = get_string('configdefaultinactivitydelay', 'block_course_notification');
-$desc = '';
-$default = 14;
-$settings->add(new admin_setting_configtext($key, $label, $desc, $default));
->>>>>>> MOODLE_37_STABLE
-=======
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot.'/blocks/course_notification/lib.php');
@@ -191,4 +112,3 @@ if ($hassiteconfig) {
         $settings->add(new admin_setting_heading('plugindisthdr', $label, $desc));
     }
 }
->>>>>>> MOODLE_39_STABLE

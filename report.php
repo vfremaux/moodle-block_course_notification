@@ -27,10 +27,7 @@ require_once($CFG->dirroot.'/blocks/course_notification/locallib.php');
 
 $courseid = required_param('id', PARAM_INT);
 $blockid = required_param('blockid', PARAM_INT);
-<<<<<<< HEAD
-=======
 $action = optional_param('what', '', PARAM_TEXT);
->>>>>>> MOODLE_37_STABLE
 
 if (!$course = $DB->get_record('course', ['id' => $courseid])) {
     print_error('coursemisconf');
@@ -55,8 +52,6 @@ $PAGE->set_context($context);
 require_login();
 require_capability('block/course_notification:setup', $context);
 
-<<<<<<< HEAD
-=======
 if (!empty($action)) {
     include_once($CFG->dirroot.'/blocks/course_notification/report.controller.php');
     $controller = new \block_course_notification\report_controller();
@@ -64,14 +59,8 @@ if (!empty($action)) {
     $controller->process($action);
 }
 
-<<<<<<< HEAD
->>>>>>> MOODLE_37_STABLE
-$PAGE->set_heading(get_string('pluginname', 'block_course_notification'));
-$PAGE->set_title(get_string('pluginname', 'block_course_notification'));
-=======
 $PAGE->set_heading(get_string('emissionreport', 'block_course_notification'));
 $PAGE->set_title(get_string('emissionreport', 'block_course_notification'));
->>>>>>> MOODLE_39_STABLE
 $PAGE->set_pagelayout('admin');
 
 $userstr = get_string('user');
@@ -246,15 +235,12 @@ if (empty($enrolled)) {
 }
 
 echo '<center>';
-<<<<<<< HEAD
-=======
 $systemcontext = context_system::instance();
 if (has_capability('moodle/site:config', $systemcontext)) {
     $buttonurl = new moodle_url('/blocks/course_notification/report.php', ['id' => $courseid, 'blockid' => $blockid, 'what' => 'reset']);
     echo $OUTPUT->single_button($buttonurl, get_string('reset', 'block_course_notification'));
 }
 
->>>>>>> MOODLE_37_STABLE
 $buttonurl = new moodle_url('/course/view.php', array('id' => $courseid));
 echo $OUTPUT->single_button($buttonurl, get_string('backtocourse', 'block_course_notification'));
 echo '</center>';

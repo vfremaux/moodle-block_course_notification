@@ -83,10 +83,7 @@ class block_course_notification extends block_list {
             $this->config->closed = $config->defaultclosed;
             $this->config->inactive = $config->defaultinactive;
             $this->config->completed = $config->defaultcompleted;
-<<<<<<< HEAD
-=======
             $this->config->inactivitydelayindays = $config->defaultinactivitydelayindays;
->>>>>>> MOODLE_37_STABLE
 
             $this->instance_config_save($this->config);
         }
@@ -126,27 +123,10 @@ class block_course_notification extends block_list {
         $enabledicon = $OUTPUT->pix_icon('i/checked', get_string('enabled', 'block_course_notification'), 'core');
         $disabledicon = $OUTPUT->pix_icon('i/invalid', get_string('disabled', 'block_course_notification'), 'core');
 
-<<<<<<< HEAD
-        $this->content->icons[] = (@$this->config->firstassign) ? $enabledicon : $disabledicon;
-        $this->content->icons[] = (@$this->config->firstcall) ? $enabledicon : $disabledicon;
-        $this->content->icons[] = (@$this->config->secondcall) ? $enabledicon : $disabledicon;
-        $this->content->icons[] = (@$this->config->twoweeksnearend) ? $enabledicon : $disabledicon;
-        $this->content->icons[] = (@$this->config->oneweeknearend) ? $enabledicon : $disabledicon;
-        $this->content->icons[] = (strpos(@$this->config->courseeventsreminders, '5') !== false) ? $enabledicon : $disabledicon;
-        $this->content->icons[] = (strpos(@$this->config->courseeventsreminders, '3') !== false) ? $enabledicon : $disabledicon;
-        $this->content->icons[] = (strpos(@$this->config->courseeventsreminders, '1') !== false) ? $enabledicon : $disabledicon;
-        $this->content->icons[] = (@$this->config->closed) ? $enabledicon : $disabledicon;
-        $this->content->icons[] = (@$this->config->completed) ? $enabledicon : $disabledicon;
-        $this->content->icons[] = (@$this->config->inactive) ? $enabledicon : $disabledicon;
-        $this->content->icons[] = (@$this->config->completed) ? $enabledicon : $disabledicon;
-
-        $this->content->items[] = get_string('firstassign', 'block_course_notification').' ('.count($firstassigns).')';
-=======
         if (!empty($this->config->firstassign)) {
             $this->content->icons[] = $enabledicon;
             $this->content->items[] = get_string('firstassign', 'block_course_notification').' ('.count($firstassigns).')';
         }
->>>>>>> MOODLE_39_STABLE
 
         if (!empty($this->config->firstcall)) {
             $userlist = '';

@@ -93,8 +93,6 @@ $string['configcourseeventsreminders'] = 'Event reminders';
 $string['configinactive'] = 'Inactivity reminders';
 $string['configclosed'] = 'When access closes';
 $string['configcompleted'] = 'When course is completed';
-<<<<<<< HEAD
-=======
 
 $string['configfirstassignobject'] = 'Notify on assign (object)';
 $string['configfirstcallobject'] = 'First call after assign (object)';
@@ -109,7 +107,6 @@ $string['configinactiveobject'] = 'Inactivity reminders (object)';
 $string['configclosedobject'] = 'When access closes (object)';
 $string['configcompletedobject'] = 'When course is completed (object)';
 
->>>>>>> MOODLE_37_STABLE
 $string['noreminders'] = 'No remind mails';
 $string['configfirstassign_help'] = 'If enabled, a notification is sent to all participants when course opens (start date) or when further being enrolled in course.';
 $string['configfirstassign_help'] = 'If enabled, a notification is sent to all participants when course opens (start date) or when further being enrolled in course.';
@@ -130,28 +127,18 @@ $string['configdefaultsecondcall'] = 'Second call signal (default state)';
 $string['configdefaulttwoweeksnearend'] = 'Two weeks near end signal (default state)';
 $string['configdefaultoneweeknearend'] = 'One week near end signal (default state)';
 $string['configdefaultfivedaystoend'] = 'Five days to end signal (default state)';
-<<<<<<< HEAD
-$string['configdefaultthreedaystoend'] = 'three days to end signal (default state)';
-=======
 $string['configdefaultthreedaystoend'] = 'Three days to end signal (default state)';
->>>>>>> MOODLE_37_STABLE
 $string['configdefaultonedaytoend'] = 'One day to end signal (default state)';
 $string['configdefaultcompleted'] = 'Course completed message (default state)';
 $string['configdefaultclosed'] = 'Closed access signal (default state)';
 $string['configdefaultinactive'] = 'Inactive signal (default state)';
-<<<<<<< HEAD
-=======
 $string['configdefaultinactivitydelay'] = 'Default inactive delay period (in days)';
 $string['configinactivitydelayindays'] = 'Inactivity delay (in days)';
->>>>>>> MOODLE_37_STABLE
 $string['processnotifications'] = 'Process notifications for the course {$a}';
 $string['siteenabled'] = 'Enabled (site level)';
 $string['configsiteenabled'] = 'If enabled, all notification blocks in Moodle will be active.';
 $string['process'] = 'Process notifications';
-<<<<<<< HEAD
-=======
 $string['reset'] = 'Reset events';
->>>>>>> MOODLE_37_STABLE
 $string['mailoverrides'] = 'Mail message overrides';
 $string['mailoverrides_help'] = 'these settings will override mail content for each event.
 You may use the same placeholders you use in central configuration: {{WWWROOT}}, {{COURSE}}, {{COURSEID}}, {{SITENAME}},

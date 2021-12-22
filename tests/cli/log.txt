@@ -3,9 +3,6 @@ Config check : playing for http://dev.moodle36.fr
 Testing firstassign
 	Sending firstassign Mail Notification to Admin Utilisateur
 ####
-<<<<<<< HEAD
-<div class="text_to_html">1</div>
-=======
 
 <p>Hello Admin Utilisateur,</p>
 
@@ -30,16 +27,12 @@ may you contact us directly here:</p>
 
 <p><a href="">Contact support</a></p>
 
->>>>>>> MOODLE_37_STABLE
 ####
 Error: lib/moodlelib.php email_to_user(): Could not instantiate mail function.
 	Sent to user 2 for event 'notify firstassign' for course 1 
 Testing firstcall
 	Sending firstcall Mail Notification to Admin Utilisateur
 ####
-<<<<<<< HEAD
-<div class="text_to_html">1</div>
-=======
 
 <p>Hello Admin Utilisateur,</p>
 
@@ -58,16 +51,12 @@ may you contact us directly here:</p>
 
 <p><a href="">Contact</a></p>
 
->>>>>>> MOODLE_37_STABLE
 ####
 Error: lib/moodlelib.php email_to_user(): Could not instantiate mail function.
 	Sent to user 2 for event 'notify firstcall' for course 1 
 Testing secondcall
 	Sending secondcall Mail Notification to Admin Utilisateur
 ####
-<<<<<<< HEAD
-<div class="text_to_html">1</div>
-=======
 
 <p>Hello Admin Utilisateur,</p>
 
@@ -86,16 +75,12 @@ may you contact us directly here:</p>
 
 <p><a href="">Contact the support</a></p>
 
->>>>>>> MOODLE_37_STABLE
 ####
 Error: lib/moodlelib.php email_to_user(): Could not instantiate mail function.
 	Sent to user 2 for event 'notify secondcall' for course 1 
 Testing twoweeksnearend
 	Sending twoweeksnearend Mail Notification to Admin Utilisateur
 ####
-<<<<<<< HEAD
-<div class="text_to_html">1</div>
-=======
 
 <p>Hello Admin Utilisateur,</p>
 
@@ -115,16 +100,12 @@ you may browse to:</p>
 
 <p>As a reminder your username is: <b>admin</b></p>
 
->>>>>>> MOODLE_37_STABLE
 ####
 Error: lib/moodlelib.php email_to_user(): Could not instantiate mail function.
 	Sent to user 2 for event 'notify twoweeksnearend' for course 1 
 Testing oneweeknearend
 	Sending oneweeknearend Mail Notification to Admin Utilisateur
 ####
-<<<<<<< HEAD
-<div class="text_to_html">1</div>
-=======
 
 <p>Hello Admin Utilisateur,</p>
 
@@ -144,16 +125,12 @@ you may browse to:</p>
 
 <p>As a reminder your username is: <b>admin</b></p>
 
->>>>>>> MOODLE_37_STABLE
 ####
 Error: lib/moodlelib.php email_to_user(): Could not instantiate mail function.
 	Sent to user 2 for event 'notify oneweeknearend' for course 1 
 Testing fivedaystoend
 	Sending fivedaystoend Mail Notification to Admin Utilisateur
 ####
-<<<<<<< HEAD
-<div class="text_to_html">1</div>
-=======
 
 <p>Hello Admin Utilisateur,</p>
 
@@ -173,16 +150,12 @@ you may browse to:</p>
 
 <p>As a reminder your username is: <b>admin</b></p>
 
->>>>>>> MOODLE_37_STABLE
 ####
 Error: lib/moodlelib.php email_to_user(): Could not instantiate mail function.
 	Sent to user 2 for event 'notify fivedaystoend' for course 1 
 Testing threedaystoend
 	Sending threedaystoend Mail Notification to Admin Utilisateur
 ####
-<<<<<<< HEAD
-<div class="text_to_html">1</div>
-=======
 
 <p>Hello Admin Utilisateur,</p>
 
@@ -202,16 +175,12 @@ you may browse to:</p>
 
 <p>As a reminder your username is: <b>admin</b></p>
 
->>>>>>> MOODLE_37_STABLE
 ####
 Error: lib/moodlelib.php email_to_user(): Could not instantiate mail function.
 	Sent to user 2 for event 'notify threedaystoend' for course 1 
 Testing onedaytoend
 	Sending onedaytoend Mail Notification to Admin Utilisateur
 ####
-<<<<<<< HEAD
-<div class="text_to_html">1</div>
-=======
 
 <p>Hello Admin Utilisateur,</p>
 
@@ -231,16 +200,12 @@ you may browse to:</p>
 
 <p>As a reminder your username is: <b>admin</b></p>
 
->>>>>>> MOODLE_37_STABLE
 ####
 Error: lib/moodlelib.php email_to_user(): Could not instantiate mail function.
 	Sent to user 2 for event 'notify onedaytoend' for course 1 
 Testing closed
 	Sending closed Mail Notification to Admin Utilisateur
 ####
-<<<<<<< HEAD
-<div class="text_to_html">1</div>
-=======
 
 <p>Hello Admin Utilisateur,</p>
 
@@ -250,23 +215,12 @@ Testing closed
 
 <p><a href="">Our support</a></p>
 
->>>>>>> MOODLE_37_STABLE
 ####
 Error: lib/moodlelib.php email_to_user(): Could not instantiate mail function.
 	Sent to user 2 for event 'notify closed' for course 1 
-Testing completed
-	Sending completed Mail Notification to Admin Utilisateur
-####
-<div class="text_to_html">1</div>
-####
-Error: lib/moodlelib.php email_to_user(): Could not instantiate mail function.
-	Sent to user 2 for event 'notify completed' for course 1 
 Testing inactive
 	Sending inactive Mail Notification to Admin Utilisateur
 ####
-<<<<<<< HEAD
-<div class="text_to_html">1</div>
-=======
 
 <p>Hello Admin Utilisateur,</p>
 
@@ -287,7 +241,6 @@ may you contact us directly here:</p>
 
 <p><a href="">Contact</a></p>
 
->>>>>>> MOODLE_37_STABLE
 ####
 Error: lib/moodlelib.php email_to_user(): Could not instantiate mail function.
 	Sent to user 2 for event 'notify inactive' for course 1 

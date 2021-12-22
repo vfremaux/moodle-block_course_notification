@@ -485,16 +485,6 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
     }
 
     $notification = bcn_compile_mail_template("{$eventtype}_mail_raw", $vars, $blockinstance->config, $user->lang);
-<<<<<<< HEAD
-
-    $alternatetemplate = get_string("{$eventtype}_mail_html", 'block_course_notification');
-    if (empty($alternatetemplate)) {
-        $alternatetemplate = null;
-    }
-    $notification_html = bcn_compile_mail_template("{$eventtype}_mail_html", $vars, $blockinstance->config, $user->lang);
-
-    if ($CFG->debugsmtp || $verbose) {
-=======
     $notification_html = bcn_compile_mail_template("{$eventtype}_mail_html", $vars, $blockinstance->config, $user->lang);
 
     $options = array('filter' => false);
@@ -503,16 +493,12 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
 
     if ($CFG->debugsmtp || $verbose) {
         mtrace("\tSending {$eventtype} Text Mail Notification to " . fullname($user) . "\n####\n".$notification. "\n####");
->>>>>>> MOODLE_37_STABLE
         mtrace("\tSending {$eventtype} Mail Notification to " . fullname($user) . "\n####\n".$notification_html. "\n####");
     }
 
     $admin = get_admin();
 
     $subject = get_string("{$eventtype}_object", 'block_course_notification', $SITE->shortname);
-<<<<<<< HEAD
-    if (email_to_user($user, $admin, $subject, $notification, $notification_html)) {
-=======
     $objectconfigkey = $eventtype.'_object_ovl';
     if (!empty($blockinstance->config->$objectconfigkey)) {
         $subject = $blockinstance->config->$objectconfigkey;
@@ -521,14 +507,9 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
         }
     }
 
-<<<<<<< HEAD
-    if (email_to_user($user, $admin, $subject, $notification, $notification_html, '', '', false)) {
->>>>>>> MOODLE_37_STABLE
-=======
     $success = email_to_user($user, null, $subject, $notification, $notification_html, '', '', false);
 
     if ($success) {
->>>>>>> MOODLE_39_STABLE
         $context = context_course::instance($course->id);
         $eventparams = array(
             'objectid' => $user->id,
