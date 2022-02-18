@@ -33,10 +33,11 @@
  * @return a fully resolved template where all data has been injected
  */
 function bcn_compile_mail_template($template, $infomap, $blockconfig, $lang = null) {
-    global $USER;
+    global $USER, $CFG;
 
     if (!$lang) {
-        $lang = $USER->lang;
+        // Take platform preference lang.
+        $lang = $CFG->lang;
     }
 
     // Extract eventtype and check overrides, but not for manager mails.

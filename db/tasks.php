@@ -29,8 +29,8 @@ $tasks = array(
     array(
         'classname' => 'block_course_notification\task\notification_task',
         'blocking' => 0,
-        'minute' => '*',
-        'hour' => '*',
+        'minute' => '0',
+        'hour' => '22',
         'day' => '*',
         'month' => '*',
         'dayofweek' => '*',

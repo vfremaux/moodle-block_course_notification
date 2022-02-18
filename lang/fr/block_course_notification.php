@@ -48,10 +48,13 @@ $string['pending'] = 'Non émis';
 $string['sent'] = 'Emis';
 $string['disabled'] = 'Désactivé';
 $string['errorinstancenotfound'] = 'L\'instance de bloc n\'a pas pu être trouvée.';
-$string['inactivitydelay'] = 'Période inactive (jours)';
-$string['inactivityfrequency'] = 'Fréquence d\'émission';
+$string['inactivitydelayindays'] = 'Longueur de l\'inactivité';
+$string['inactivitydelayindays_help'] = 'La longueur en jour de la période d\'inactivité accordée avant émission d\'un signal';
+$string['inactivityfrequency'] = 'Fréquence d\'émission d\'inactivité';
+$string['inactivityfrequency_help'] = 'Fréquence d\'émission, en jours, du signal d\'inactivité lorsque l\'état d\'inactivité est détecté';
 $string['task_notification'] = 'Tâche d\'émission des notifications';
 $string['completed'] = 'A chaque achèvement du cours';
+$string['configbulklimit'] = 'Limite du nombre de notifications par process';
 $string['configfirstassign_desc'] = 'Si activé, une notification est envoyée à tous les inscrits lors de l\'ouverture du cours (date de début) ou, une fois le cours ouvert, lors de l\'arrivée de nouveaux enrollements manuel. ';
 $string['configfirstassign'] = 'Inscription';
 $string['configfirstcall'] = 'Premier rappel après inscription';
@@ -87,8 +90,9 @@ $string['configdefaultonedaytoend'] = 'La veille de la fin(défaut)';
 $string['configdefaultcompleted'] = 'Signal d\'achèvement (défaut)';
 $string['configdefaultclosed'] = 'Fermeture de l\'accès (défaut)';
 $string['configdefaultinactive'] = 'Inactivité (défaut)';
-$string['configdefaultinactivitydelay'] = 'Longueur d\'inactivité (jours)';
-$string['configinactivitydelayindays'] = 'Délai d\'inactivité (en jours)';
+$string['configdefaultinactivitydelay'] = 'Longueur d\'inactivité (jours, par défaut)';
+$string['configdefaultinactivityfrequency'] = 'Fréquence d\'émission de l\'inactivité (jours, défaut)';
+
 
 $string['configfirstassignobject'] = 'Inscription (sujet)';
 $string['configfirstcallobject'] = 'Premier rappel après inscription (sujet)';
@@ -125,7 +129,7 @@ $string['closed'] = 'Accès clôturés';
 $string['processnotifications'] = 'Procéder aux notifications pour le cours {$a}';
 $string['configsiteenabled'] = 'Si désactivé, aucun bloc de notification n\'émettra de signaux.';
 $string['process'] = 'Lancer les notifications';
-$string['reset'] = 'Réinitialiszer';
+$string['reset'] = 'Réinitialiser les états';
 $string['mailoverrides'] = 'Surcharges locales des messages';
 
 $string['mailoverrides_help'] = 'Ces réglages remplacent les messages standard réglés dans l\'administration centrale.
