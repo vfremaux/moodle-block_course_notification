@@ -77,11 +77,14 @@ $string['inactive_html'] = ''; // for mail template customisation. Use local ove
 $string['nearend_html'] = ''; // for mail template customisation. Use local overrides to change text
 $string['secondcall_html'] = ''; // for mail template customisation. Use local overrides to change text
 
-$string['inactivitydelay'] = 'Inactive delay (days)';
+$string['inactivitydelayindays'] = 'Inactivity length (days)';
 $string['inactivityfrequency'] = 'Inactive notification frequ.';
+
 $string['configfirstassign'] = 'Notify on assign';
 $string['configfirstcall'] = 'First call after assign';
 $string['configsecondcall'] = 'Second call after assign';
+$string['configoneweekfromstart'] = 'One week from start';
+$string['configtwoweeksfromstart'] = 'Two weeks from start';
 $string['configoneweeknearend'] = 'One week near end';
 $string['configtwoweeksnearend'] = 'Two weeks near end';
 $string['configfivedaystoend'] = 'Five days to end';
@@ -91,6 +94,7 @@ $string['configcourseeventsreminders'] = 'Event reminders';
 $string['configinactive'] = 'Inactivity reminders';
 $string['configclosed'] = 'When access closes';
 $string['configcompleted'] = 'When course is completed';
+$string['configbulklimit'] = 'Max number of notifications per process';
 
 $string['configfirstassignobject'] = 'Notify on assign (object)';
 $string['configfirstcallobject'] = 'First call after assign (object)';
@@ -119,6 +123,7 @@ $string['configsupporturl'] = 'An URL the user can use to rebind contact with th
 $string['configcoursenotificationenablecron'] = 'Enable cron for all course notifications.';
 $string['course_notifications_enable_cron'] = 'Cron enable';
 $string['supporturl'] = 'Support/contact URL';
+
 $string['configdefaultfirstassign'] = 'First assign signal (default state)';
 $string['configdefaultfirstcall'] = 'First call signal (default state)';
 $string['configdefaultsecondcall'] = 'Second call signal (default state)';
@@ -131,7 +136,8 @@ $string['configdefaultcompleted'] = 'Course completed message (default state)';
 $string['configdefaultclosed'] = 'Closed access signal (default state)';
 $string['configdefaultinactive'] = 'Inactive signal (default state)';
 $string['configdefaultinactivitydelay'] = 'Default inactive delay period (in days)';
-$string['configinactivitydelayindays'] = 'Inactivity delay (in days)';
+$string['configdefaultinactivityfrequency'] = 'Default inactive delay sending frequency (in days)';
+
 $string['processnotifications'] = 'Process notifications for the course {$a}';
 $string['siteenabled'] = 'Enabled (site level)';
 $string['configsiteenabled'] = 'If enabled, all notification blocks in Moodle will be active.';

@@ -50,8 +50,15 @@ class block_course_notification_edit_form extends block_edit_form {
 
         $mform->addElement('advcheckbox', 'config_inactive', get_string('configinactive', 'block_course_notification'));
 
-        $mform->addElement('text', 'config_inactivitydelayindays', get_string('configinactivitydelayindays', 'block_course_notification'));
+        $mform->addElement('text', 'config_inactivitydelayindays', get_string('inactivitydelayindays', 'block_course_notification'));
         $mform->setType('config_inactivitydelayindays', PARAM_INT);
+        $mform->setDefault('config_inactivitydelayindays', $config->defaultinactivitydelayindays);
+        $mform->addHelpButton('config_inactivitydelayindays', 'inactivitydelayindays', 'block_course_notification');
+
+        $mform->addElement('text', 'config_inactivityfrequency', get_string('inactivityfrequency', 'block_course_notification'));
+        $mform->setType('config_inactivityfrequency', PARAM_INT);
+        $mform->setDefault('config_inactivityfrequency', $config->defaultinactivityfrequency);
+        $mform->addHelpButton('config_inactivityfrequency', 'inactivityfrequency', 'block_course_notification');
 
         $mform->addElement('header', 'configheader2', get_string('courseend', 'block_course_notification'));
 
