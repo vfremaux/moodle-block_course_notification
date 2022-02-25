@@ -103,9 +103,22 @@ if ($hassiteconfig) {
     $default = 14;
     $settings->add(new admin_setting_configtext($key, $label, $desc, $default));
 
+    $key = 'block_course_notification/defaultinactivityfrequency';
+    $label = get_string('configdefaultinactivityfrequency', 'block_course_notification');
+    $desc = '';
+    $default = 7;
+    $settings->add(new admin_setting_configtext($key, $label, $desc, $default));
+
+    $key = 'block_course_notification/bulklimit';
+    $label = get_string('configbulklimit', 'block_course_notification');
+    $desc = get_string('configbulklimit_desc', 'block_course_notification');
+    $default = 300;
+    $settings->add(new admin_setting_configtext($key, $label, $desc, $default));
+
     if (block_course_notification_supports_feature('emulate/community') == 'pro') {
         include_once($CFG->dirroot.'/blocks/course_notification/pro/prolib.php');
-        \block_course_notification\pro_manager::add_settings($ADMIN, $settings);
+        $promanager = block_course_notification\pro_manager::instance();
+        $promanager->add_settings($ADMIN, $settings);
     } else {
         $label = get_string('plugindist', 'block_course_notification');
         $desc = get_string('plugindist_desc', 'block_course_notification');

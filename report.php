@@ -77,6 +77,7 @@ $inactivesstr = get_string('inactive', 'block_course_notification');
 
 $sentstr = get_string('sent', 'block_course_notification');
 $pendingstr = get_string('pending', 'block_course_notification');
+$tosendstr = get_string('tosend', 'block_course_notification');
 $disabledstr = get_string('disabled', 'block_course_notification');
 
 echo $OUTPUT->header();
@@ -94,6 +95,35 @@ foreach ($enrolled as $u) {
     if (in_array($u->id, $ignoreduserids)) {
         unset($enrolled[$u->id]);
     }
+}
+
+// Get all user events to send
+$firstassigns = bcn_get_start_event_users($blockobj, $course, 'firstassign', $ignoreduserids);
+$oneweekinactives = bcn_get_start_event_users($blockobj, $course, 'firstcall', $ignoreduserids);
+$twoweeksinactives = bcn_get_start_event_users($blockobj, $course, 'secondcall', $ignoreduserids);
+
+$closedusers = bcn_get_end_event_users($blockobj, $course, 'closed', $ignoreduserids);
+$ignoreduserids = block_course_notification::add($ignoreduserids, array_keys($closedusers));
+
+$onedaytoend = bcn_get_end_event_users($blockobj, $course, 'onedaytoend', $ignoreduserids);
+$ignoreduserids = block_course_notification::add($ignoreduserids, array_keys($onedaytoend));
+
+$threedaystoend = bcn_get_end_event_users($blockobj, $course, 'threedaystoend', $ignoreduserids);
+$ignoreduserids = block_course_notification::add($ignoreduserids, array_keys($threedaystoend));
+
+$fivedaystoend = bcn_get_end_event_users($blockobj, $course, 'fivedaystoend', $ignoreduserids);
+$ignoreduserids = block_course_notification::add($ignoreduserids, array_keys($fivedaystoend));
+
+$oneweeknearend = bcn_get_end_event_users($blockobj, $course, 'oneweeknearend', $ignoreduserids);
+$ignoreduserids = block_course_notification::add($ignoreduserids, array_keys($oneweeknearend));
+
+$twoweeksnearend = bcn_get_end_event_users($blockobj, $course, 'twoweeksnearend', $ignoreduserids);
+$ignoreduserids = block_course_notification::add($ignoreduserids, array_keys($twoweeksnearend));
+
+if ($blockobj->config->inactivitydelayindays && $course->startdate < time() - DAYSECS * 21 ) {
+    $inactives = bcn_get_inactive($course, $blockobj->config->inactivitydelayindays, $ignoreduserids);
+} else {
+    $inactives = array();
 }
 
 if (empty($enrolled)) {
@@ -124,106 +154,146 @@ if (empty($enrolled)) {
             if (empty($blockobj->config->firstassign)) {
                 $icon = $OUTPUT->pix_icon('disabled', $disabledstr, 'block_course_notification');
             } else {
-                $icon = $OUTPUT->pix_icon('pending', $pendingstr, 'block_course_notification');
+                if (array_key_exists($u->id, $firstassigns)) {
+                    $icon = $OUTPUT->pix_icon('i/sendmessage', $tosendstr);
+                } else {
+                    $icon = $OUTPUT->pix_icon('pending', $pendingstr, 'block_course_notification');
+                }
             }
         }
         $row[] = $icon;
 
         if ($bcn && $bcn->firstcallnotified) {
-            $icon = $OUTPUT->pix_icon('sent', $sentstr, 'block_course_notification');
+            $icon = $OUTPUT->pix_icon('sent', $sentstr.userdate($bcn->firstcallnotedate), 'block_course_notification');
         } else {
             if (empty($blockobj->config->firstcall)) {
                 $icon = $OUTPUT->pix_icon('disabled', $disabledstr, 'block_course_notification');
             } else {
-                $icon = $OUTPUT->pix_icon('pending', $pendingstr, 'block_course_notification');
+                if (array_key_exists($u->id, $oneweekinactives)) {
+                    $icon = $OUTPUT->pix_icon('i/sendmessage', $tosendstr);
+                } else {
+                    $icon = $OUTPUT->pix_icon('pending', $pendingstr, 'block_course_notification');
+                }
             }
         }
         $row[] = $icon;
 
         if ($bcn && $bcn->secondcallnotified) {
-            $icon = $OUTPUT->pix_icon('sent', $sentstr, 'block_course_notification');
+            $icon = $OUTPUT->pix_icon('sent', $sentstr.userdate($bcn->secondcallnotedate), 'block_course_notification');
         } else {
             if (empty($blockobj->config->secondcall)) {
                 $icon = $OUTPUT->pix_icon('disabled', $disabledstr, 'block_course_notification');
             } else {
-                $icon = $OUTPUT->pix_icon('pending', $pendingstr, 'block_course_notification');
+                if (array_key_exists($u->id, $twoweeksinactives)) {
+                    $icon = $OUTPUT->pix_icon('i/sendmessage', $tosendstr);
+                } else {
+                    $icon = $OUTPUT->pix_icon('pending', $pendingstr, 'block_course_notification');
+                }
             }
         }
         $row[] = $icon;
 
         if ($bcn && $bcn->twoweeksnearendnotified) {
-            $icon = $OUTPUT->pix_icon('sent', $sentstr, 'block_course_notification');
+            $icon = $OUTPUT->pix_icon('sent', $sentstr.userdate($bcn->twoweeksnearendnotedate), 'block_course_notification');
         } else {
             if (empty($blockobj->config->twoweeksnearend)) {
                 $icon = $OUTPUT->pix_icon('disabled', $disabledstr, 'block_course_notification');
             } else {
-                $icon = $OUTPUT->pix_icon('pending', $pendingstr, 'block_course_notification');
+                if (array_key_exists($u->id, $twoweeksnearend)) {
+                    $icon = $OUTPUT->pix_icon('i/sendmessage', $tosendstr);
+                } else {
+                    $icon = $OUTPUT->pix_icon('pending', $pendingstr, 'block_course_notification');
+                }
             }
         }
         $row[] = $icon;
 
         if ($bcn && $bcn->oneweeknearendnotified) {
-            $icon = $OUTPUT->pix_icon('sent', $sentstr, 'block_course_notification');
+            $icon = $OUTPUT->pix_icon('sent', $sentstr.userdate($bcn->oneweeknearendnotedate), 'block_course_notification');
         } else {
             if (empty($blockobj->config->oneweeknearend)) {
                 $icon = $OUTPUT->pix_icon('disabled', $disabledstr, 'block_course_notification');
             } else {
-                $icon = $OUTPUT->pix_icon('pending', $pendingstr, 'block_course_notification');
+                if (array_key_exists($u->id, $oneweeknearend)) {
+                    $icon = $OUTPUT->pix_icon('i/sendmessage', $tosendstr);
+                } else {
+                    $icon = $OUTPUT->pix_icon('pending', $pendingstr, 'block_course_notification');
+                }
             }
         }
         $row[] = $icon;
 
         if ($bcn && $bcn->fivedaystoendnotified) {
-            $icon = $OUTPUT->pix_icon('sent', $sentstr, 'block_course_notification');
+            $icon = $OUTPUT->pix_icon('sent', $sentstr.userdate($bcn->fivedaystoendnotedate), 'block_course_notification');
         } else {
             if (strpos('5', @$blockobj->config->courseeventsreminders) === false) {
                 $icon = $OUTPUT->pix_icon('disabled', $disabledstr, 'block_course_notification');
             } else {
-                $icon = $OUTPUT->pix_icon('pending', $pendingstr, 'block_course_notification');
+                if (array_key_exists($u->id, $fivedaystoend)) {
+                    $icon = $OUTPUT->pix_icon('i/sendmessage', $tosendstr);
+                } else {
+                    $icon = $OUTPUT->pix_icon('pending', $pendingstr, 'block_course_notification');
+                }
             }
         }
         $row[] = $icon;
 
         if ($bcn && $bcn->threedaystoendnotified) {
-            $icon = $OUTPUT->pix_icon('sent', $sentstr, 'block_course_notification');
+            $icon = $OUTPUT->pix_icon('sent', $sentstr.userdate($bcn->threedaystoendnotedate), 'block_course_notification');
         } else {
             if (strpos('3', @$blockobj->config->courseeventsreminders) === false) {
                 $icon = $OUTPUT->pix_icon('disabled', $disabledstr, 'block_course_notification');
             } else {
-                $icon = $OUTPUT->pix_icon('pending', $pendingstr, 'block_course_notification');
+                if (array_key_exists($u->id, $threedaystoend)) {
+                    $icon = $OUTPUT->pix_icon('i/sendmessage', $tosendstr);
+                } else {
+                    $icon = $OUTPUT->pix_icon('pending', $pendingstr, 'block_course_notification');
+                }
             }
         }
         $row[] = $icon;
 
         if ($bcn && $bcn->onedaytoendnotified) {
-            $icon = $OUTPUT->pix_icon('sent', $sentstr, 'block_course_notification');
+            $icon = $OUTPUT->pix_icon('sent', $sentstr.userdate($bcn->onedaytoendnotedate), 'block_course_notification');
         } else {
             if (strpos('1', @$blockobj->config->courseeventsreminders) === false) {
                 $icon = $OUTPUT->pix_icon('disabled', $disabledstr, 'block_course_notification');
             } else {
-                $icon = $OUTPUT->pix_icon('pending', $pendingstr, 'block_course_notification');
+                if (array_key_exists($u->id, $onedaytoend)) {
+                    $icon = $OUTPUT->pix_icon('i/sendmessage', $tosendstr);
+                } else {
+                    $icon = $OUTPUT->pix_icon('pending', $pendingstr, 'block_course_notification');
+                }
             }
         }
         $row[] = $icon;
 
         if ($bcn && $bcn->closednotified) {
-            $icon = $OUTPUT->pix_icon('sent', $sentstr, 'block_course_notification');
+            $icon = $OUTPUT->pix_icon('sent', $sentstr.userdate($bcn->closednotedate), 'block_course_notification');
         } else {
             if (empty($blockobj->config->closed)) {
                 $icon = $OUTPUT->pix_icon('disabled', $disabledstr, 'block_course_notification');
             } else {
-                $icon = $OUTPUT->pix_icon('pending', $pendingstr, 'block_course_notification');
+                if (array_key_exists($u->id, $closed)) {
+                    $icon = $OUTPUT->pix_icon('i/sendmessage', $tosendstr);
+                } else {
+                    $icon = $OUTPUT->pix_icon('pending', $pendingstr, 'block_course_notification');
+                }
             }
         }
         $row[] = $icon;
 
         if ($bcn && $bcn->inactivenotified) {
-            $icon = $OUTPUT->pix_icon('sent', $sentstr, 'block_course_notification');
+            $icon = $OUTPUT->pix_icon('sent', $sentstr.userdate($bcn->inactivenotedate), 'block_course_notification');
         } else {
             if (empty($blockobj->config->inactive)) {
                 $icon = $OUTPUT->pix_icon('disabled', $disabledstr, 'block_course_notification');
             } else {
-                $icon = $OUTPUT->pix_icon('pending', $pendingstr, 'block_course_notification');
+                if (array_key_exists($u->id, $inactives)) {
+                    $icon = $OUTPUT->pix_icon('i/sendmessage', $tosendstr);
+                } else {
+                    $icon = $OUTPUT->pix_icon('pending', $pendingstr, 'block_course_notification');
+                }
             }
         }
         $row[] = $icon;
