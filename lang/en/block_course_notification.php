@@ -36,21 +36,24 @@ $string['incourse'] = 'In course';
 $string['courseend'] = 'At course end';
 $string['completed'] = 'On course completion';
 $string['disabled'] = 'Disabled';
+$string['instanceisdisabled'] = 'Instance is disabled to send';
 $string['doprocess'] = 'Send the notifications';
 $string['enabled'] = 'Enabled';
 $string['errorinstancenotfound'] = 'Block instance does not exist';
 $string['firstassign'] = 'First invite';
 $string['fivedaystoend'] = 'Five days to end';
+$string['general'] = 'General';
 $string['inactive'] = 'Inactivity';
 $string['onedaytoend'] = 'One day to end';
 $string['oneweekfromstart'] = 'One week miss (start)';
 $string['oneweeknearend'] = 'One week enrol end';
 $string['pending'] = 'Pending';
 $string['pluginname'] = 'Course notifications';
-$string['sent'] = 'Sent';
+$string['sent'] = 'Sent on ';
 $string['status'] = 'User states';
 $string['task_notification'] = 'Notification emission task';
 $string['threedaystoend'] = 'three days to end';
+$string['tosend'] = 'To be sent';
 $string['twoweeksfromstart'] = 'Two weeks miss (start)';
 $string['twoweeksnearend'] = 'Two weeks enrol end';
 $string['nocoldfeedbackmodules'] = 'No Questionnaire nor Feedback modules in this course';
@@ -61,6 +64,8 @@ $string['message'] = 'Notification message';
 $string['messagestosendhelp'] = 'Setting up these texts will override the default message defined in the plugin\'s stringset';
 $string['messagestosend'] = 'Messages content';
 $string['emissionreport'] = 'Notification emission report';
+$string['showemptylines'] = 'Show empty lines';
+$string['hideemptylines'] = 'Hide empty lines';
 
 $string['unset'] = '--  Not set --';
 $string['oneday'] = 'One day';
@@ -144,10 +149,14 @@ $string['configsiteenabled'] = 'If enabled, all notification blocks in Moodle wi
 $string['process'] = 'Process notifications';
 $string['reset'] = 'Reset events';
 $string['mailoverrides'] = 'Mail message overrides';
+$string['completionadvice'] = 'Enables message sending on each completion event';
+
+$string['configbulklimit_desc'] = 'Each process (cron or cli) will only be able to send up to this amount of notifications
+per turn, to avoid big bulks of outgoing mail. Leave to 0 for unlimited.';
+
 $string['mailoverrides_help'] = 'these settings will override mail content for each event.
 You may use the same placeholders you use in central configuration: {{WWWROOT}}, {{COURSE}}, {{COURSEID}}, {{SITENAME}},
 {{USERNAME}}, {{FIRSTNAME}}, {{LASTNAME}}, {{CONTACTURL}}';
-$string['completionadvice'] = 'Enables message sending on each completion event';
 
 include(__DIR__.'/mailtemplates.php');
 include(__DIR__.'/pro_additional_strings.php');

@@ -115,7 +115,8 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
             u.suspended,
             u.lang,
             MIN(ue.timestart) as timestart,
-            MAX(ue.timeend) as timeend
+            MAX(ue.timeend) as timeend,
+            MIN(ue.timeend) as earlyesttimeend
        FROM
             {user} u,
             {enrol} e,
@@ -135,15 +136,25 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
     $params = [$course->id];
     $potentials = $DB->get_records_sql($sql, $params);
     $counter = count($potentials);
+    $completion = new \completion_info($course);
 
     $result = [];
     if (!empty($potentials)) {
         $statuslog = '';
         foreach ($potentials as $pot) {
+
+            if ($completion->is_course_complete($pot->id)) {
+                // rule A1.
+                $statuslog .= $course->id.' inactive -'.$pot->username.' trapped rule A1 : course is completed'."\n";
+                // Do not notify start to already completed users.
+                // Note A1 and A2 rules should be redundant....
+                continue;
+            }
+
             $ula = $DB->get_record('user_lastaccess', ['courseid' => $course->id, 'userid' => $pot->id]);
             if (!empty($ula) && $ula->timeaccess > 0) {
-                // rule A.
-                $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule A : Already accessed course'."\n";
+                // rule A2.
+                $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule A2 : Already accessed course'."\n";
                 // User has accessed the course.
                  continue;
             }
@@ -163,9 +174,11 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
                 continue;
             }
 
-            if (!empty($pot->timeend) && ($pot->timeend < $course->startdate)) {
+            // earlyesttimeend detects (==0) there is an inifinite enrol active in the enrol list for the user
+            // so the user is still enrolled in spite of any other closed enrols.
+            if (!empty($pot->timeend) && ($pot->timeend < $course->startdate) && ($pot->earlyesttimeend > 0)) {
                 // rule D.
-                $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule D : enrol over'."\n";
+                $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule D : enrol is over'."\n";
                 // This enrol is over.
                 continue;
             }
@@ -264,7 +277,8 @@ function bcn_get_end_event_users(&$blockinstance, &$course, $event, $ignoreduser
             u.deleted,
             u.suspended,
             MIN(ue.timestart) as timestart,
-            MAX(ue.timeend) as timeend
+            MAX(ue.timeend) as timeend,
+            MIN(ue.timeend) as earlyesttimeend
         FROM
             {user} u,
             {enrol} e,
@@ -304,7 +318,9 @@ function bcn_get_end_event_users(&$blockinstance, &$course, $event, $ignoreduser
                 continue;
             }
 
-            if (empty($pot->timeend) && empty($course->enddate)) {
+            // earlyesttimeend detects (==0) there is an infinite enrol active in the enrol list for the user
+            // so the user is still enrolled in spite of any other closed enrols.
+            if (empty($pot->timeend) && empty($course->enddate) || ($pot->earlyesttimeend == 0)) {
                 // rule C.
                 $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule C : infinite enrol'."\n";
                 // No limit for this course nor enrolment.
@@ -327,6 +343,14 @@ function bcn_get_end_event_users(&$blockinstance, &$course, $event, $ignoreduser
                 // End is later.
                 continue;
             }
+
+            if ($enddate < ($now - DAYSECS * 15)) {
+                // rule E.
+                $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule E : end date is too far in the past. Notification is not consistant.'."\n";
+                // End is later.
+                continue;
+            }
+
             $statuslog .= $course->id.' '.$event.' -'.$pot->username.' Accepted for notification'."\n";
             $result[$pot->id] = $pot;
         }
@@ -492,7 +516,7 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
                     }
                 }
             }
-            $users[] = $u;
+            $users[$u->id] = $u;
         }
         debug_trace($statuslog, TRACE_DEBUG_FINE);
         if (@$options['verbose'] == 2) {

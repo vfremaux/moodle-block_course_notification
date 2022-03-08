@@ -40,6 +40,8 @@ list($options, $unrecognized) = cli_get_params(
           'verbose' => false,
           'dryrun' => false,
           'markonly' => false,
+          'forcesitedisabled' => false,
+          'forcedisabledinstances' => false,
     ),
     array('h' => 'help',
           'H' => 'host',
@@ -48,6 +50,8 @@ list($options, $unrecognized) = cli_get_params(
           'd' => 'debug',
           'D' => 'dryrun',
           'm' => 'markonly',
+          'f' => 'forcesitedisabled',
+          'F' => 'forcedisabledinstances',
     )
 );
 if ($unrecognized) {
@@ -60,19 +64,24 @@ if ($options['help']) {
 Process notifications for some courses, or users.
 
 Options:
-    -h, --help            Print out this help.
-    -H, --host            the virtual host you are working for.
-    -c, --courses         courses to process (as a coma separated list of ids).
-    -u, --users           Users to process (as a coma separated list of ids).
-    -d, --debug           Turn on debug mode.
-    -v, --verbose         Turns on more verbose output. when verbose = 2, very detailed decision rules report.
-    -D, --dryrun          Do not send notifications nor mark sending states.
-    -m, --markonly        Just mark states but do NOT send mails.
+    -h, --help                      Print out this help.
+    -H, --host                      The virtual host you are working for.
+    -c, --courses                   Courses to process (as a coma separated list of ids).
+    -u, --users                     Users to process (as a coma separated list of ids).
+    -d, --debug                     Turn on debug mode.
+    -v, --verbose                   Turns on more verbose output. when verbose = 2, very detailed decision rules report.
+    -D, --dryrun                    Do not send notifications nor mark sending states.
+    -m, --markonly                  Just mark states but do NOT send mails.
+    -f, --forcesitedisabled         Forces processing even if site level config disables it. This is to use with --dryrun or --markonly
+                                    to set initial state.
+    -F, --forcedisabledinstances    Forces processing disabled instances also. This is to use with --dryrun or --markonly
+                                    to set initial state.
 
 Example (from moodle root):
 \$sudo -u www-data /usr/bin/php blocks/course_notifications/cli/process_notifications.php [--host=<moodlewwwroot>] --courses=12,13,14
 \$sudo -u www-data /usr/bin/php blocks/course_notifications/cli/process_notifications.php [--host=<moodlewwwroot>] --users=2034,2045
 \$sudo -u www-data /usr/bin/php blocks/course_notifications/cli/process_notifications.php --host=<moodlewwwroot>] --dryrun --courses=45
+\$sudo -u www-data /usr/bin/php blocks/course_notifications/cli/process_notifications.php --host=<moodlewwwroot>] --dryrun --forcesitedisabled
 
 ";
 
@@ -100,6 +109,16 @@ echo('Config check : playing for '.$CFG->wwwroot."\n");
 if (!empty($options['debug'])) {
     $CFG->debug = DEBUG_DEVELOPER;
 }
+
+$config = get_config('block_course_notification');
+
+if (empty($config->enable)) {
+    if (empty($options['forcesitedisabled'])) {
+        mtrace("Disabled at site level config");
+        exit(0);
+    }
+}
+
 
 $restricttousers = [];
 if (!empty($options['users'])) {
