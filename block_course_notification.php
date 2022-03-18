@@ -272,6 +272,10 @@ class block_course_notification extends block_list {
 
         $this->content->footer = '';
 
+        if (empty($this->config->enable)) {
+            $this->content->footer .= $OUTPUT->notification(get_string('instanceisdisabled', 'block_course_notification'), 'error');
+        }
+
         if (has_capability('block/course_notification:setup', $blockcontext) && $CFG->debug == DEBUG_DEVELOPER) {
             $params = ['id' => $COURSE->id, 'blockid' => $this->instance->id];
             $indexurl = new moodle_url('/blocks/course_notification/index.php', $params);
@@ -317,9 +321,9 @@ class block_course_notification extends block_list {
                 $instance = block_instance('course_notification', $instancerec);
 
                 // Parent context is course context.
-                $parentcontext = $DB->get_record('context', ['id' => $instance->parentcontextid]);
+                $parentcontext = $DB->get_record('context', ['id' => $instancerec->parentcontextid]);
                 $courseid = $parentcontext->instanceid;
-                mtrace("\nCourse notifications processing instance {$instance->id} in course : {$courseid}");
+                mtrace("\nCourse notifications processing instance {$instancerec->id} in course : {$courseid}");
                 if (!$course = $DB->get_record('course', array('id' => $courseid))) {
                     if ($verbose) {
                         echo "Skipping course $courseid because missing\n";
@@ -342,12 +346,14 @@ class block_course_notification extends block_list {
      * @param block_course_notification $instance the block instance
      * @param bool $verbose 
      * @param array $resticttousers an array of user ids. If not empty, will only process those users.
-     * @param array $options process options such as 'dryrun' or 'markonly', or 'verbose'.
+     * @param array $options process options such as 'dryrun' or 'markonly', or 'verbose', 'forcesitedisabled'.
      */
     public static function process_course_notification($course, block_course_notification $instance, $restricttousers = [], $options = []) {
         global $CFG, $DB;
 
         $verbose = @$options['verbose'];
+        $forcedisabledinstances = @$options['forcedisabledinstances'];
+        $config = get_config('block_course_notification');
 
         $coursecontext = context_course::instance($course->id);
         $ignoredusers = get_users_by_capability($coursecontext, 'block/course_notification:excludefromnotification', 'u.id');
@@ -358,9 +364,9 @@ class block_course_notification extends block_list {
 
         // Do never notify hidden courses.
         if (!$course->visible) {
-            debug_trace("\tSkipping hiddencourse $course->id\n", TRACE_DEBUG);
+            debug_trace("\tSkipping hiddencourse [$course->shortname] ($course->id)\n", TRACE_DEBUG);
             if ($verbose) {
-                echo "Skipping hiddencourse $course->id\n";
+                echo "Skipping hiddencourse [$course->shortname] ($course->id)\n";
             }
             return;
         }
@@ -375,15 +381,23 @@ class block_course_notification extends block_list {
             return;
         }
 
-        debug_trace("\tStarting course notifications for [$course->shortname] ".$course->fullname, TRACE_DEBUG);
+        debug_trace("\tStarting course notifications for [$course->shortname] ($course->id)".$course->fullname, TRACE_DEBUG);
         if ($verbose) {
-            echo "Starting course notifications for [$course->shortname] ".$course->fullname."\n";
+            echo "Starting course notifications for [$course->shortname]  ($course->id)".$course->fullname."\n";
         }
 
         if (empty($instance->config)) {
             debug_trace("Block not configured", TRACE_DEBUG);
             mtrace("Block not configured\n");
             return;
+        }
+
+        if (empty($instance->config->enable)) {
+            if (empty($forcedisabledinstances)) {
+                debug_trace("Instance {$instance->instance->id} is disabled by local config in [$course->shortname]  ($course->id)", TRACE_DEBUG);
+                mtrace("Instance {$instance->instance->id} is disabled by local config in [$course->shortname]  ($course->id)\n");
+                return;
+            }
         }
 
         $globalcounttosend = 0;
@@ -672,7 +686,7 @@ class block_course_notification extends block_list {
         debug_trace("Finished !", TRACE_DEBUG);
     }
 
-    protected static function add($target, $source) {
+    public static function add($target, $source) {
         foreach($source as $s) {
             if (!in_array($s, $target)) {
                 $target[] = $s;

@@ -34,18 +34,21 @@ $string['courseend'] = 'A la fin de la formation';
 $string['doprocess'] = 'Envoyer les notifications';
 $string['enabled'] = 'Activé';
 $string['disabled'] = 'Désactivé';
+$string['instanceisdisabled'] = 'Ce bloc n\'est pas actif et n\'enverra pas les notifications';
 $string['firstassign'] = 'Inscription';
+$string['general'] = 'Général';
 $string['oneweekfromstart'] = 'Une semaine du début';
 $string['twoweeksfromstart'] = 'Deux semaines du début';
 $string['oneweeknearend'] = 'Une semaine de la fin';
 $string['twoweeksnearend'] = 'Deux semaines de la fin';
 $string['fivedaystoend'] = '5 jours de la fin';
+$string['tosend'] = 'A émettre';
 $string['threedaystoend'] = '3 jours de la fin';
 $string['onedaytoend'] = '1 jour de la fin';
 $string['inactive'] = 'Inactivité';
 $string['status'] = 'Etat des notifications';
 $string['pending'] = 'Non émis';
-$string['sent'] = 'Emis';
+$string['sent'] = 'Emis le ';
 $string['disabled'] = 'Désactivé';
 $string['errorinstancenotfound'] = 'L\'instance de bloc n\'a pas pu être trouvée.';
 $string['inactivitydelayindays'] = 'Longueur de l\'inactivité';
@@ -72,6 +75,8 @@ $string['message'] = 'Message';
 $string['messagestosendhelp'] = 'Définir ces textes remplace les textes (sujet et objet) par défaut.';
 $string['messagestosend'] = 'Contenu des messages';
 $string['emissionreport'] = 'Rapport d\'émission des notifications';
+$string['showemptylines'] = 'Afficher les lignes vides';
+$string['hideemptylines'] = 'Cacher les lignes vides';
 
 $string['unset'] = '--  Aucun --';
 $string['oneday'] = 'Un jour';
@@ -131,6 +136,9 @@ $string['configsiteenabled'] = 'Si désactivé, aucun bloc de notification n\'é
 $string['process'] = 'Lancer les notifications';
 $string['reset'] = 'Réinitialiser les états';
 $string['mailoverrides'] = 'Surcharges locales des messages';
+
+$string['configbulklimit_desc'] = 'Chaque processus (cron ou cli) ne pourra pas envoyer plus que nombre de notification
+par exécution. Laisser à 0 pour lever les limitations.';
 
 $string['mailoverrides_help'] = 'Ces réglages remplacent les messages standard réglés dans l\'administration centrale.
 Vous pouvez y injecter les mêmes variables dynamiques avec les balises : {{WWWROOT}}, {{COURSE}}, {{COURSEID}}, {{SITENAME}},
