@@ -141,7 +141,7 @@ $string['configbulklimit_desc'] = 'Chaque processus (cron ou cli) ne pourra pas 
 par exécution. Laisser à 0 pour lever les limitations.';
 
 $string['mailoverrides_help'] = 'Ces réglages remplacent les messages standard réglés dans l\'administration centrale.
-Vous pouvez y injecter les mêmes variables dynamiques avec les balises : {{WWWROOT}}, {{COURSE}}, {{COURSEID}}, {{SITENAME}},
+Vous pouvez y injecter les mêmes variables dynamiques avec les balises : {{WWWROOT}}, {{COURSE}}, {{COURSESHORT}}, {{COURSEID}}, {{SITENAME}},
 {{USERNAME}}, {{FIRSTNAME}}, {{LASTNAME}}, {{CONTACTURL}}';
 
 $string['completionadvice'] = 'Active l\'envoi de message sur chaque événement d\'achèvement de ce cours.';

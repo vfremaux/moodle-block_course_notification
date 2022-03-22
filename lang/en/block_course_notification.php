@@ -155,7 +155,7 @@ $string['configbulklimit_desc'] = 'Each process (cron or cli) will only be able 
 per turn, to avoid big bulks of outgoing mail. Leave to 0 for unlimited.';
 
 $string['mailoverrides_help'] = 'these settings will override mail content for each event.
-You may use the same placeholders you use in central configuration: {{WWWROOT}}, {{COURSE}}, {{COURSEID}}, {{SITENAME}},
+You may use the same placeholders you use in central configuration: {{WWWROOT}}, {{COURSE}}, {{COURSESHORT}}, {{COURSEID}}, {{SITENAME}},
 {{USERNAME}}, {{FIRSTNAME}}, {{LASTNAME}}, {{CONTACTURL}}';
 
 include(__DIR__.'/mailtemplates.php');

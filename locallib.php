@@ -441,7 +441,9 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
             u.suspended,
             u.lang,
             MAX(l.timecreated) as lastlog,
-            MIN(ue.timestart) as earlyassign
+            MIN(ue.timestart) as earlyassign,
+            MAX(ue.timeend) as lateend,
+            MIN(ue.timeend) as earlyend
         FROM
             {user} u
         JOIN
@@ -488,6 +490,13 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
                 // rule A.
                 $statuslog .= $course->id.' inactive -'.$u->username.' trapped rule A : course is completed'."\n";
                 // Do not notify inactivity to completed users.
+                continue;
+            }
+
+            if ($u->lateend && (time() > $u->lateend + 2 * DAYSECS) && ($u->earlyend > 0)) {
+                // rule A1.
+                $statuslog .= $course->id.' inactive -'.$u->username.' trapped rule A1 : enrols are over'."\n";
+                // Do not notify inactivity to users out of enrol. User should not have any active infinite enrolment (null end date).
                 continue;
             }
 
