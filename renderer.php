@@ -43,4 +43,20 @@ class block_course_notification_renderer extends plugin_renderer_base  {
 
         return $this->output->render_from_template('block_course_notification/coldfeedback', $template);
     }
+
+    public function blankline_filter($blockid, $courseid) {
+        global $OUTPUT;
+
+        $filterbl = optional_param('filterbl', false, PARAM_BOOL);
+
+        if ($filterbl) {
+            $label = get_string('showemptylines', 'block_course_notification');
+            $params = ['blockid' => $blockid, 'id' => $courseid];
+        } else {
+            $label = get_string('hideemptylines', 'block_course_notification');
+            $params = ['blockid' => $blockid, 'id' => $courseid, 'filterbl' => 1];
+        }
+        $url = new moodle_url('/blocks/course_notification/report.php', $params);
+        return $OUTPUT->single_button($url, $label);
+    }
 }

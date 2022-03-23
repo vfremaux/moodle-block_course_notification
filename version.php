@@ -24,13 +24,12 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2021030800;        // The current plugin version (Date: YYYYMMDDXX)
+$plugin->version   = 2022021800;        // The current plugin version (Date: YYYYMMDDXX)
 $plugin->requires  = 2020061500;        // Requires this Moodle version.
 $plugin->component = 'block_course_notification'; // Full name of the plugin (used for diagnostics).
-$plugin->release = '3.9.0 (Build 2021030800)';
+$plugin->release = '3.9.0 (Build 2022021800)';
 $plugin->maturity = MATURITY_RC;
-$plugin->supports = [38,39];
 
 // Non moodle attributes.
-$plugin->codeincrement = '3.9.0005';
+$plugin->codeincrement = '3.9.0007';
 $plugin->privacy = 'dualrelease';

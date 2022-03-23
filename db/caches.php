@@ -15,25 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Definition of block course notification.
- *
- * @package   block_course_notification
- * @category  task
- * @copyright 2014 Dan Poltawski <dan@moodle.com>
+ * @package   local_courseindex
+ * @category  local
+ * @copyright 2006 Valery Fremaux
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$tasks = array(
-    array(
-        'classname' => 'block_course_notification\task\notification_task',
-        'blocking' => 0,
-        'minute' => '0',
-        'hour' => '22',
-        'day' => '*',
-        'month' => '*',
-        'dayofweek' => '*',
-        'disabled' => 1,
+$definitions = array(
+    'pro' => array(
+        'mode' => cache_store::MODE_APPLICATION
     )
 );
