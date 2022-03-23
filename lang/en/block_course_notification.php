@@ -64,6 +64,8 @@ $string['message'] = 'Notification message';
 $string['messagestosendhelp'] = 'Setting up these texts will override the default message defined in the plugin\'s stringset';
 $string['messagestosend'] = 'Messages content';
 $string['emissionreport'] = 'Notification emission report';
+$string['showemptylines'] = 'Show empty lines';
+$string['hideemptylines'] = 'Hide empty lines';
 
 $string['unset'] = '--  Not set --';
 $string['oneday'] = 'One day';
@@ -153,7 +155,7 @@ $string['configbulklimit_desc'] = 'Each process (cron or cli) will only be able 
 per turn, to avoid big bulks of outgoing mail. Leave to 0 for unlimited.';
 
 $string['mailoverrides_help'] = 'these settings will override mail content for each event.
-You may use the same placeholders you use in central configuration: {{WWWROOT}}, {{COURSE}}, {{COURSEID}}, {{SITENAME}},
+You may use the same placeholders you use in central configuration: {{WWWROOT}}, {{COURSE}}, {{COURSESHORT}}, {{COURSEID}}, {{SITENAME}},
 {{USERNAME}}, {{FIRSTNAME}}, {{LASTNAME}}, {{CONTACTURL}}';
 
 include(__DIR__.'/mailtemplates.php');

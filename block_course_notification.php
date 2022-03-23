@@ -321,9 +321,9 @@ class block_course_notification extends block_list {
                 $instance = block_instance('course_notification', $instancerec);
 
                 // Parent context is course context.
-                $parentcontext = $DB->get_record('context', ['id' => $instance->parentcontextid]);
+                $parentcontext = $DB->get_record('context', ['id' => $instancerec->parentcontextid]);
                 $courseid = $parentcontext->instanceid;
-                mtrace("\nCourse notifications processing instance {$instance->id} in course : {$courseid}");
+                mtrace("\nCourse notifications processing instance {$instancerec->id} in course : {$courseid}");
                 if (!$course = $DB->get_record('course', array('id' => $courseid))) {
                     if ($verbose) {
                         echo "Skipping course $courseid because missing\n";
@@ -392,7 +392,7 @@ class block_course_notification extends block_list {
             return;
         }
 
-        if (empty($instance->config->enabled)) {
+        if (empty($instance->config->enable)) {
             if (empty($forcedisabledinstances)) {
                 debug_trace("Instance {$instance->instance->id} is disabled by local config in [$course->shortname]  ($course->id)", TRACE_DEBUG);
                 mtrace("Instance {$instance->instance->id} is disabled by local config in [$course->shortname]  ($course->id)\n");

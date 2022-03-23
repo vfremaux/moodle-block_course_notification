@@ -343,6 +343,14 @@ function bcn_get_end_event_users(&$blockinstance, &$course, $event, $ignoreduser
                 // End is later.
                 continue;
             }
+
+            if ($enddate < ($now - DAYSECS * 15)) {
+                // rule E.
+                $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule E : end date is too far in the past. Notification is not consistant.'."\n";
+                // End is later.
+                continue;
+            }
+
             $statuslog .= $course->id.' '.$event.' -'.$pot->username.' Accepted for notification'."\n";
             $result[$pot->id] = $pot;
         }
@@ -433,7 +441,9 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
             u.suspended,
             u.lang,
             MAX(l.timecreated) as lastlog,
-            MIN(ue.timestart) as earlyassign
+            MIN(ue.timestart) as earlyassign,
+            MAX(ue.timeend) as lateend,
+            MIN(ue.timeend) as earlyend
         FROM
             {user} u
         JOIN
@@ -480,6 +490,13 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
                 // rule A.
                 $statuslog .= $course->id.' inactive -'.$u->username.' trapped rule A : course is completed'."\n";
                 // Do not notify inactivity to completed users.
+                continue;
+            }
+
+            if ($u->lateend && (time() > $u->lateend + 2 * DAYSECS) && ($u->earlyend > 0)) {
+                // rule A1.
+                $statuslog .= $course->id.' inactive -'.$u->username.' trapped rule A1 : enrols are over'."\n";
+                // Do not notify inactivity to users out of enrol. User should not have any active infinite enrolment (null end date).
                 continue;
             }
 

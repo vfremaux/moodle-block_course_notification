@@ -517,7 +517,7 @@ Bonjour {{FIRSTNAME}} {{LASTNAME}},
 Vous n\'avez pas eu d\'activité dans le cours "{{COURSE}}" sur {{SITENAME}}
 depuis plus de {{DATA_0}} jours. Peut être vos enseignants attendent-ils certains travaux
 ou une participation de votre part dans cet espace de travail. Il serait peut être 
-utile d\'aller voir dans un déali raisonnable quels engagements vous ont été donnés.
+utile d\'aller voir dans un délai raisonnable quels engagements vous ont été donnés.
 
 Pour rappel, votre identifiant de connexion est : {{USERNAME}}
 
@@ -532,7 +532,7 @@ $string['inactive_mail_html'] = '
 <p>Vous n\'avez pas eu d\'activité dans le cours "{{COURSE}}" sur {{SITENAME}}
 depuis plus de {{DATA_0}} jours. Peut être vos enseignants attendent-ils certains travaux
 ou une participation de votre part dans cet espace de travail. Il serait peut être 
-utile d\'aller voir dans un déali raisonnable quels engagements vous ont été donnés.</p>
+utile d\'aller voir dans un délai raisonnable quels engagements vous ont été donnés.</p>
 
 <p><a href="{{WWWROOT}}/login/forgot_password.php">Récupération du mot de passe</a></p>
 
