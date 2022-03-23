@@ -34,7 +34,7 @@ require_once($CFG->libdir . '/completionlib.php');
  * @param array $ignoreusers array of user ids to be ignored
  * @return an array of users to be notified.
  */
-function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcall', $ignoredusers = []) {
+function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcall', $ignoredusers = [], $options = []) {
     global $DB;
 
     $now = time();
@@ -76,8 +76,11 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
         }
     }
 
+    debug_trace("Getting start events", TRACE_DEBUG);
+
     if ($course->startdate > $now) {
         // course not even started yet.
+        debug_trace("Course {$course->id} - $event : Course has not yet started", TRACE_DEBUG_FINE);
         return [];
     }
 
@@ -85,6 +88,7 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
         if ($course->startdate > $now - $eventcourseoffset) {
             // There cannot be any notified users for first or second call before sufficient time has passed.
             // echo "Startdate too late for offset $eventcourseoffset ";
+            debug_trace("Course {$course->id} - $event : starts foo far ahead", TRACE_DEBUG_FINE);
             return [];
         }
     }
@@ -110,8 +114,9 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
             u.deleted,
             u.suspended,
             u.lang,
-            MIN(ue.timestart),
-            MAX(ue.timeend)
+            MIN(ue.timestart) as timestart,
+            MAX(ue.timeend) as timeend,
+            MIN(ue.timeend) as earlyesttimeend
        FROM
             {user} u,
             {enrol} e,
@@ -130,38 +135,67 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
     ";
     $params = [$course->id];
     $potentials = $DB->get_records_sql($sql, $params);
+    $counter = count($potentials);
+    $completion = new \completion_info($course);
 
     $result = [];
     if (!empty($potentials)) {
+        $statuslog = '';
         foreach ($potentials as $pot) {
+
+            if ($completion->is_course_complete($pot->id)) {
+                // rule A1.
+                $statuslog .= $course->id.' inactive -'.$pot->username.' trapped rule A1 : course is completed'."\n";
+                // Do not notify start to already completed users.
+                // Note A1 and A2 rules should be redundant....
+                continue;
+            }
+
             $ula = $DB->get_record('user_lastaccess', ['courseid' => $course->id, 'userid' => $pot->id]);
             if (!empty($ula) && $ula->timeaccess > 0) {
+                // rule A2.
+                $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule A2 : Already accessed course'."\n";
                 // User has accessed the course.
                  continue;
             }
 
             $bcn = $DB->get_record('block_course_notification', ['courseid' => $course->id, 'userid' => $pot->id]);
             if (!empty($bcn) && $bcn->$eventfield) {
+                // rule B.
+                $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule B : Already sent'."\n";
                 // Event already sent.
                 continue;
             }
 
             if (!empty($bcn) && $event == 'firstcall' && $bcn->secondcallnotified) {
+                // rule C.
+                $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule C : Got second call'."\n";
                 // First call can never follow a second call.
                 continue;
             }
 
-            if (!empty($pot->timeend) && ($pot->timeend < $course->startdate)) {
+            // earlyesttimeend detects (==0) there is an inifinite enrol active in the enrol list for the user
+            // so the user is still enrolled in spite of any other closed enrols.
+            if (!empty($pot->timeend) && ($pot->timeend < $course->startdate) && ($pot->earlyesttimeend > 0)) {
+                // rule D.
+                $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule D : enrol is over'."\n";
                 // This enrol is over.
                 continue;
             }
 
             if (max($course->startdate, $pot->timestart) < $startrange ||
                     (max($course->startdate, $pot->timestart) >= $endrange)) {
+                // rule E.
+                $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule E : Out of concerned time range'."\n";
                 // Not concerned because not in notification time range.
                 continue;
             }
+            $statuslog .= $course->id.' '.$event.' -'.$pot->username.' Accepted for notification'."\n";
             $result[$pot->id] = $pot;
+        }
+        debug_trace($statuslog, TRACE_DEBUG_FINE);
+        if (@$options['verbose'] == 2) {
+            mtrace($statuslog);
         }
     }
 
@@ -176,7 +210,7 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
  * @param array $ignoreusers array of user ids to be ignored
  * @return an array of users to be notified.
  */
-function bcn_get_end_event_users(&$blockinstance, &$course, $event, $ignoredusers) {
+function bcn_get_end_event_users(&$blockinstance, &$course, $event, $ignoredusers, $options = []) {
     global $DB;
 
     if (is_object($course)) {
@@ -242,8 +276,9 @@ function bcn_get_end_event_users(&$blockinstance, &$course, $event, $ignoreduser
             u.mailformat,
             u.deleted,
             u.suspended,
-            MIN(ue.timestart),
-            MAX(ue.timeend)
+            MIN(ue.timestart) as timestart,
+            MAX(ue.timeend) as timeend,
+            MIN(ue.timeend) as earlyesttimeend
         FROM
             {user} u,
             {enrol} e,
@@ -262,25 +297,33 @@ function bcn_get_end_event_users(&$blockinstance, &$course, $event, $ignoreduser
     ";
 
     $potentials = $DB->get_records_sql($sql, [$course->id]);
-
     $completion = new \completion_info($course);
 
     $result = [];
     if (!empty($potentials)) {
+        $statuslog = '';
         foreach ($potentials as $pot) {
             if ($completion->is_course_complete($pot->id)) {
+                // rule A.
+                $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule A : course is completed'."\n";
                 // Do not notify end to completed users.
                 continue;
             }
 
             $bcn = $DB->get_record('block_course_notification', ['courseid' => $course->id, 'userid' => $pot->id]);
             if (!empty($bcn) && $bcn->$eventfield) {
+                // rule B.
+                $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule B : already sent'."\n";
                 // Event was already sent.
                 continue;
             }
 
-            if (empty($pot->timeend) && empty($course->enddate)) {
-                // No limit fo this course nor enrolment.
+            // earlyesttimeend detects (==0) there is an infinite enrol active in the enrol list for the user
+            // so the user is still enrolled in spite of any other closed enrols.
+            if (empty($pot->timeend) && empty($course->enddate) || ($pot->earlyesttimeend == 0)) {
+                // rule C.
+                $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule C : infinite enrol'."\n";
+                // No limit for this course nor enrolment.
                 continue;
             }
 
@@ -295,11 +338,25 @@ function bcn_get_end_event_users(&$blockinstance, &$course, $event, $ignoreduser
             }
             // echo "$event : ".userdate($enddate)." > ".userdate($now + $eventendcourseoffset);
             if ($enddate > ($now + $eventendcourseoffset)) {
+                // rule D.
+                $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule D : end date is too far ahead'."\n";
                 // End is later.
-                // echo "skip it <br/>";
                 continue;
             }
+
+            if ($enddate < ($now - DAYSECS * 15)) {
+                // rule E.
+                $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule E : end date is too far in the past. Notification is not consistant.'."\n";
+                // End is later.
+                continue;
+            }
+
+            $statuslog .= $course->id.' '.$event.' -'.$pot->username.' Accepted for notification'."\n";
             $result[$pot->id] = $pot;
+        }
+        debug_trace($statuslog, TRACE_DEBUG_FINE);
+        if (@$options['verbose'] == 2) {
+            mtrace($statuslog);
         }
     }
 
@@ -325,7 +382,7 @@ function bcn_get_event_users($courseid, $event) {
 * @param array $ignoreusers array of user ids to be ignored
 *
 */
-function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []) {
+function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = [], $options = []) {
     global $CFG, $DB;
 
     if (is_object($course)) {
@@ -334,17 +391,31 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
         $courseid = $course;
         $course = $DB->get_record('course', ['id' => $courseid]);
         if (!$course) {
-            throw new Exception("Missing course {$courseid}");
+            if ($CFG->debug == DEBUG_DEVELOPER) {
+                // Less robust in developer mode.
+                throw new Exception("Missing course {$courseid}");
+            }
+            mtrace("Missing course {$courseid}");
+            return [];
         }
     }
     $coursecontext = context_course::instance($course->id);
 
     $fromtime = time() - (DAYSECS * $fromtimerangeindays);
 
-    // if course is too recent for the required inactivity time, do not notify anyone.
+    // If course is too recent for the required inactivity time, do not notify anyone.
     if ($course->startdate > $fromtime) {
+        mtrace("Inactivity : Course not yet started {$courseid}");
         return [];
     }
+
+    // Course is closed.
+    if (!empty($course->enddate) && ($course->enddate < time())) {
+        mtrace("Inactivity : Course is closed {$courseid}");
+        return [];
+    }
+
+    // Course visibility status is already handled by the course loop level.
 
     $ignoreclause = '';
     if (!empty($ignoredusers)) {
@@ -370,7 +441,9 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
             u.suspended,
             u.lang,
             MAX(l.timecreated) as lastlog,
-            MIN(ue.timestart) as earlyassign
+            MIN(ue.timestart) as earlyassign,
+            MAX(ue.timeend) as lateend,
+            MIN(ue.timeend) as earlyend
         FROM
             {user} u
         JOIN
@@ -386,10 +459,11 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
         ON
             l.courseid = e.courseid
         WHERE
-            l.userid = u.id AND
             u.deleted = 0 AND
             u.suspended = 0 AND
-            e.courseid = l.id AND
+            l.userid = u.id AND
+            e.courseid = ? AND
+            e.courseid = l.courseid AND
             ue.status = 0 AND
             e.status = 0
             $ignoreclause
@@ -403,36 +477,87 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
             firstname
         ";
 
-    $params = [$coursecontext->id, $courseid, $fromtime, $fromtime];
+    $params = [$courseid, $fromtime, $fromtime];
     $candidates = $DB->get_records_sql($sql, $params);
+    $completion = new \completion_info($course);
 
     $users = [];
     if (!empty($candidates)) {
+        $statuslog = '';
         foreach ($candidates as $u) {
+
+            if ($completion->is_course_complete($u->id)) {
+                // rule A.
+                $statuslog .= $course->id.' inactive -'.$u->username.' trapped rule A : course is completed'."\n";
+                // Do not notify inactivity to completed users.
+                continue;
+            }
+
+            if ($u->lateend && (time() > $u->lateend + 2 * DAYSECS) && ($u->earlyend > 0)) {
+                // rule A1.
+                $statuslog .= $course->id.' inactive -'.$u->username.' trapped rule A1 : enrols are over'."\n";
+                // Do not notify inactivity to users out of enrol. User should not have any active infinite enrolment (null end date).
+                continue;
+            }
+
             $params = ['userid' => $u->id, 'courseid' => $courseid];
             if ($bcn = $DB->get_record('block_course_notification', $params)) {
+                if (!empty($bcn->inactivenotedate) && ((time() - DAYSECS + 30) <= $bcn->inactivenotedate)) {
+                    // rule B.
+                    // there is already an inactive signal sent in less than past 24 hours. Do not send twice per 24 day.
+                    $statuslog .= $course->id.' inactive -'.$u->username.' trapped rule B : already sent in previous 24 hours'."\n";
+                    continue;
+                }
+
                 if ($bcn->secondcallnotedate) {
                     if ($fromtime <= $bcn->secondcallnotedate) {
+                        // rule C.
+                        // Second call has been sent and send date is recent.
+                        $statuslog .= $course->id.' inactive -'.$u->username.' trapped rule C : recently called (2nd)'."\n";
                         continue;
                     }
                 } else if ($bcn->firstcallnotedate) {
                     if ($fromtime <= $bcn->firstcallnotedate) {
+                        // rule D.
+                        // First call has been sent and send date is recent.
+                        $statuslog .= $course->id.' inactive -'.$u->username.' trapped rule D : recently called (1st)'."\n";
                         continue;
                     }
                 }
             }
-            $users[] = $u;
+            $users[$u->id] = $u;
+        }
+        debug_trace($statuslog, TRACE_DEBUG_FINE);
+        if (@$options['verbose'] == 2) {
+            mtrace($statuslog);
         }
     }
 
     return $users;
 }
 
+/**
+ * @param block_course_notification $blockinstance the block instance (block object, @see block_instance)
+ * @param objectref &$course the course
+ * @param array $users an array of users to notify
+ * @param string $eventtype the type of the event
+ * @param string $data an array of additional metadata expected by the eventtype to feed the message placeholders
+ * @param bool $allowiterate 
+ */
+function bcn_notify_users(block_course_notification $blockinstance, &$course, $users, $eventtype, $data = null, $allowiterate = false, $options = []) {
+    static $bulklimiter = 0;
 
-function bcn_notify_users(&$blockinstance, &$course, $users, $eventtype, $data = null, $allowiterate = false, $verbose = false) {
+    $config = get_config('block_course_notification');
+
     if (!empty($users)) {
         foreach ($users as $u) {
-            bcn_notify_user($blockinstance, $course, $u, $eventtype, $data, $allowiterate, $verbose);
+            if (!empty($config->bulklimit) && $bulklimiter >= $config->bulklimit) {
+                // Stop sending this turn.
+                echo "Stop notifying because of bulk limit of $config->bulklimit\n";
+                break;
+            }
+            bcn_notify_user($blockinstance, $course, $u, $eventtype, $data, $allowiterate, $options);
+            $bulklimiter++;
         }
     }
 }
@@ -445,8 +570,12 @@ function bcn_notify_users(&$blockinstance, &$course, $users, $eventtype, $data =
 * @param array $data additional data to display in notifications as DATA_<N> tags
 * @param boolean $allowiterate if true, the same notification can be sent several time, counting iterations
 */
-function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = null, $allowiterate = false, $verbose = false) {
+function bcn_notify_user(block_course_notification $blockinstance, &$course, &$user, $eventtype, $data = null, $allowiterate = false, $options = []) {
     global $CFG, $SITE, $DB;
+
+    $verbose = @$options['verbose'];
+    $dryrun = @$options['dryrun'];
+    $markonly = @$options['markonly'];
 
     debug_trace("Notify user $user->username with $eventtype ", TRACE_DEBUG);
 
@@ -491,7 +620,7 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
     $notification_html = format_text($notification_html, FORMAT_HTML, $options);
     // $notification = format_text_email($notification, FORMAT_HTML, $options);
 
-    if ($CFG->debugsmtp || $verbose) {
+    if ($CFG->debugsmtp) {
         mtrace("\tSending {$eventtype} Text Mail Notification to " . fullname($user) . "\n####\n".$notification. "\n####");
         mtrace("\tSending {$eventtype} Mail Notification to " . fullname($user) . "\n####\n".$notification_html. "\n####");
     }
@@ -507,7 +636,11 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
         }
     }
 
-    $success = email_to_user($user, null, $subject, $notification, $notification_html, '', '', false);
+    if (!$markonly && !$dryrun) {
+        $success = email_to_user($user, null, $subject, $notification, $notification_html, '', '', false);
+    } else {
+        $success = true;
+    }
 
     if ($success) {
         $context = context_course::instance($course->id);
@@ -520,9 +653,18 @@ function bcn_notify_user(&$blockinstance, &$course, &$user, $eventtype, $data = 
         $event = $eventclass::create($eventparams);
         $event->trigger();
 
-        bcn_mark_event($eventtype, $user->id, $course->id);
+        if (!$dryrun) {
+            bcn_mark_event($eventtype, $user->id, $course->id);
+        }
+
         if ($CFG->debugsmtp || $verbose) {
-            mtrace("\tSent to user {$user->id} for event 'notify $eventtype' for course {$course->id} ");
+            if ($dryrun) {
+                mtrace("\tDry Run mode : Should send to user {$user->id} for event 'notify $eventtype' for course {$course->id} ");
+            } else if ($markonly) {
+                mtrace("\tMark Only mode : Marked user (BUT NOT SEND) {$user->id} for event 'notify $eventtype' for course {$course->id} ");
+            } else {
+                mtrace("\tSent to user {$user->id} for event 'notify $eventtype' for course {$course->id} ");
+            }
         }
     } else {
         debug_trace("Failed sending mail to {$user->username} ", TRACE_DEBUG);

@@ -26,24 +26,25 @@
 
 /**
  * useful templating functions from an older project of mine, hacked for Moodle
- * @param string $template the template's file name from $CFG->sitedir
+ * @param string $template the template name as event name
  * @param array $infomap a hash containing pairs of parm => data to replace in template
- * @param string $module themodule where to find the template tpl files
- * @param text $alternatetemplate when provided, this content will override the file hardlinked template. 
+ * @param string $blockconfig the current block instance config that may propose local message overrides
  * @return a fully resolved template where all data has been injected
  */
 function bcn_compile_mail_template($template, $infomap, $blockconfig, $lang = null) {
-    global $USER;
+    global $USER, $CFG;
 
     if (!$lang) {
-        $lang = $USER->lang;
+        // Take platform preference lang.
+        $lang = $CFG->lang;
     }
 
     // Extract eventtype and check overrides, but not for manager mails.
     $notification = '';
-    if (strpos($template, 'manager') === false) {
-        $eventtype = str_replace('_mail_raw', '', str_replace('_mail_html', '', $template));
+    $eventtype = str_replace('_mail_raw', '', str_replace('_mail_html', '', $template));
 
+    if (strpos($template, 'manager') === false) {
+        // Not for managers.
         if (!is_null($blockconfig)) {
             $ovlkey = $eventtype.'_ovl';
             if (!empty($blockconfig->$ovlkey['text'])) {
@@ -63,6 +64,7 @@ function bcn_compile_mail_template($template, $infomap, $blockconfig, $lang = nu
         $notification = ''.$str;
     }
 
+    // Replacing all placeholders.
     foreach ($infomap as $akey => $avalue) {
         $notification = str_replace('{{'.$akey.'}}', $avalue, $notification);
     }

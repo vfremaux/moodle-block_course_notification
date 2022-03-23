@@ -36,21 +36,24 @@ $string['incourse'] = 'In course';
 $string['courseend'] = 'At course end';
 $string['completed'] = 'On course completion';
 $string['disabled'] = 'Disabled';
+$string['instanceisdisabled'] = 'Instance is disabled to send';
 $string['doprocess'] = 'Send the notifications';
 $string['enabled'] = 'Enabled';
 $string['errorinstancenotfound'] = 'Block instance does not exist';
 $string['firstassign'] = 'First invite';
 $string['fivedaystoend'] = 'Five days to end';
+$string['general'] = 'General';
 $string['inactive'] = 'Inactivity';
 $string['onedaytoend'] = 'One day to end';
 $string['oneweekfromstart'] = 'One week miss (start)';
 $string['oneweeknearend'] = 'One week enrol end';
 $string['pending'] = 'Pending';
 $string['pluginname'] = 'Course notifications';
-$string['sent'] = 'Sent';
+$string['sent'] = 'Sent on ';
 $string['status'] = 'User states';
 $string['task_notification'] = 'Notification emission task';
 $string['threedaystoend'] = 'three days to end';
+$string['tosend'] = 'To be sent';
 $string['twoweeksfromstart'] = 'Two weeks miss (start)';
 $string['twoweeksnearend'] = 'Two weeks enrol end';
 $string['nocoldfeedbackmodules'] = 'No Questionnaire nor Feedback modules in this course';
@@ -61,6 +64,8 @@ $string['message'] = 'Notification message';
 $string['messagestosendhelp'] = 'Setting up these texts will override the default message defined in the plugin\'s stringset';
 $string['messagestosend'] = 'Messages content';
 $string['emissionreport'] = 'Notification emission report';
+$string['showemptylines'] = 'Show empty lines';
+$string['hideemptylines'] = 'Hide empty lines';
 
 $string['unset'] = '--  Not set --';
 $string['oneday'] = 'One day';
@@ -77,8 +82,9 @@ $string['inactive_html'] = ''; // for mail template customisation. Use local ove
 $string['nearend_html'] = ''; // for mail template customisation. Use local overrides to change text
 $string['secondcall_html'] = ''; // for mail template customisation. Use local overrides to change text
 
-$string['inactivitydelay'] = 'Inactive delay (days)';
+$string['inactivitydelayindays'] = 'Inactivity length (days)';
 $string['inactivityfrequency'] = 'Inactive notification frequ.';
+
 $string['configfirstassign'] = 'Notify on assign';
 $string['configfirstcall'] = 'First call after assign';
 $string['configsecondcall'] = 'Second call after assign';
@@ -93,6 +99,7 @@ $string['configcourseeventsreminders'] = 'Event reminders';
 $string['configinactive'] = 'Inactivity reminders';
 $string['configclosed'] = 'When access closes';
 $string['configcompleted'] = 'When course is completed';
+$string['configbulklimit'] = 'Max number of notifications per process';
 
 $string['configfirstassignobject'] = 'Notify on assign (object)';
 $string['configfirstcallobject'] = 'First call after assign (object)';
@@ -121,6 +128,7 @@ $string['configsupporturl'] = 'An URL the user can use to rebind contact with th
 $string['configcoursenotificationenablecron'] = 'Enable cron for all course notifications.';
 $string['course_notifications_enable_cron'] = 'Cron enable';
 $string['supporturl'] = 'Support/contact URL';
+
 $string['configdefaultfirstassign'] = 'First assign signal (default state)';
 $string['configdefaultfirstcall'] = 'First call signal (default state)';
 $string['configdefaultsecondcall'] = 'Second call signal (default state)';
@@ -133,17 +141,22 @@ $string['configdefaultcompleted'] = 'Course completed message (default state)';
 $string['configdefaultclosed'] = 'Closed access signal (default state)';
 $string['configdefaultinactive'] = 'Inactive signal (default state)';
 $string['configdefaultinactivitydelay'] = 'Default inactive delay period (in days)';
-$string['configinactivitydelayindays'] = 'Inactivity delay (in days)';
+$string['configdefaultinactivityfrequency'] = 'Default inactive delay sending frequency (in days)';
+
 $string['processnotifications'] = 'Process notifications for the course {$a}';
 $string['siteenabled'] = 'Enabled (site level)';
 $string['configsiteenabled'] = 'If enabled, all notification blocks in Moodle will be active.';
 $string['process'] = 'Process notifications';
 $string['reset'] = 'Reset events';
 $string['mailoverrides'] = 'Mail message overrides';
-$string['mailoverrides_help'] = 'these settings will override mail content for each event.
-You may use the same placeholders you use in central configuration: {{WWWROOT}}, {{COURSE}}, {{COURSEID}}, {{SITENAME}},
-{{USERNAME}}, {{FIRSTNAME}}, {{LASTNAME}}, {{CONTACTURL}}';
 $string['completionadvice'] = 'Enables message sending on each completion event';
+
+$string['configbulklimit_desc'] = 'Each process (cron or cli) will only be able to send up to this amount of notifications
+per turn, to avoid big bulks of outgoing mail. Leave to 0 for unlimited.';
+
+$string['mailoverrides_help'] = 'these settings will override mail content for each event.
+You may use the same placeholders you use in central configuration: {{WWWROOT}}, {{COURSE}}, {{COURSESHORT}}, {{COURSEID}}, {{SITENAME}},
+{{USERNAME}}, {{FIRSTNAME}}, {{LASTNAME}}, {{CONTACTURL}}';
 
 include(__DIR__.'/mailtemplates.php');
 include(__DIR__.'/pro_additional_strings.php');

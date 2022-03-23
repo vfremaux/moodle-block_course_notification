@@ -8,6 +8,9 @@ and improvement effort.</p>
 <p>Please contact one of our distributors to get "Pro" version support.</p>
 <p><a href="http://www.mylearningfactory.com/index.php/documentation/Distributeurs?lang=en_utf8">MyLF Distributors</a></p>';
 
+// Caches.
+$string['cachedef_pro'] = 'Caches some pro related options and data';
+
 require_once($CFG->dirroot.'/blocks/course_notification/lib.php');
 if ('pro' == block_course_notification_supports_feature()) {
     include($CFG->dirroot.'/blocks/course_notification/pro/lang/en/pro.php');
