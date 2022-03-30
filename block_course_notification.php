@@ -30,6 +30,11 @@ if (!function_exists('debug_trace')) {
     function debug_trace() {
         // Fake this function if not existing in the target moodle environment.
     }
+    define('TRACE_ERRORS', 1); // Errors should be always traced when trace is on.
+    define('TRACE_NOTICE', 3); // Notices are important notices in normal execution.
+    define('TRACE_DEBUG', 5); // Debug are debug time notices that should be burried in debug_fine level when debug is ok.
+    define('TRACE_DATA', 8); // Data level is when requiring to see data structures content.
+    define('TRACE_DEBUG_FINE', 10); // Debug fine are control points we want to keep when code is refactored and debug needs to be reactivated.
 }
 
 class block_course_notification extends block_list {
@@ -115,7 +120,11 @@ class block_course_notification extends block_list {
         $ignoreduserids = self::add($ignoreduserids, array_keys($twoweeksnearend));
 
         if ($this->config->inactivitydelayindays && $COURSE->startdate < time() - DAYSECS * 21 ) {
-            $inactives = bcn_get_inactive($COURSE, $this->config->inactivitydelayindays, $ignoreduserids);
+            $options = [];
+            if (!empty($this->config->inactivityfrequency)) {
+                $options['inactivityfrequency'] = $this->config->inactivityfrequency;
+            }
+            $inactives = bcn_get_inactive($COURSE, $this->config->inactivitydelayindays, $ignoreduserids, $options);
         } else {
             $inactives = array();
         }
@@ -514,6 +523,9 @@ class block_course_notification extends block_list {
                 echo ("\tInactives...\n");
             }
             // ignores : do not notify outgoing users any more
+            if (!empty($instance->config->inactivityfrequency)) {
+                $options['inactivityfrequency'] = $instance->config->inactivityfrequency;
+            }
             if ($inactiveusers = bcn_get_inactive($course, $instance->config->inactivitydelayindays, $ignoreduserids, $options)) {
                 // Second call users cannot receive inactive notification.
                 foreach ($secondcallusers as $u) {
