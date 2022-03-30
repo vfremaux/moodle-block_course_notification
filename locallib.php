@@ -375,12 +375,11 @@ function bcn_get_event_users($courseid, $event) {
 }
 
 /**
-* get list of unconnected users since time
-* @param int $from unix timestamp
-* @param int $to unix timestamp
-* @param string $ignoreactions a list of previous actions that will discard users from being notified here 
-* @param array $ignoreusers array of user ids to be ignored
-*
+* get list of unconnected users since some time
+* @param int $fromtimerangeindays since when in days the user has not been connected
+* @param array $ignoredusers array of user ids to be ignored
+* @param array $options some process options (logging, verbosity, block instance configs)
+* @return an array of user records to be notified.
 */
 function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = [], $options = []) {
     global $CFG, $DB;
@@ -502,10 +501,14 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
 
             $params = ['userid' => $u->id, 'courseid' => $courseid];
             if ($bcn = $DB->get_record('block_course_notification', $params)) {
-                if (!empty($bcn->inactivenotedate) && ((time() - DAYSECS + 30) <= $bcn->inactivenotedate)) {
+                if (!array_key_exists('inactivityfrequency', $options)) {
+                    $options['inactivityfrequency'] = 1;
+                }
+                if (!empty($bcn->inactivenotedate) && ((time() - DAYSECS * $options['inactivityfrequency'] + 30) <= $bcn->inactivenotedate)) {
                     // rule B.
                     // there is already an inactive signal sent in less than past 24 hours. Do not send twice per 24 day.
-                    $statuslog .= $course->id.' inactive -'.$u->username.' trapped rule B : already sent in previous 24 hours'."\n";
+                    // Let 30 seconds drift incertainty.
+                    $statuslog .= $course->id.' inactive -'.$u->username.' trapped rule B : already sent in previous 24 hours * frequency'."\n";
                     continue;
                 }
 
