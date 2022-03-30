@@ -128,7 +128,11 @@ $twoweeksnearend = bcn_get_end_event_users($blockobj, $course, 'twoweeksnearend'
 $ignoreduserids = block_course_notification::add($ignoreduserids, array_keys($twoweeksnearend));
 
 if ($blockobj->config->inactivitydelayindays && $course->startdate < time() - DAYSECS * 21 ) {
-    $inactives = bcn_get_inactive($course, $blockobj->config->inactivitydelayindays, $ignoreduserids);
+    $options = [];
+    if (!empty($blockobj->config->inactivityfrequency)) {
+        $options['inactivityfrequency'] = $blockobj->config->inactivityfrequency;
+    }
+    $inactives = bcn_get_inactive($course, $blockobj->config->inactivitydelayindays, $ignoreduserids, $options);
 } else {
     $inactives = array();
 }
