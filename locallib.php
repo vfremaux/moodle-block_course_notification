@@ -76,7 +76,9 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
         }
     }
 
-    debug_trace("Getting start events", TRACE_DEBUG);
+    $startdate = date('Ymd Hms', $startrange);
+    $enddate = date('Ymd Hms', $endrange);
+    debug_trace("Getting start events / Range : [$startdate - $enddate] ", TRACE_DEBUG);
 
     if ($course->startdate > $now) {
         // course not even started yet.
@@ -554,7 +556,7 @@ function bcn_notify_users(block_course_notification $blockinstance, &$course, $u
 
     if (!empty($users)) {
         foreach ($users as $u) {
-            if (!empty($config->bulklimit) && $bulklimiter >= $config->bulklimit) {
+            if (!empty($config->bulklimit) && ($config->bulklimit > 0)  && $bulklimiter >= $config->bulklimit) {
                 // Stop sending this turn.
                 echo "Stop notifying because of bulk limit of $config->bulklimit\n";
                 break;

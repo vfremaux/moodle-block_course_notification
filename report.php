@@ -158,7 +158,8 @@ if (empty($enrolled)) {
         $bcn = $DB->get_record('block_course_notification', ['userid' => $u->id, 'courseid' => $course->id]);
         $row = [];
 
-        $row[] = fullname($u);
+        $userurl = new moodle_url('/user/profile.php', ['id' => $u->id]);
+        $row[] = '<a href="'.$userurl.'">'.fullname($u).'</a>';
 
         if ($bcn && $bcn->firstassignnotified) {
             $icon = $OUTPUT->pix_icon('sent', $sentstr, 'block_course_notification');
@@ -313,9 +314,18 @@ if (empty($enrolled)) {
         }
         $row[] = $icon;
 
-        if ($bcn && $bcn->inactivenotified) {
-            $icon = $OUTPUT->pix_icon('sent', $sentstr.userdate($bcn->inactivenotedate), 'block_course_notification');
-            $lineisempty = false;
+        $inactivehorizondate = time() - $blockobj->config->inactivityfrequency * DAYSECS;
+        // The inactive signal must be fresh enough to be signalled, either it is a new signal to be sent.
+        if ($bcn && $bcn->inactivenotified && $bcn->inactivenotedate > $inactivehorizondate) {
+            // Only report inactivity on user who are still inactive. If not any more inactive, just tell we are "not concerned"
+            // i.e. pending for a new inactivity state to emerge. 
+            if (array_key_exists($u->id, $inactives)) {
+                // Still inactive ! tell we have sent.
+                $icon = $OUTPUT->pix_icon('sent', $sentstr.userdate($bcn->inactivenotedate), 'block_course_notification');
+                $lineisempty = false;
+            } else {
+                $icon = $OUTPUT->pix_icon('pending', $pendingstr, 'block_course_notification');
+            }
         } else {
             if (empty($blockobj->config->inactive)) {
                 $icon = $OUTPUT->pix_icon('disabled', $disabledstr, 'block_course_notification');
