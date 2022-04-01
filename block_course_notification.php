@@ -30,6 +30,11 @@ if (!function_exists('debug_trace')) {
     function debug_trace() {
         // Fake this function if not existing in the target moodle environment.
     }
+    define('TRACE_ERRORS', 1); // Errors should be always traced when trace is on.
+    define('TRACE_NOTICE', 3); // Notices are important notices in normal execution.
+    define('TRACE_DEBUG', 5); // Debug are debug time notices that should be burried in debug_fine level when debug is ok.
+    define('TRACE_DATA', 8); // Data level is when requiring to see data structures content.
+    define('TRACE_DEBUG_FINE', 10); // Debug fine are control points we want to keep when code is refactored and debug needs to be reactivated.
 }
 
 class block_course_notification extends block_list {
@@ -115,7 +120,11 @@ class block_course_notification extends block_list {
         $ignoreduserids = self::add($ignoreduserids, array_keys($twoweeksnearend));
 
         if ($this->config->inactivitydelayindays && $COURSE->startdate < time() - DAYSECS * 21 ) {
-            $inactives = bcn_get_inactive($COURSE, $this->config->inactivitydelayindays, $ignoreduserids);
+            $options = [];
+            if (!empty($this->config->inactivityfrequency)) {
+                $options['inactivityfrequency'] = $this->config->inactivityfrequency;
+            }
+            $inactives = bcn_get_inactive($COURSE, $this->config->inactivitydelayindays, $ignoreduserids, $options);
         } else {
             $inactives = array();
         }
@@ -506,14 +515,17 @@ class block_course_notification extends block_list {
 
         debug_trace("Inactives... ", TRACE_DEBUG);
         if (@$instance->config->inactive) {
-            debug_trace(" ... processing... ", TRACE_DEBUG);
             if (empty($instance->config->inactivitydelayindays)) {
                 $instance->config->inactivitydelayindays = 7;
             }
             if ($verbose) {
                 echo ("\tInactives...\n");
             }
+            debug_trace("Inactives...\n", TRACE_DEBUG);
             // ignores : do not notify outgoing users any more
+            if (!empty($instance->config->inactivityfrequency)) {
+                $options['inactivityfrequency'] = $instance->config->inactivityfrequency;
+            }
             if ($inactiveusers = bcn_get_inactive($course, $instance->config->inactivitydelayindays, $ignoreduserids, $options)) {
                 // Second call users cannot receive inactive notification.
                 foreach ($secondcallusers as $u) {
@@ -528,20 +540,20 @@ class block_course_notification extends block_list {
                     $globalcounttosend += $count;
                     if ($verbose) {
                         echo "\tSending $count users...\n";
-                        debug_trace(" ... No users to send !", TRACE_DEBUG);
                     }
+                    debug_trace("... Sending $count users...\n", TRACE_DEBUG);
                     bcn_notify_users($instance, $course, $inactiveusers, 'inactive', null, true /* allow iterate */, $options);
                 } else {
                     if ($verbose) {
                         echo "\tNo users to send...\n";
-                        debug_trace(" ... No users to send !", TRACE_DEBUG);
                     }
+                    debug_trace(" ... No users to send !", TRACE_DEBUG);
                 }
             } else {
                 if ($verbose) {
                     echo "\tNo users to send...\n";
-                    debug_trace(" ... No users to send !", TRACE_DEBUG);
                 }
+                debug_trace(" ... No users to send !", TRACE_DEBUG);
             }
             debug_trace(" ... done !", TRACE_DEBUG);
         }
@@ -559,12 +571,14 @@ class block_course_notification extends block_list {
                 if ($verbose) {
                     echo "\tSending $count users...\n";
                 }
+                debug_trace("... Sending $count users...\n", TRACE_DEBUG);
                 bcn_notify_users($instance, $course, $endusers, 'closed', null, false, $options);
                 $ignoreduserids = self::add($ignoreduserids, array_keys($endusers));
             } else {
                 if ($verbose) {
                     echo "\tNo users to send...\n";
                 }
+                debug_trace(" ... No users to send !", TRACE_DEBUG);
             }
             debug_trace(" ... done !", TRACE_DEBUG);
         }
@@ -577,18 +591,19 @@ class block_course_notification extends block_list {
                 }
                 debug_trace("One day from end...", TRACE_DEBUG);
                 if ($endusers = bcn_get_end_event_users($instance, $course, 'onedaytoend', $ignoreduserids, $options)) {
-                    debug_trace("... processing ...", TRACE_DEBUG);
                     $count = count($endusers);
                     $globalcounttosend += $count;
                     if ($verbose) {
                         echo "\tSending $count users...\n";
                     }
+                    debug_trace("... Sending $count users ...\n", TRACE_DEBUG);
                     bcn_notify_users($instance, $course, $endusers, 'onedaytoend', null, false, $options);
                     $ignoreduserids = self::add($ignoreduserids, array_keys($endusers));
                 } else {
                     if ($verbose) {
                         echo "\tNo users to send...\n";
                     }
+                    debug_trace(" ... No users to send !", TRACE_DEBUG);
                 }
                 debug_trace(" ... done !", TRACE_DEBUG);
             }
@@ -598,17 +613,18 @@ class block_course_notification extends block_list {
                     echo "\tThree days from end...\n";
                 }
                 if ($endusers = bcn_get_end_event_users($instance, $course, 'threedaystoend', $ignoreduserids, $options)) {
-                    debug_trace(" ... processing ...", TRACE_DEBUG);
                     $count = count($endusers);
                     $globalcounttosend += $count;
                     if ($verbose) {
                         echo "\tSending $count users...\n";
                     }
+                    debug_trace(" ... Sending $count users ...\n", TRACE_DEBUG);
                     bcn_notify_users($instance, $course, $endusers, 'threedaystoend', null, false, $options);
                     $ignoreduserids = self::add($ignoreduserids, array_keys($endusers));
                 } else {
                     if ($verbose) {
                         echo "\tNo users to send...\n";
+                        debug_trace(" ... No users to send !", TRACE_DEBUG);
                     }
                 }
                 debug_trace(" ... done !", TRACE_DEBUG);
@@ -620,18 +636,19 @@ class block_course_notification extends block_list {
                     echo "\tFive days from end...\n";
                 }
                 if ($endusers = bcn_get_end_event_users($instance, $course, 'fivedaystoend', $ignoreduserids, $options)) {
-                    debug_trace(" ... processing ...", TRACE_DEBUG);
                     $count = count($endusers);
                     $globalcounttosend += $count;
                     if ($verbose) {
                         echo "\tSending $count users...\n";
                     }
+                    debug_trace(" ... Sending $count users ...\n", TRACE_DEBUG);
                     bcn_notify_users($instance, $course, $endusers, 'fivedaystoend', null, false, $options);
                     $ignoreduserids = self::add($ignoreduserids, array_keys($endusers));
                 } else {
                     if ($verbose) {
                         echo "\tNo users to send...\n";
                     }
+                    debug_trace(" ... No users to send !", TRACE_DEBUG);
                 }
                 debug_trace(" ... done !", TRACE_DEBUG);
             }
@@ -648,13 +665,14 @@ class block_course_notification extends block_list {
                 if ($verbose) {
                     echo "\tSending $count users...\n";
                 }
-                debug_trace(" ... processing $count users ...", TRACE_DEBUG);
+                debug_trace(" ... Sending $count users ...", TRACE_DEBUG);
                 bcn_notify_users($instance, $course, $endusers, 'oneweeknearend', null, false, $options);
                 $ignoreduserids = self::add($ignoreduserids, array_keys($endusers));
             } else {
                 if ($verbose) {
                     echo "\tNo users to send...\n";
                 }
+                debug_trace(" ... No users to send !", TRACE_DEBUG);
             }
             debug_trace(" ... done !", TRACE_DEBUG);
         }
@@ -670,12 +688,13 @@ class block_course_notification extends block_list {
                 if ($verbose) {
                     echo "\tSending $count users...\n";
                 }
-                debug_trace(" ... processing $count users ...", TRACE_DEBUG);
+                debug_trace(" ... Sending $count users ...", TRACE_DEBUG);
                 bcn_notify_users($instance, $course, $endusers, 'twoweeksnearend', null, false, $options);
             } else {
                 if ($verbose) {
                     echo "\tNo users to send...\n";
                 }
+                debug_trace(" ... No users to send !", TRACE_DEBUG);
             }
             if ($verbose) {
                 echo "Notifications to send : $globalcounttosend ...\n";

@@ -128,7 +128,11 @@ $twoweeksnearend = bcn_get_end_event_users($blockobj, $course, 'twoweeksnearend'
 $ignoreduserids = block_course_notification::add($ignoreduserids, array_keys($twoweeksnearend));
 
 if ($blockobj->config->inactivitydelayindays && $course->startdate < time() - DAYSECS * 21 ) {
-    $inactives = bcn_get_inactive($course, $blockobj->config->inactivitydelayindays, $ignoreduserids);
+    $options = [];
+    if (!empty($blockobj->config->inactivityfrequency)) {
+        $options['inactivityfrequency'] = $blockobj->config->inactivityfrequency;
+    }
+    $inactives = bcn_get_inactive($course, $blockobj->config->inactivitydelayindays, $ignoreduserids, $options);
 } else {
     $inactives = array();
 }
@@ -154,10 +158,11 @@ if (empty($enrolled)) {
         $bcn = $DB->get_record('block_course_notification', ['userid' => $u->id, 'courseid' => $course->id]);
         $row = [];
 
-        $row[] = fullname($u);
+        $userurl = new moodle_url('/user/profile.php', ['id' => $u->id]);
+        $row[] = '<a href="'.$userurl.'">'.fullname($u).'</a>';
 
         if ($bcn && $bcn->firstassignnotified) {
-            $icon = $OUTPUT->pix_icon('sent', $sentstr, 'block_course_notification');
+            $icon = $OUTPUT->pix_icon('sent', $sentstr.userdate($bcn->firstassignnotedate), 'block_course_notification');
             $lineisempty = false;
         } else {
             if (empty($blockobj->config->firstassign)) {
@@ -309,9 +314,18 @@ if (empty($enrolled)) {
         }
         $row[] = $icon;
 
-        if ($bcn && $bcn->inactivenotified) {
-            $icon = $OUTPUT->pix_icon('sent', $sentstr.userdate($bcn->inactivenotedate), 'block_course_notification');
-            $lineisempty = false;
+        $inactivehorizondate = time() - $blockobj->config->inactivityfrequency * DAYSECS;
+        // The inactive signal must be fresh enough to be signalled, either it is a new signal to be sent.
+        if ($bcn && $bcn->inactivenotified && $bcn->inactivenotedate > $inactivehorizondate) {
+            // Only report inactivity on user who are still inactive. If not any more inactive, just tell we are "not concerned"
+            // i.e. pending for a new inactivity state to emerge. 
+            if (array_key_exists($u->id, $inactives)) {
+                // Still inactive ! tell we have sent.
+                $icon = $OUTPUT->pix_icon('sent', $sentstr.userdate($bcn->inactivenotedate), 'block_course_notification');
+                $lineisempty = false;
+            } else {
+                $icon = $OUTPUT->pix_icon('pending', $pendingstr, 'block_course_notification');
+            }
         } else {
             if (empty($blockobj->config->inactive)) {
                 $icon = $OUTPUT->pix_icon('disabled', $disabledstr, 'block_course_notification');

@@ -100,6 +100,7 @@ $string['configinactive'] = 'Inactivity reminders';
 $string['configclosed'] = 'When access closes';
 $string['configcompleted'] = 'When course is completed';
 $string['configbulklimit'] = 'Max number of notifications per process';
+$string['configsendfirstassignanyway'] = 'Send first assign notification anyway';
 
 $string['configfirstassignobject'] = 'Notify on assign (object)';
 $string['configfirstcallobject'] = 'First call after assign (object)';
@@ -154,8 +155,11 @@ $string['completionadvice'] = 'Enables message sending on each completion event'
 $string['configbulklimit_desc'] = 'Each process (cron or cli) will only be able to send up to this amount of notifications
 per turn, to avoid big bulks of outgoing mail. Leave to 0 for unlimited.';
 
+$string['configsendfirstassignanyway_desc'] = 'Send first assign notification anyway, even if user has already accessed the course.
+Notification will by the way not be sent to neither completed nor unenroled users. This notification type needs to be enabled in the bloc instance.';
+
 $string['mailoverrides_help'] = 'these settings will override mail content for each event.
-You may use the same placeholders you use in central configuration: {{WWWROOT}}, {{COURSE}}, {{COURSEID}}, {{SITENAME}},
+You may use the same placeholders you use in central configuration: {{WWWROOT}}, {{COURSE}}, {{COURSESHORT}}, {{COURSEID}}, {{SITENAME}},
 {{USERNAME}}, {{FIRSTNAME}}, {{LASTNAME}}, {{CONTACTURL}}';
 
 include(__DIR__.'/mailtemplates.php');
