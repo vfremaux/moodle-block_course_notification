@@ -162,7 +162,7 @@ if (empty($enrolled)) {
         $row[] = '<a href="'.$userurl.'">'.fullname($u).'</a>';
 
         if ($bcn && $bcn->firstassignnotified) {
-            $icon = $OUTPUT->pix_icon('sent', $sentstr, 'block_course_notification');
+            $icon = $OUTPUT->pix_icon('sent', $sentstr.userdate($bcn->firstassignnotedate), 'block_course_notification');
             $lineisempty = false;
         } else {
             if (empty($blockobj->config->firstassign)) {

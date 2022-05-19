@@ -37,6 +37,7 @@ require_once($CFG->libdir . '/completionlib.php');
 function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcall', $ignoredusers = [], $options = []) {
     global $DB;
 
+    $config = get_config('block_course_notification');
     $now = time();
 
     if (is_object($course)) {
@@ -156,9 +157,11 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
             $ula = $DB->get_record('user_lastaccess', ['courseid' => $course->id, 'userid' => $pot->id]);
             if (!empty($ula) && $ula->timeaccess > 0) {
                 // rule A2.
-                $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule A2 : Already accessed course'."\n";
-                // User has accessed the course.
-                 continue;
+                if ($event != 'firstassign' || empty($config->sendfirstassignanyway)) {
+                    $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule A2 : Already accessed course'."\n";
+                    // User has accessed the course.
+                     continue;
+                }
             }
 
             $bcn = $DB->get_record('block_course_notification', ['courseid' => $course->id, 'userid' => $pot->id]);
