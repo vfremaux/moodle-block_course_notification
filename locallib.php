@@ -37,7 +37,6 @@ require_once($CFG->libdir . '/completionlib.php');
 function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcall', $ignoredusers = [], $options = []) {
     global $DB;
 
-    $config = get_config('block_course_notification');
     $now = time();
 
     if (is_object($course)) {
@@ -77,9 +76,7 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
         }
     }
 
-    $startdate = date('Ymd Hms', $startrange);
-    $enddate = date('Ymd Hms', $endrange);
-    debug_trace("Getting start events / Range : [$startdate - $enddate] ", TRACE_DEBUG);
+    debug_trace("Getting start events", TRACE_DEBUG);
 
     if ($course->startdate > $now) {
         // course not even started yet.
@@ -157,11 +154,9 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
             $ula = $DB->get_record('user_lastaccess', ['courseid' => $course->id, 'userid' => $pot->id]);
             if (!empty($ula) && $ula->timeaccess > 0) {
                 // rule A2.
-                if ($event != 'firstassign' || empty($config->sendfirstassignanyway)) {
-                    $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule A2 : Already accessed course'."\n";
-                    // User has accessed the course.
-                     continue;
-                }
+                $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule A2 : Already accessed course'."\n";
+                // User has accessed the course.
+                 continue;
             }
 
             $bcn = $DB->get_record('block_course_notification', ['courseid' => $course->id, 'userid' => $pot->id]);
@@ -380,11 +375,12 @@ function bcn_get_event_users($courseid, $event) {
 }
 
 /**
-* get list of unconnected users since some time
-* @param int $fromtimerangeindays since when in days the user has not been connected
-* @param array $ignoredusers array of user ids to be ignored
-* @param array $options some process options (logging, verbosity, block instance configs)
-* @return an array of user records to be notified.
+* get list of unconnected users since time
+* @param int $from unix timestamp
+* @param int $to unix timestamp
+* @param string $ignoreactions a list of previous actions that will discard users from being notified here 
+* @param array $ignoreusers array of user ids to be ignored
+*
 */
 function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = [], $options = []) {
     global $CFG, $DB;
@@ -506,14 +502,10 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
 
             $params = ['userid' => $u->id, 'courseid' => $courseid];
             if ($bcn = $DB->get_record('block_course_notification', $params)) {
-                if (!array_key_exists('inactivityfrequency', $options)) {
-                    $options['inactivityfrequency'] = 1;
-                }
-                if (!empty($bcn->inactivenotedate) && ((time() - DAYSECS * $options['inactivityfrequency'] + 30) <= $bcn->inactivenotedate)) {
+                if (!empty($bcn->inactivenotedate) && ((time() - DAYSECS + 30) <= $bcn->inactivenotedate)) {
                     // rule B.
                     // there is already an inactive signal sent in less than past 24 hours. Do not send twice per 24 day.
-                    // Let 30 seconds drift incertainty.
-                    $statuslog .= $course->id.' inactive -'.$u->username.' trapped rule B : already sent in previous 24 hours * frequency'."\n";
+                    $statuslog .= $course->id.' inactive -'.$u->username.' trapped rule B : already sent in previous 24 hours'."\n";
                     continue;
                 }
 
@@ -559,7 +551,7 @@ function bcn_notify_users(block_course_notification $blockinstance, &$course, $u
 
     if (!empty($users)) {
         foreach ($users as $u) {
-            if (!empty($config->bulklimit) && ($config->bulklimit > 0)  && $bulklimiter >= $config->bulklimit) {
+            if (!empty($config->bulklimit) && $bulklimiter >= $config->bulklimit) {
                 // Stop sending this turn.
                 echo "Stop notifying because of bulk limit of $config->bulklimit\n";
                 break;

@@ -97,7 +97,7 @@ $string['configdefaultclosed'] = 'Fermeture de l\'accès (défaut)';
 $string['configdefaultinactive'] = 'Inactivité (défaut)';
 $string['configdefaultinactivitydelay'] = 'Longueur d\'inactivité (jours, par défaut)';
 $string['configdefaultinactivityfrequency'] = 'Fréquence d\'émission de l\'inactivité (jours, défaut)';
-$string['configsendfirstassignanyway'] = 'Toujours envoyer les notifications d\'inscription.';
+
 
 $string['configfirstassignobject'] = 'Inscription (sujet)';
 $string['configfirstcallobject'] = 'Premier rappel après inscription (sujet)';
@@ -139,10 +139,6 @@ $string['mailoverrides'] = 'Surcharges locales des messages';
 
 $string['configbulklimit_desc'] = 'Chaque processus (cron ou cli) ne pourra pas envoyer plus que nombre de notification
 par exécution. Laisser à 0 pour lever les limitations.';
-
-$string['configsendfirstassignanyway_desc'] = 'Envoyer la notification d\'inscription même si l\'utilisateur a déjà accédé au cours.
-La notification ne sera toutefois pas émise si l\'utilisateur a achevé le cours ou s\'il en est désinscrit. La notification doit être activée dans
-le bloc.';
 
 $string['mailoverrides_help'] = 'Ces réglages remplacent les messages standard réglés dans l\'administration centrale.
 Vous pouvez y injecter les mêmes variables dynamiques avec les balises : {{WWWROOT}}, {{COURSE}}, {{COURSESHORT}}, {{COURSEID}}, {{SITENAME}},
