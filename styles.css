@@ -3,3 +3,10 @@
 #id_configmailheader .fitem_feditor {
     display: block;
 }
+
+.firstname-selected,
+.name-selected {
+    border-radius: 40%;
+    background-color: #dfdfdf;
+    padding: 2px;
+}

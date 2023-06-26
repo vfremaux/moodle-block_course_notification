@@ -32,6 +32,8 @@ class block_course_notification_edit_form extends block_edit_form {
     function specific_definition($mform) {
         global $CFG, $DB, $COURSE;
 
+        $config = get_config('block_course_notification');
+
         $editoroptions = array('trusttext' => true,
                                  'subdirs' => false,
                                  'maxfiles' => 0,
