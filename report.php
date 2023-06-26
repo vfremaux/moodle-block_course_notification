@@ -29,6 +29,7 @@ $courseid = required_param('id', PARAM_INT);
 $blockid = required_param('blockid', PARAM_INT);
 $action = optional_param('what', '', PARAM_TEXT);
 $filterbl = optional_param('filterbl', false, PARAM_BOOL);
+$filterenrol = optional_param('filterenrol', false, PARAM_BOOL);
 
 if (!$course = $DB->get_record('course', ['id' => $courseid])) {
     print_error('coursemisconf');
@@ -38,22 +39,21 @@ if (!$instance = $DB->get_record('block_instances', ['id' => $blockid])) {
     print_error(get_string('errorinstancenotfound', 'block_course_notification'));
 }
 
+// Security.
+require_login($course);
+$context = context_course::instance($courseid);
+require_capability('block/course_notification:setup', $context);
+
 $blockobj = block_instance('course_notification', $instance);
 
-$params = array('id' => $courseid, 'blockid' => $blockid);
+$params = array('id' => $courseid, 'blockid' => $blockid, 'filterbl' => $filterbl, 'filterenrol' => $filterenrol);
 $url = new moodle_url('/blocks/course_notification/report.php', $params);
 $PAGE->set_url($url);
 
-$context = context_course::instance($courseid);
 $blockcontext = context_block::instance($blockid);
 $PAGE->set_context($context);
 
 $renderer = $PAGE->get_renderer('block_course_notification');
-
-// Security.
-
-require_login();
-require_capability('block/course_notification:setup', $context);
 
 if (!empty($action)) {
     include_once($CFG->dirroot.'/blocks/course_notification/report.controller.php');
@@ -89,18 +89,39 @@ echo $OUTPUT->header();
 
 echo $OUTPUT->heading(get_string('emissionreport', 'block_course_notification'));
 
-echo $renderer->blankline_filter($blockid, $courseid);
+echo $renderer->namefilter($url, $filterstates);
+$filterparams = ['blockid' => $blockid,
+                 'id' => $courseid,
+                 'filterbl' => $filterbl,
+                 'filterenrol' => $filterenrol,
+                 'filterfirstname' => $filterstates['firstnamefilter'],
+                 'filterlastname' => $filterstates['lastnamefilter']
+             ];
+echo $renderer->blankline_filter($filterparams);
+echo $renderer->active_enrol_filter($filterparams);
 
 // Get enrolled users having states and make a table.
 
 $ignoredusers = get_users_by_capability($blockcontext, 'block/course_notification:excludefromnotification', 'u.id');
 $ignoreduserids = array_keys($ignoredusers);
 
-$enrolled = get_enrolled_users($context);
+$enrolled = get_enrolled_users($context, '', 0, 'u.*', 'lastname,firstname', 0, 0, $filterenrol);
 
 foreach ($enrolled as $u) {
     if (in_array($u->id, $ignoreduserids)) {
         unset($enrolled[$u->id]);
+    }
+
+    if (!empty($filterstates['firstnamefilter'])) {
+        if (!preg_match('/^'.$filterstates['firstnamefilter'].'/i', $u->firstname)) {
+            unset($enrolled[$u->id]);
+        }
+    }
+
+    if (!empty($filterstates['lastnamefilter'])) {
+        if (!preg_match('/^'.$filterstates['lastnamefilter'].'/i', $u->lastname)) {
+            unset($enrolled[$u->id]);
+        }
     }
 }
 
@@ -128,9 +149,24 @@ $twoweeksnearend = bcn_get_end_event_users($blockobj, $course, 'twoweeksnearend'
 $ignoreduserids = block_course_notification::add($ignoreduserids, array_keys($twoweeksnearend));
 
 if ($blockobj->config->inactivitydelayindays && $course->startdate < time() - DAYSECS * 21 ) {
-    $inactives = bcn_get_inactive($course, $blockobj->config->inactivitydelayindays, $ignoreduserids);
+    $options = [];
+    if (!empty($blockobj->config->inactivityfrequency)) {
+        $options['inactivityfrequency'] = $blockobj->config->inactivityfrequency;
+    }
+    $options['justcheckinactivestatus'] = true;
+    $inactives = bcn_get_inactive($course, $blockobj->config->inactivitydelayindays, $ignoreduserids, $options);
 } else {
-    $inactives = array();
+    $inactives = [];
+}
+
+if (block_course_notification_supports_feature('coldfeedback/mail')) {
+    include_once($CFG->dirroot.'/blocks/course_notification/pro/lib.php');
+    $coldfeedbackstr = get_string('coldfeedback', 'block_course_notification');
+    if (!empty($blockobj->config->coldfeedback)) {
+        $placedcoldfeedbacks = bcn_get_placedcoldfeedbacks($course, $ignoreduserids, $options);
+        $coldfeedbacked = bcn_get_coldfeedbacked($course, $ignoreduserids, $options);
+        $failedtosendstr = get_string('coldfeedbackfailure', 'block_course_notification');
+    }
 }
 
 if (empty($enrolled)) {
@@ -149,15 +185,22 @@ if (empty($enrolled)) {
                     $closedstr,
                     $inactivesstr,
                     ];
+    if (block_course_notification_supports_feature('coldfeedback/mail')) {
+        $table->head[] = $coldfeedbackstr;
+    }
+
+    $havetaskfailures = false;
+
     foreach ($enrolled as $u) {
         $lineisempty = true;
         $bcn = $DB->get_record('block_course_notification', ['userid' => $u->id, 'courseid' => $course->id]);
         $row = [];
 
-        $row[] = fullname($u);
+        $userurl = new moodle_url('/user/profile.php', ['id' => $u->id]);
+        $row[] = '<a href="'.$userurl.'">'.fullname($u).'</a>';
 
         if ($bcn && $bcn->firstassignnotified) {
-            $icon = $OUTPUT->pix_icon('sent', $sentstr, 'block_course_notification');
+            $icon = $OUTPUT->pix_icon('sent', $sentstr.userdate($bcn->firstassignnotedate), 'block_course_notification');
             $lineisempty = false;
         } else {
             if (empty($blockobj->config->firstassign)) {
@@ -299,7 +342,7 @@ if (empty($enrolled)) {
             if (empty($blockobj->config->closed)) {
                 $icon = $OUTPUT->pix_icon('disabled', $disabledstr, 'block_course_notification');
             } else {
-                if (array_key_exists($u->id, $closed)) {
+                if (array_key_exists($u->id, $closedusers)) {
                     $icon = $OUTPUT->pix_icon('i/sendmessage', $tosendstr);
                     $lineisempty = false;
                 } else {
@@ -309,9 +352,18 @@ if (empty($enrolled)) {
         }
         $row[] = $icon;
 
-        if ($bcn && $bcn->inactivenotified) {
-            $icon = $OUTPUT->pix_icon('sent', $sentstr.userdate($bcn->inactivenotedate), 'block_course_notification');
-            $lineisempty = false;
+        $inactivehorizondate = time() - $blockobj->config->inactivitydelayindays * DAYSECS;
+        // The inactive signal must be fresh enough to be signalled, either it is a new signal to be sent.
+        if ($bcn && $bcn->inactivenotified && $bcn->inactivenotedate > $inactivehorizondate) {
+            // Only report inactivity on user who are still inactive. If not any more inactive, just tell we are "not concerned"
+            // i.e. pending for a new inactivity state to emerge. 
+            if (array_key_exists($u->id, $inactives)) {
+                // Still inactive ! tell we have sent.
+                $icon = $OUTPUT->pix_icon('sent', $sentstr.userdate($bcn->inactivenotedate), 'block_course_notification');
+                $lineisempty = false;
+            } else {
+                $icon = $OUTPUT->pix_icon('pending', $pendingstr, 'block_course_notification');
+            }
         } else {
             if (empty($blockobj->config->inactive)) {
                 $icon = $OUTPUT->pix_icon('disabled', $disabledstr, 'block_course_notification');
@@ -326,12 +378,39 @@ if (empty($enrolled)) {
         }
         $row[] = $icon;
 
+        if (block_course_notification_supports_feature('coldfeedback/mail')) {
+            // Add report for coldfeedback notification.
+            if (empty($blockobj->config->coldfeedback)) {
+                $icon = $OUTPUT->pix_icon('disabled', $disabledstr, 'block_course_notification');
+            } else {
+                if (array_key_exists($u->id, $coldfeedbacked)) {
+                    $icon = $OUTPUT->pix_icon('sent', $sentstr.userdate($coldfeedbacked[$u->id]->coldfeedbacknotedate), 'block_course_notification');
+                } else if (array_key_exists($u->id, $placedcoldfeedbacks)) {
+                    if ($placedcoldfeedbacks[$u->id]->faildelay > 0) {
+                        $icon = $OUTPUT->pix_icon('failure', $failedtosendstr.' '.userdate($placedcoldfeedbacks[$u->id]->nextruntime), 'block_course_notification');
+                        $lineisempty = false;
+                        $havetaskfailures = true;
+                    } else {
+                        $icon = $OUTPUT->pix_icon('i/sendmessage', $tosendstr.' '.userdate($placedcoldfeedbacks[$u->id]->nextruntime));
+                        $lineisempty = false;
+                    }
+                } else {
+                    $icon = $OUTPUT->pix_icon('pending', $pendingstr, 'block_course_notification');
+                }
+            }
+            $row[] = $icon;
+        }
+
         if (!$filterbl || !$lineisempty) {
             $table->data[] = $row;
         }
     }
 
     echo html_writer::table($table);
+}
+
+if ($havetaskfailures && is_dir($CFG->dirroot.'/admin/tool/adhoc')) {
+    echo $OUTPUT->notification(get_string('failurechecknotice', 'block_course_notification'), 'error');
 }
 
 echo '<center>';

@@ -115,6 +115,12 @@ if ($hassiteconfig) {
     $default = 300;
     $settings->add(new admin_setting_configtext($key, $label, $desc, $default));
 
+    $key = 'block_course_notification/sendfirstassignanyway';
+    $label = get_string('configsendfirstassignanyway', 'block_course_notification');
+    $desc = get_string('configsendfirstassignanyway_desc', 'block_course_notification');
+    $default = 0;
+    $settings->add(new admin_setting_configcheckbox($key, $label, $desc, $default));
+
     if (block_course_notification_supports_feature('emulate/community') == 'pro') {
         include_once($CFG->dirroot.'/blocks/course_notification/pro/prolib.php');
         $promanager = block_course_notification\pro_manager::instance();

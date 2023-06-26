@@ -20,63 +20,67 @@ $string['course_notification:excludefromnotification'] = 'N\'est pas notifié pa
 $string['course_notification:setup'] = 'Configurer les notification';
 $string['course_notification:benotified'] = 'Est notifié';
 
-$string['pluginname'] = 'Notifications du cours';
 $string['backtocourse'] = 'Revenir au cours';
 $string['coldfeedback'] = 'Questionnaire à froid';
-$string['coldfeedbackmodule'] = 'Instance';
 $string['coldfeedbackdelay'] = 'Délai d\'attente du questionnaire à froid';
-$string['coldfeedbacktriggerson'] = 'Déclenchement du questionnaire à froid';
+$string['coldfeedbackfailure'] = 'Erreur lors de l\'émission du questionnaire à froid. Prochaine tentative : ';
 $string['coldfeedbackmodtype'] = 'Type de module de feedback';
 $string['coldfeedbackmodtype_desc'] = '';
-$string['coursestart'] = 'Au début de la formation';
-$string['incourse'] = 'Pendant la formation';
+$string['coldfeedbackmodule'] = 'Instance';
+$string['coldfeedbacktriggerson'] = 'Déclenchement du questionnaire à froid';
+$string['completed'] = 'A chaque achèvement du cours';
+$string['configbulklimit'] = 'Limite du nombre de notifications par process';
+$string['configfirstassign'] = 'Inscription';
+$string['configfirstassign_desc'] = 'Si activé, une notification est envoyée à tous les inscrits lors de l\'ouverture du cours (date de début) ou, une fois le cours ouvert, lors de l\'arrivée de nouveaux enrollements manuel. ';
+$string['configfirstcall'] = 'Premier rappel après inscription';
+$string['configfivedaystoend'] = 'Cinq jours de la fin';
+$string['configonedaytoend'] = 'La veille de la fin';
+$string['configoneweekfromstart'] = 'A une semaine du début';
+$string['configoneweeknearend'] = 'Une semaine de la fin';
+$string['configsecondcall'] = 'Second rappel après inscription';
+$string['configthreedaystoend'] = 'Trois jours de la fin';
+$string['configtwoweeksfromstart'] = 'A deux semaines du début';
+$string['configtwoweeksnearend'] = 'Deux semaines de la fin';
 $string['courseend'] = 'A la fin de la formation';
+$string['coursestart'] = 'Au début de la formation';
+$string['disabled'] = 'Désactivé';
+$string['disabled'] = 'Désactivé';
 $string['doprocess'] = 'Envoyer les notifications';
+$string['emissionreport'] = 'Rapport d\'émission des notifications';
 $string['enabled'] = 'Activé';
-$string['disabled'] = 'Désactivé';
-$string['instanceisdisabled'] = 'Ce bloc n\'est pas actif et n\'enverra pas les notifications';
-$string['firstassign'] = 'Inscription';
-$string['general'] = 'Général';
-$string['oneweekfromstart'] = 'Une semaine du début';
-$string['twoweeksfromstart'] = 'Deux semaines du début';
-$string['oneweeknearend'] = 'Une semaine de la fin';
-$string['twoweeksnearend'] = 'Deux semaines de la fin';
-$string['fivedaystoend'] = '5 jours de la fin';
-$string['tosend'] = 'A émettre';
-$string['threedaystoend'] = '3 jours de la fin';
-$string['onedaytoend'] = '1 jour de la fin';
-$string['inactive'] = 'Inactivité';
-$string['status'] = 'Etat des notifications';
-$string['pending'] = 'Non émis';
-$string['sent'] = 'Emis le ';
-$string['disabled'] = 'Désactivé';
 $string['errorinstancenotfound'] = 'L\'instance de bloc n\'a pas pu être trouvée.';
+$string['failurechecknotice'] = 'Des tâches d\'émission sont en erreur. Vous pouvez essayer de les débloquer ou d\'avoir plus d\'information sur le problème en utilisant <a href="/admin/tool/adhoc/index.php">le gestionnaire de tâches ad hoc</a> en lançant ces tâches manuellement.';
+$string['firstassign'] = 'Inscription';
+$string['fivedaystoend'] = '5 jours de la fin';
+$string['general'] = 'Général';
+$string['hideemptylines'] = 'Cacher les lignes vides';
+$string['inactive'] = 'Inactivité';
 $string['inactivitydelayindays'] = 'Longueur de l\'inactivité';
 $string['inactivitydelayindays_help'] = 'La longueur en jour de la période d\'inactivité accordée avant émission d\'un signal';
 $string['inactivityfrequency'] = 'Fréquence d\'émission d\'inactivité';
 $string['inactivityfrequency_help'] = 'Fréquence d\'émission, en jours, du signal d\'inactivité lorsque l\'état d\'inactivité est détecté';
-$string['task_notification'] = 'Tâche d\'émission des notifications';
-$string['completed'] = 'A chaque achèvement du cours';
-$string['configbulklimit'] = 'Limite du nombre de notifications par process';
-$string['configfirstassign_desc'] = 'Si activé, une notification est envoyée à tous les inscrits lors de l\'ouverture du cours (date de début) ou, une fois le cours ouvert, lors de l\'arrivée de nouveaux enrollements manuel. ';
-$string['configfirstassign'] = 'Inscription';
-$string['configfirstcall'] = 'Premier rappel après inscription';
-$string['configsecondcall'] = 'Second rappel après inscription';
-$string['configoneweekfromstart'] = 'A une semaine du début';
-$string['configtwoweeksfromstart'] = 'A deux semaines du début';
-$string['configoneweeknearend'] = 'Une semaine de la fin';
-$string['configtwoweeksnearend'] = 'Deux semaines de la fin';
-$string['configfivedaystoend'] = 'Cinq jours de la fin';
-$string['configthreedaystoend'] = 'Trois jours de la fin';
-$string['configonedaytoend'] = 'La veille de la fin';
-$string['nocoldfeedbackmodules'] = 'Il n\'y a aucun module de questionnaire dans ce cours';
-$string['messages'] = 'Messages de notification';
+$string['incourse'] = 'Pendant la formation';
+$string['instanceisdisabled'] = 'Ce bloc n\'est pas actif et n\'enverra pas les notifications';
 $string['message'] = 'Message';
-$string['messagestosendhelp'] = 'Définir ces textes remplace les textes (sujet et objet) par défaut.';
+$string['messages'] = 'Messages de notification';
 $string['messagestosend'] = 'Contenu des messages';
-$string['emissionreport'] = 'Rapport d\'émission des notifications';
+$string['messagestosendhelp'] = 'Définir ces textes remplace les textes (sujet et objet) par défaut.';
+$string['nocoldfeedbackmodules'] = 'Il n\'y a aucun module de questionnaire dans ce cours';
+$string['onedaytoend'] = '1 jour de la fin';
+$string['oneweekfromstart'] = 'Une semaine du début';
+$string['oneweeknearend'] = 'Une semaine de la fin';
+$string['pending'] = 'Non émis';
+$string['pluginname'] = 'Notifications du cours';
+$string['sent'] = 'Emis le ';
 $string['showemptylines'] = 'Afficher les lignes vides';
-$string['hideemptylines'] = 'Cacher les lignes vides';
+$string['showallenrols'] = 'Afficher tous les utilisateurs';
+$string['showonlyactiveenrols'] = 'N\'afficher que les inscriptions actives';
+$string['status'] = 'Etat des notifications';
+$string['task_notification'] = 'Tâche d\'émission des notifications';
+$string['threedaystoend'] = '3 jours de la fin';
+$string['tosend'] = 'A émettre';
+$string['twoweeksfromstart'] = 'Deux semaines du début';
+$string['twoweeksnearend'] = 'Deux semaines de la fin';
 
 $string['unset'] = '--  Aucun --';
 $string['oneday'] = 'Un jour';
@@ -97,7 +101,7 @@ $string['configdefaultclosed'] = 'Fermeture de l\'accès (défaut)';
 $string['configdefaultinactive'] = 'Inactivité (défaut)';
 $string['configdefaultinactivitydelay'] = 'Longueur d\'inactivité (jours, par défaut)';
 $string['configdefaultinactivityfrequency'] = 'Fréquence d\'émission de l\'inactivité (jours, défaut)';
-
+$string['configsendfirstassignanyway'] = 'Toujours envoyer les notifications d\'inscription.';
 
 $string['configfirstassignobject'] = 'Inscription (sujet)';
 $string['configfirstcallobject'] = 'Premier rappel après inscription (sujet)';
@@ -140,11 +144,23 @@ $string['mailoverrides'] = 'Surcharges locales des messages';
 $string['configbulklimit_desc'] = 'Chaque processus (cron ou cli) ne pourra pas envoyer plus que nombre de notification
 par exécution. Laisser à 0 pour lever les limitations.';
 
+$string['configsendfirstassignanyway_desc'] = 'Envoyer la notification d\'inscription même si l\'utilisateur a déjà accédé au cours.
+La notification ne sera toutefois pas émise si l\'utilisateur a achevé le cours ou s\'il en est désinscrit. La notification doit être activée dans
+le bloc.';
+
 $string['mailoverrides_help'] = 'Ces réglages remplacent les messages standard réglés dans l\'administration centrale.
 Vous pouvez y injecter les mêmes variables dynamiques avec les balises : {{WWWROOT}}, {{COURSE}}, {{COURSESHORT}}, {{COURSEID}}, {{SITENAME}},
 {{USERNAME}}, {{FIRSTNAME}}, {{LASTNAME}}, {{CONTACTURL}}';
 
 $string['completionadvice'] = 'Active l\'envoi de message sur chaque événement d\'achèvement de ce cours.';
+
+$string['inactivitydelayindays_help'] = '
+La durée continue de temps d\'inactivité qui déclenche une alerte.
+';
+
+$string['inactivityfrequency_help'] = '
+La fréquence à laquelle les messages d\'inactivité doivent être émis lorsque le statut d\'inactivité est avéré.
+';
 
 include(__DIR__.'/mailtemplates.php');
 include(__DIR__.'/pro_additional_strings.php');
