@@ -37,11 +37,13 @@ if (!function_exists('debug_trace')) {
 class block_course_notification_observer {
 
     /**
-     * This will add the teacher as standard editingteacher
+     * This will wrap to the pro section.
      * @param object $event
      */
     public static function on_course_completed(\core\event\course_completed $event) {
         global $DB, $CFG;
+
+        $course = $DB->get_record('course', ['id' => $event->courseid]);
 
         $params = ['parentcontextid' => $event->contextid, 'blockname' => 'course_notification'];
         $blockrecords = $DB->get_records('block_instances', $params);
@@ -54,27 +56,30 @@ class block_course_notification_observer {
         $record = array_shift($blockrecords);
         $instance = block_instance('course_notification', $record);
 
-        if (empty($instance->config->completed)) {
-            return;
+        if (!empty($instance->config->completed)) {
+            if (function_exists('debug_trace')) {
+                debug_trace("Course Notification observer : Send completion message");
+            }
+
+            $user = $DB->get_record('user', ['id' => $event->relateduserid]);
+            if (!empty($user)) {
+                bcn_notify_user($instance, $course, $user, 'completed', null, false, false);
+            }
         }
 
-        if (function_exists('debug_trace')) {
-            debug_trace("Course Notification observer : Send completion message");
-        }
-
-        $user = $DB->get_record('user', ['id' => $event->relateduserid]);
-        if (!empty($user)) {
-            bcn_notify_user($instance, $course, $user, 'completed', null, false, false);
-        }
-
-        if (block_course_notification_supports_feature('pro/coldfeedback')) {
+        if (block_course_notification_supports_feature('coldfeedback/mail')) {
+            debug_trace("Triggering block_course_notification_observer_extended::on_course_completed in pro zone ");
             include_once($CFG->dirroot.'/blocks/course_notification/pro/observers.php');
             block_course_notification_observer_extended::on_course_completed($event, $instance);
+        } else {
+            if (function_exists('debug_trace')) {
+                debug_trace("Skipping block_course_notification_observer_extended::on_course_completed in pro zone ");
+            }
         }
     }
 
     /**
-     * This will place an adhoc task for late sollicitation of the cold feedback query.
+     * This will wrap to the pro section.
      * @param object $event
      */
     public static function on_course_module_completion_updated(\core\event\course_module_completion_updated $event) {

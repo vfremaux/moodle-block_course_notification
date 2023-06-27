@@ -26,7 +26,7 @@ function block_course_notification_get_site_indicators() {
  * Will be tranmitted to the internal render to superseed the internal strategy.
  * @return string|numeric|array.
  */
-function block_course_notification_get_site_indicator($index, $format = 'graph', $override = null) {
+function block_course_notification_get_site_indicator($index, $format = 'graph', $override = null, $options = []) {
     global $CFG;
 
     if (!block_course_notification_supports_feature('notifications/coldfeedback')) {
@@ -35,7 +35,7 @@ function block_course_notification_get_site_indicator($index, $format = 'graph',
     }
 
     include_once($CFG->dirroot.'/blocks/course_notification/pro/lib.php');
-    return bcn_get_coldfeedback_site_stat($index, $format, $override);
+    return bcn_get_coldfeedback_site_stat($index, $format, $override, $options);
 }
 
 /**
