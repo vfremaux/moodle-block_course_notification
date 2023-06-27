@@ -30,7 +30,9 @@
         <FIELD NAME="completednotified" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Marked if course completed message has been sent"/>
         <FIELD NAME="completednotedate" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of course completed message"/>
         <FIELD NAME="inactivenotified" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Counts inactive message sent"/>
-        <FIELD NAME="inactivenotedate" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of lat inactive message sent"/>
+        <FIELD NAME="inactivenotedate" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of last inactive message sent"/>
+        <FIELD NAME="coldfeedbacknotified" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Counts coldform message sent"/>
+        <FIELD NAME="coldfeedbacknotedate" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of coldform message"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

@@ -1,0 +1,42 @@
+
+
+<!-- block_course_notification/namefilter -->
+<div id="bcc-name-filter">
+    {{#str}}firstname{{/str}}:
+    {{#fnletters}}
+        {{#current}}
+        <span class="firstname-selected">{{letter}}</span>
+        {{/current}}
+        {{^current}}
+        <a href="{{{thisurl}}}" >{{letter}}</a>&nbsp
+        {{/current}}
+    {{/fnletters}}
+
+    {{#firstnamefilter}}
+        <a href="{{{allfnurl}}}" >{{#str}}all{{/str}}</a>&nbsp
+    {{/firstnamefilter}}
+    {{^firstnamefilter}}
+        <span class="firstname-selected">{{#str}}all{{/str}}</span>
+    {{/firstnamefilter}}
+
+    <br/>
+
+    {{#str}}lastname{{/str}}:
+
+    {{#lnletters}}
+        {{#current}}
+        <span class="name-selected">{{letter}}</span>
+        {{/current}}
+        {{^current}}
+        <a href="{{{thisurl}}}" >{{letter}}</a>&nbsp
+        {{/current}}
+    {{/lnletters}}
+
+    {{#lastnamefilter}}
+        <a href="{{{alllnurl}}}" >{{#str}}all{{/str}}</a>&nbsp
+    {{/lastnamefilter}}
+    {{^lastnamefilter}}
+        <span class="name-selected">{{#str}}all{{/str}}</span>
+    {{/lastnamefilter}}
+</div>
+<!-- /block_course_notification/namefilter -->
