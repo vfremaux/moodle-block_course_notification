@@ -31,6 +31,7 @@ $string['coldfeedbackmodule'] = 'Instance';
 $string['coldfeedbackmodtype'] = 'Feedack module type';
 $string['coldfeedbackmodtype_desc'] = '';
 $string['coldfeedbacktriggerson'] = 'Cold feedback triggers on';
+$string['coldfeedbackfailure'] = 'Error sending coldfeedback. Check adhoc task execution. Next try: ';
 $string['coursestart'] = 'When course starts';
 $string['incourse'] = 'In course';
 $string['courseend'] = 'At course end';
@@ -40,6 +41,7 @@ $string['instanceisdisabled'] = 'Instance is disabled to send';
 $string['doprocess'] = 'Send the notifications';
 $string['enabled'] = 'Enabled';
 $string['errorinstancenotfound'] = 'Block instance does not exist';
+$string['failurechecknotice'] = 'You have some sending tasks in error. You may try to get use more information using the <a href="/admin/tool/adhoc/index.php">adhoc task manager</a> and launching task by hand.';
 $string['firstassign'] = 'First invite';
 $string['fivedaystoend'] = 'Five days to end';
 $string['general'] = 'General';
@@ -66,6 +68,8 @@ $string['messagestosend'] = 'Messages content';
 $string['emissionreport'] = 'Notification emission report';
 $string['showemptylines'] = 'Show empty lines';
 $string['hideemptylines'] = 'Hide empty lines';
+$string['showallenrols'] = 'Show all users';
+$string['showonlyactiveenrols'] = 'Show only active enrols';
 
 $string['unset'] = '--  Not set --';
 $string['oneday'] = 'One day';
@@ -161,6 +165,14 @@ Notification will by the way not be sent to neither completed nor unenroled user
 $string['mailoverrides_help'] = 'these settings will override mail content for each event.
 You may use the same placeholders you use in central configuration: {{WWWROOT}}, {{COURSE}}, {{COURSESHORT}}, {{COURSEID}}, {{SITENAME}},
 {{USERNAME}}, {{FIRSTNAME}}, {{LASTNAME}}, {{CONTACTURL}}';
+
+$string['inactivitydelayindays_help'] = '
+The continuous duration of inactivity thet triggers the notification.
+';
+
+$string['inactivityfrequency_help'] = '
+the frequency inactivity signals will be sent, when activity state is detected.
+';
 
 include(__DIR__.'/mailtemplates.php');
 include(__DIR__.'/pro_additional_strings.php');
