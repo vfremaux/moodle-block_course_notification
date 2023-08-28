@@ -26,8 +26,22 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot.'/blocks/course_notification/locallib.php');
 
 if (!function_exists('debug_trace')) {
+<<<<<<< HEAD
     function debug_trace($message, $label = '') {
         assert(1);
+=======
+    @include_once($CFG->dirroot.'/local/advancedperfs/debugtools.php');
+    if (!function_exists('debug_trace')) {
+        function debug_trace($msg, $tracelevel = 0, $label = '', $backtracelevel = 1) {
+            // Fake this function if not existing in the target moodle environment.
+            assert(1);
+        }
+        define('TRACE_ERRORS', 1); // Errors should be always traced when trace is on.
+        define('TRACE_NOTICE', 3); // Notices are important notices in normal execution.
+        define('TRACE_DEBUG', 5); // Debug are debug time notices that should be burried in debug_fine level when debug is ok.
+        define('TRACE_DATA', 8); // Data level is when requiring to see data structures content.
+        define('TRACE_DEBUG_FINE', 10); // Debug fine are control points we want to keep when code is refactored and debug needs to be reactivated.
+>>>>>>> MOODLE_401_STABLE
     }
 }
 
@@ -37,12 +51,21 @@ if (!function_exists('debug_trace')) {
 class block_course_notification_observer {
 
     /**
+<<<<<<< HEAD
      * This will add the teacher as standard editingteacher
+=======
+     * This will wrap to the pro section.
+>>>>>>> MOODLE_401_STABLE
      * @param object $event
      */
     public static function on_course_completed(\core\event\course_completed $event) {
         global $DB, $CFG;
 
+<<<<<<< HEAD
+=======
+        $course = $DB->get_record('course', ['id' => $event->courseid]);
+
+>>>>>>> MOODLE_401_STABLE
         $params = ['parentcontextid' => $event->contextid, 'blockname' => 'course_notification'];
         $blockrecords = $DB->get_records('block_instances', $params);
         if (empty($blockrecords)) {
@@ -54,6 +77,7 @@ class block_course_notification_observer {
         $record = array_shift($blockrecords);
         $instance = block_instance('course_notification', $record);
 
+<<<<<<< HEAD
         if (empty($instance->config->completed)) {
             return;
         }
@@ -70,11 +94,36 @@ class block_course_notification_observer {
         if (block_course_notification_supports_feature('pro/coldfeedback')) {
             include_once($CFG->dirroot.'/blocks/course_notification/pro/observers.php');
             block_course_notification_observer_extended::on_course_completed($event, $instance);
+=======
+        if (!empty($instance->config->completed)) {
+            if (function_exists('debug_trace')) {
+                debug_trace("Course Notification observer : Send completion message");
+            }
+
+            $user = $DB->get_record('user', ['id' => $event->relateduserid]);
+            if (!empty($user)) {
+                bcn_notify_user($instance, $course, $user, 'completed', null, false, false);
+            }
+        }
+
+        if (block_course_notification_supports_feature('coldfeedback/mail')) {
+            debug_trace("Triggering block_course_notification_observer_extended::on_course_completed in pro zone ");
+            include_once($CFG->dirroot.'/blocks/course_notification/pro/observers.php');
+            block_course_notification_observer_extended::on_course_completed($event, $instance);
+        } else {
+            if (function_exists('debug_trace')) {
+                debug_trace("Skipping block_course_notification_observer_extended::on_course_completed in pro zone ");
+            }
+>>>>>>> MOODLE_401_STABLE
         }
     }
 
     /**
+<<<<<<< HEAD
      * This will place an adhoc task for late sollicitation of the cold feedback query.
+=======
+     * This will wrap to the pro section.
+>>>>>>> MOODLE_401_STABLE
      * @param object $event
      */
     public static function on_course_module_completion_updated(\core\event\course_module_completion_updated $event) {

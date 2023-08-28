@@ -2,4 +2,14 @@
 
 #id_configmailheader .fitem_feditor {
     display: block;
+<<<<<<< HEAD
+=======
+}
+
+.firstname-selected,
+.name-selected {
+    border-radius: 40%;
+    background-color: #dfdfdf;
+    padding: 2px;
+>>>>>>> MOODLE_401_STABLE
 }

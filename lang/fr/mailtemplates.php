@@ -396,10 +396,14 @@ $string['fivedaystoend_mail_html'] = '
 
 <p>Votre compte est activé sur le site {{SITENAME}}.
 <<<<<<< HEAD
+<<<<<<< HEAD
 Votre inscription au cours "{{COURSE}}" va se terminer dans 1 semaine.
 =======
 Votre inscription au cours "{{COURSE}}" va se terminer dans 5 jours.
 >>>>>>> MOODLE_37_STABLE
+=======
+Votre inscription au cours "{{COURSE}}" va se terminer dans 5 jours.
+>>>>>>> MOODLE_401_STABLE
 Il est possible que vous ne puissiez plus accéder à ce cours et y avoir des activités à partir de cette date.</p>
 
 <p>Si vous éprouvez des difficultés de connexion, ou pour toute autre
@@ -467,6 +471,7 @@ information sur votre participation, contactez nous ici :
 
 {{CONTACTURL}}
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 Si vous ne vous souvenez plus de votre mot de passe,
 vous pouvez le réactiver ici :
@@ -476,6 +481,8 @@ vous pouvez le réactiver ici :
 Pour rappel, votre identifiant est : {{USERNAME}}
 =======
 >>>>>>> MOODLE_37_STABLE
+=======
+>>>>>>> MOODLE_401_STABLE
 ';
 
 $string['onedaytoend_mail_html'] = '
@@ -491,6 +498,7 @@ information sur votre participation, contactez nous ici :</p>
 <p><a href="{{CONTACTURL}}">Nous contacter</a></p>
 <hr/>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <p>Si vous ne vous souvenez plus de votre mot de passe,
 vous pouvez le réactiver ici :</p>
 
@@ -499,6 +507,8 @@ vous pouvez le réactiver ici :</p>
 <p>Pour rappel, votre identifiant est : <b>{{USERNAME}}</b></p>
 =======
 >>>>>>> MOODLE_37_STABLE
+=======
+>>>>>>> MOODLE_401_STABLE
 ';
 
 $string['closed_mail_raw'] = '
@@ -540,7 +550,11 @@ Bonjour {{FIRSTNAME}} {{LASTNAME}},
 Vous n\'avez pas eu d\'activité dans le cours "{{COURSE}}" sur {{SITENAME}}
 depuis plus de {{DATA_0}} jours. Peut être vos enseignants attendent-ils certains travaux
 ou une participation de votre part dans cet espace de travail. Il serait peut être 
+<<<<<<< HEAD
 utile d\'aller voir dans un déali raisonnable quels engagements vous ont été donnés.
+=======
+utile d\'aller voir dans un délai raisonnable quels engagements vous ont été donnés.
+>>>>>>> MOODLE_401_STABLE
 
 Pour rappel, votre identifiant de connexion est : {{USERNAME}}
 
@@ -555,7 +569,11 @@ $string['inactive_mail_html'] = '
 <p>Vous n\'avez pas eu d\'activité dans le cours "{{COURSE}}" sur {{SITENAME}}
 depuis plus de {{DATA_0}} jours. Peut être vos enseignants attendent-ils certains travaux
 ou une participation de votre part dans cet espace de travail. Il serait peut être 
+<<<<<<< HEAD
 utile d\'aller voir dans un déali raisonnable quels engagements vous ont été donnés.</p>
+=======
+utile d\'aller voir dans un délai raisonnable quels engagements vous ont été donnés.</p>
+>>>>>>> MOODLE_401_STABLE
 
 <p><a href="{{WWWROOT}}/login/forgot_password.php">Récupération du mot de passe</a></p>
 

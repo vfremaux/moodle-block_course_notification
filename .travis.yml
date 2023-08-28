@@ -22,19 +22,25 @@ php:
 
 env:
 <<<<<<< HEAD
+<<<<<<< HEAD
   global:
     - MOODLE_BRANCH=MOODLE_37_STABLE
   matrix:
     - DB=mariadb
     - DB=pgsql
 =======
+=======
+>>>>>>> MOODLE_401_STABLE
  global:
   - MOODLE_BRANCH=MOODLE_39_STABLE
   - PLUGINS_BRANCH=MOODLE_39_WORKING
  matrix:
   - DB=pgsql
   - DB=mariadb
+<<<<<<< HEAD
 >>>>>>> MOODLE_39_STABLE
+=======
+>>>>>>> MOODLE_401_STABLE
 
 before_install:
   - phpenv config-rm xdebug.ini
@@ -58,8 +64,12 @@ script:
   - moodle-plugin-ci grunt
 #  - moodle-plugin-ci phpdoc
 <<<<<<< HEAD
+<<<<<<< HEAD
   - moodle-plugin-ci phpunit
 =======
 #  - moodle-plugin-ci phpunit
 >>>>>>> MOODLE_39_STABLE
+=======
+#  - moodle-plugin-ci phpunit
+>>>>>>> MOODLE_401_STABLE
 #  - moodle-plugin-ci behat

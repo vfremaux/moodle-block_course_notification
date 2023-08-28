@@ -25,7 +25,11 @@ define(['jquery', 'core/log', 'core/config'], function($, log, cfg) {
 
         init: function() {
 
+<<<<<<< HEAD
             var licensekeyid = '#id_s_' + course_notificationpro.component + '_licensekey';
+=======
+            var licensekeyid = '#id_s_' + course_notificationpro.shortcomponent + '_licensekey';
+>>>>>>> MOODLE_401_STABLE
             $(licensekeyid).bind('change', this.check_product_key);
             $(licensekeyid).trigger('change');
             log.debug('AMD Pro js initialized for ' + course_notificationpro.component + ' system');
@@ -33,7 +37,11 @@ define(['jquery', 'core/log', 'core/config'], function($, log, cfg) {
 
         check_product_key: function() {
 
+<<<<<<< HEAD
             var licensekeyid = '#id_s_' + course_notificationpro.component + '_licensekey';
+=======
+            var licensekeyid = '#id_s_' + course_notificationpro.shortcomponent + '_licensekey';
+>>>>>>> MOODLE_401_STABLE
 
             var that = $(this);
 
@@ -54,7 +62,11 @@ define(['jquery', 'core/log', 'core/config'], function($, log, cfg) {
                 url += 'what=license';
                 url += '&service=check';
                 url += '&customerkey=' + that.val();
+<<<<<<< HEAD
                 url += '&provider=' + $('#id_s_' + course_notificationpro.component + '_licenseprovider').val();
+=======
+                url += '&provider=' + $('#id_s_' + course_notificationpro.shortcomponent + '_licenseprovider').val();
+>>>>>>> MOODLE_401_STABLE
 
                 $(licensekeyid + ' + img').remove();
                 $(licensekeyid).after(waiticon);

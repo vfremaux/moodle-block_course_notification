@@ -26,6 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 $plugin->version   = 2019071101;        // The current plugin version (Date: YYYYMMDDXX)
 $plugin->requires  = 2018112800;        // Requires this Moodle version.
 $plugin->component = 'block_course_notification'; // Full name of the plugin (used for diagnostics).
@@ -55,3 +56,15 @@ $plugin->privacy = 'public';
 $plugin->codeincrement = '3.9.0005';
 $plugin->privacy = 'dualrelease';
 >>>>>>> MOODLE_39_STABLE
+=======
+$plugin->version   = 2022021800;        // The current plugin version (Date: YYYYMMDDXX)
+$plugin->requires  = 2022112801;        // Requires this Moodle version.
+$plugin->component = 'block_course_notification'; // Full name of the plugin (used for diagnostics).
+$plugin->release = '4.1.0 (Build 2022021800)';
+$plugin->maturity = MATURITY_STABLE;
+$plugin->supported = [401, 402];
+
+// Non moodle attributes.
+$plugin->codeincrement = '4.1.0008';
+$plugin->privacy = 'dualrelease';
+>>>>>>> MOODLE_401_STABLE

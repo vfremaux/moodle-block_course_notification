@@ -32,13 +32,26 @@ class block_course_notification_edit_form extends block_edit_form {
     function specific_definition($mform) {
         global $CFG, $DB, $COURSE;
 
+<<<<<<< HEAD
+=======
+        $config = get_config('block_course_notification');
+
+>>>>>>> MOODLE_401_STABLE
         $editoroptions = array('trusttext' => true,
                                  'subdirs' => false,
                                  'maxfiles' => 0,
                                  'maxbytes' => 0,
                                  'noclean' => true);
 
+<<<<<<< HEAD
         $mform->addElement('header', 'configheader0', get_string('coursestart', 'block_course_notification'));
+=======
+        $mform->addElement('header', 'configheader0', get_string('general', 'block_course_notification'));
+
+        $mform->addElement('advcheckbox', 'config_enable', get_string('enabled', 'block_course_notification'));
+
+        $mform->addElement('header', 'configheader1', get_string('coursestart', 'block_course_notification'));
+>>>>>>> MOODLE_401_STABLE
 
         $mform->addElement('advcheckbox', 'config_firstassign', get_string('configfirstassign', 'block_course_notification'));
 
@@ -46,6 +59,7 @@ class block_course_notification_edit_form extends block_edit_form {
 
         $mform->addElement('advcheckbox', 'config_secondcall', get_string('configsecondcall', 'block_course_notification'));
 
+<<<<<<< HEAD
         $mform->addElement('header', 'configheader1', get_string('incourse', 'block_course_notification'));
 
         $mform->addElement('advcheckbox', 'config_inactive', get_string('configinactive', 'block_course_notification'));
@@ -64,6 +78,23 @@ class block_course_notification_edit_form extends block_edit_form {
 >>>>>>> MOODLE_37_STABLE
 
         $mform->addElement('header', 'configheader2', get_string('courseend', 'block_course_notification'));
+=======
+        $mform->addElement('header', 'configheader2', get_string('incourse', 'block_course_notification'));
+
+        $mform->addElement('advcheckbox', 'config_inactive', get_string('configinactive', 'block_course_notification'));
+
+        $mform->addElement('text', 'config_inactivitydelayindays', get_string('inactivitydelayindays', 'block_course_notification'));
+        $mform->setType('config_inactivitydelayindays', PARAM_INT);
+        $mform->setDefault('config_inactivitydelayindays', $config->defaultinactivitydelayindays);
+        $mform->addHelpButton('config_inactivitydelayindays', 'inactivitydelayindays', 'block_course_notification');
+
+        $mform->addElement('text', 'config_inactivityfrequency', get_string('inactivityfrequency', 'block_course_notification'));
+        $mform->setType('config_inactivityfrequency', PARAM_INT);
+        $mform->setDefault('config_inactivityfrequency', $config->defaultinactivityfrequency);
+        $mform->addHelpButton('config_inactivityfrequency', 'inactivityfrequency', 'block_course_notification');
+
+        $mform->addElement('header', 'configheader3', get_string('courseend', 'block_course_notification'));
+>>>>>>> MOODLE_401_STABLE
 
         $mform->addElement('advcheckbox', 'config_twoweeksnearend', get_string('configtwoweeksnearend', 'block_course_notification'));
 
@@ -82,6 +113,7 @@ class block_course_notification_edit_form extends block_edit_form {
         $mform->addElement('header', 'configmailheader', get_string('messagestosend', 'block_course_notification'));
         $mform->addHelpButton('configmailheader', 'mailoverrides', 'block_course_notification');
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         $mform->addElement('editor', 'config_firstassign_ovl', get_string('configfirstassign', 'block_course_notification'), $editoroptions);
@@ -121,6 +153,10 @@ class block_course_notification_edit_form extends block_edit_form {
         $mform->addElement('html', get_string('messagestosendhelp', 'block_course_notification').'<br/><br/>');
 
 >>>>>>> MOODLE_39_STABLE
+=======
+        $mform->addElement('html', get_string('messagestosendhelp', 'block_course_notification').'<br/><br/>');
+
+>>>>>>> MOODLE_401_STABLE
         $mform->addElement('text', 'config_firstassign_object_ovl', get_string('configfirstassignobject', 'block_course_notification'), ['size' => 100]);
         $mform->setType('config_firstassign_object_ovl', PARAM_TEXT);
 
@@ -175,11 +211,15 @@ class block_course_notification_edit_form extends block_edit_form {
         $mform->setType('config_inactive_object_ovl', PARAM_TEXT);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         $mform->addElement('editor', 'config_inactive_ovl', get_string('configinactive', 'block_course_notification'), $editoroptions);
 >>>>>>> MOODLE_37_STABLE
 =======
         $mform->addElement('editor', 'config_inactive_ovl', '', $editoroptions);
 >>>>>>> MOODLE_39_STABLE
+=======
+        $mform->addElement('editor', 'config_inactive_ovl', '', $editoroptions);
+>>>>>>> MOODLE_401_STABLE
 
         if (block_course_notification_supports_feature('notifications/coldfeedback')) {
             include_once($CFG->dirroot.'/blocks/course_notification/pro/lib.php');

@@ -7,12 +7,17 @@ $string['twoweeksnearend_object'] = '{$a} : Course will finish soon. 2 weeks lef
 $string['oneweeknearend_object'] = '{$a} : Course will finish soon. 1 week left.';
 $string['fivedaystoend_object'] = '{$a} : Course will finish soon. 5 days left.';
 <<<<<<< HEAD
+<<<<<<< HEAD
 $string['threedaystoend_object'] = '{$a} : Course will finish soon. 5 days left.';
 $string['onedaytoend_object'] = '{$a} : Course will finish soon. 5 days left.';
 =======
 $string['threedaystoend_object'] = '{$a} : Course will finish soon. 3 days left.';
 $string['onedaytoend_object'] = '{$a} : Course will finish tomorrow.';
 >>>>>>> MOODLE_37_STABLE
+=======
+$string['threedaystoend_object'] = '{$a} : Course will finish soon. 3 days left.';
+$string['onedaytoend_object'] = '{$a} : Course will finish tomorrow.';
+>>>>>>> MOODLE_401_STABLE
 $string['closed_object'] = '{$a} : Your course access has been closed.';
 $string['inactive_object'] = '{$a} : You had no activity for a while';
 $string['completed_object'] = '{$a} : Congratulation ! You have completed a course';

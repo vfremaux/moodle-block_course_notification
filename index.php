@@ -15,7 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+<<<<<<< HEAD
  * Form for editing HTML block instances.
+=======
+ * Form for editing course_notification block instances.
+>>>>>>> MOODLE_401_STABLE
  *
  * @package   block_course_notification
  * @category  blocks

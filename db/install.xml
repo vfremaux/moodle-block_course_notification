@@ -24,17 +24,27 @@
         <FIELD NAME="threedaystoendnotified" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Marked if three days to end message has been sent"/>
         <FIELD NAME="threedaystoendnotedate" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of three days to end message"/>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <FIELD NAME="onedaytoendnotifoneied" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Marked if one day to end message has been sent"/>
 =======
         <FIELD NAME="onedaytoendnotified" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Marked if one day to end message has been sent"/>
 >>>>>>> MOODLE_37_STABLE
+=======
+        <FIELD NAME="onedaytoendnotified" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Marked if one day to end message has been sent"/>
+>>>>>>> MOODLE_401_STABLE
         <FIELD NAME="onedaytoendnotedate" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of one day to end message"/>
         <FIELD NAME="closednotified" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Marked if access ending message has been sent"/>
         <FIELD NAME="closednotedate" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of access ending message"/>
         <FIELD NAME="completednotified" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Marked if course completed message has been sent"/>
         <FIELD NAME="completednotedate" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of course completed message"/>
         <FIELD NAME="inactivenotified" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Counts inactive message sent"/>
+<<<<<<< HEAD
         <FIELD NAME="inactivenotedate" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of lat inactive message sent"/>
+=======
+        <FIELD NAME="inactivenotedate" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of last inactive message sent"/>
+        <FIELD NAME="coldfeedbacknotified" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Counts coldform message sent"/>
+        <FIELD NAME="coldfeedbacknotedate" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Date of coldform message"/>
+>>>>>>> MOODLE_401_STABLE
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

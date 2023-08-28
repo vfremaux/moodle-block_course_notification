@@ -23,6 +23,7 @@
  */
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 $settings->add(new admin_setting_configcheckbox('block_course_notification/enable', get_string('siteenabled', 'block_course_notification'),
                    get_string('configsiteenabled', 'block_course_notification'), 0));
 
@@ -101,6 +102,8 @@ $default = 14;
 $settings->add(new admin_setting_configtext($key, $label, $desc, $default));
 >>>>>>> MOODLE_37_STABLE
 =======
+=======
+>>>>>>> MOODLE_401_STABLE
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot.'/blocks/course_notification/lib.php');
@@ -182,13 +185,42 @@ if ($hassiteconfig) {
     $default = 14;
     $settings->add(new admin_setting_configtext($key, $label, $desc, $default));
 
+<<<<<<< HEAD
     if (block_course_notification_supports_feature('emulate/community') == 'pro') {
         include_once($CFG->dirroot.'/blocks/course_notification/pro/prolib.php');
         \block_course_notification\pro_manager::add_settings($ADMIN, $settings);
+=======
+    $key = 'block_course_notification/defaultinactivityfrequency';
+    $label = get_string('configdefaultinactivityfrequency', 'block_course_notification');
+    $desc = '';
+    $default = 7;
+    $settings->add(new admin_setting_configtext($key, $label, $desc, $default));
+
+    $key = 'block_course_notification/bulklimit';
+    $label = get_string('configbulklimit', 'block_course_notification');
+    $desc = get_string('configbulklimit_desc', 'block_course_notification');
+    $default = 300;
+    $settings->add(new admin_setting_configtext($key, $label, $desc, $default));
+
+    $key = 'block_course_notification/sendfirstassignanyway';
+    $label = get_string('configsendfirstassignanyway', 'block_course_notification');
+    $desc = get_string('configsendfirstassignanyway_desc', 'block_course_notification');
+    $default = 0;
+    $settings->add(new admin_setting_configcheckbox($key, $label, $desc, $default));
+
+    if (block_course_notification_supports_feature('emulate/community') == 'pro') {
+        include_once($CFG->dirroot.'/blocks/course_notification/pro/prolib.php');
+        $promanager = block_course_notification\pro_manager::instance();
+        $promanager->add_settings($ADMIN, $settings);
+>>>>>>> MOODLE_401_STABLE
     } else {
         $label = get_string('plugindist', 'block_course_notification');
         $desc = get_string('plugindist_desc', 'block_course_notification');
         $settings->add(new admin_setting_heading('plugindisthdr', $label, $desc));
     }
+<<<<<<< HEAD
 }
 >>>>>>> MOODLE_39_STABLE
+=======
+}
+>>>>>>> MOODLE_401_STABLE
