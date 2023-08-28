@@ -46,6 +46,8 @@ require_capability('block/course_notification:setup', $context);
 
 $blockobj = block_instance('course_notification', $instance);
 
+$config = get_config('block_course_notification');
+
 $params = array('id' => $courseid, 'blockid' => $blockid, 'filterbl' => $filterbl, 'filterenrol' => $filterenrol);
 $url = new moodle_url('/blocks/course_notification/report.php', $params);
 $PAGE->set_url($url);
@@ -70,8 +72,8 @@ $PAGE->navbar->add(get_string('pluginname', 'block_course_notification'));
 
 $userstr = get_string('user');
 $firstassignstr = get_string('firstassign', 'block_course_notification');
-$firstcallstr = get_string('oneweekfromstart', 'block_course_notification');
-$secondcallstr = get_string('twoweeksfromstart', 'block_course_notification');
+$firstcallstr = get_string('delayfromstart', 'block_course_notification', $blockobj->config-> firstcalldelay ?? $config->defaultfirstcalldelay ?? 7);
+$secondcallstr = get_string('delayfromstart', 'block_course_notification', $blockobj->config-> secondcalldelay ?? $config->defaultsecondcalldelay ?? 14);
 $twoweeknearendstr = get_string('twoweeksnearend', 'block_course_notification');
 $oneweeknearendstr = get_string('oneweeknearend', 'block_course_notification');
 $fivedaystoendstr = get_string('fivedaystoend', 'block_course_notification');

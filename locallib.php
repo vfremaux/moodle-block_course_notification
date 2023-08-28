@@ -49,6 +49,11 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
 
     $requiredclause = '';
 
+    $firstcalldelay = $config->defaultfirstcalldelay ?? 7;
+    $firstcalldelay = $blockinstance->config->firstcalldelay ?? $firstcalldelay;
+    $secondcalldelay = $config->defaultsecondcallcalldelay ?? 14;
+    $secondcalldelay = $blockinstance->config->secondcalldelay ?? $secondcalldelay;
+
     switch ($event) {
         case 'firstassign': {
             // 'firstassign' event is when course or enrolment starts. It is emited once per user.
@@ -60,17 +65,17 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
         }
         case 'firstcall': {
             // First call is emited once after 7 days of course or enrol start to inactive users.
-            $eventcourseoffset = 7 * DAYSECS;
-            $endrange = $now - DAYSECS * 7;
-            $startrange = $now - DAYSECS * 14;
+            $eventcourseoffset = $firstcalldelay * DAYSECS;
+            $endrange = $now - DAYSECS * $firstcalldelay;
+            $startrange = $now - DAYSECS * $secondcalldelay;
             $eventfield = 'firstcallnotified';
             break;
         }
         case 'secondcall': {
             // First call is emited once after 14 days of course or enrol start to inactive users.
-            $eventcourseoffset = 14 * DAYSECS;
-            $endrange = $now - DAYSECS * 14;
-            $startrange = $now - DAYSECS * 21;
+            $eventcourseoffset = $secondcalldelay * DAYSECS;
+            $endrange = $now - DAYSECS * $secondcalldelay;
+            $startrange = $now - DAYSECS * ($secondcalldelay + 7);
             $eventfield = 'secondcallnotified';
             // $requiredclause = 'AND bcn.firstcallnotified = 1';
             break;

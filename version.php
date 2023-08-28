@@ -29,8 +29,8 @@ $plugin->requires  = 2020060900;        // Requires this Moodle version.
 $plugin->component = 'block_course_notification'; // Full name of the plugin (used for diagnostics).
 $plugin->release = '3.9.0 (Build 2022021800)';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->supported = [39,311];
+$plugin->supported = [39, 311];
 
 // Non moodle attributes.
-$plugin->codeincrement = '3.9.0008';
+$plugin->codeincrement = '3.9.0009';
 $plugin->privacy = 'dualrelease';
