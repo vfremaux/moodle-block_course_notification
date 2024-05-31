@@ -83,7 +83,9 @@ class block_course_notification extends block_list {
             $config = get_config('block_course_notification');
             $this->config->firstassign = $config->defaultfirstassign;
             $this->config->firstcall = $config->defaultfirstcall;
+            $this->config->firstcalldelay = $config->defaultfirstcalldelay;
             $this->config->secondcall = $config->defaultsecondcall;
+            $this->config->secondcalldelay = $config->defaultsecondcalldelay;
             $this->config->twoweeksnearend = $config->defaulttwoweeksnearend;
             $this->config->oneweeknearend = $config->defaultoneweeknearend;
             $this->config->fivedaystoend = $config->defaultfivedaystoend;
