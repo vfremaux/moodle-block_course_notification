@@ -58,7 +58,6 @@ $string['general'] = 'General';
 >>>>>>> MOODLE_401_STABLE
 $string['inactive'] = 'Inactivity';
 $string['onedaytoend'] = 'One day to end';
-$string['oneweekfromstart'] = 'One week miss (start)';
 $string['oneweeknearend'] = 'One week enrol end';
 $string['pending'] = 'Pending';
 $string['pluginname'] = 'Course notifications';
@@ -73,8 +72,12 @@ $string['status'] = 'User states';
 $string['task_notification'] = 'Notification emission task';
 $string['threedaystoend'] = 'three days to end';
 $string['tosend'] = 'To be sent';
+<<<<<<< HEAD
 >>>>>>> MOODLE_401_STABLE
 $string['twoweeksfromstart'] = 'Two weeks miss (start)';
+=======
+$string['delayfromstart'] = '{$a} days miss (from start)';
+>>>>>>> MOODLE_401_STABLE
 $string['twoweeksnearend'] = 'Two weeks enrol end';
 $string['nocoldfeedbackmodules'] = 'No Questionnaire nor Feedback modules in this course';
 $string['coursecompletion'] = 'Course completion';
@@ -117,9 +120,11 @@ $string['inactivityfrequency'] = 'Inactive notification frequ.';
 >>>>>>> MOODLE_401_STABLE
 $string['configfirstassign'] = 'Notify on assign';
 $string['configfirstcall'] = 'First call after assign';
+$string['configfirstcalldelay'] = 'Delay (in days) for first call after assign';
 $string['configsecondcall'] = 'Second call after assign';
-$string['configoneweekfromstart'] = 'One week from start';
-$string['configtwoweeksfromstart'] = 'Two weeks from start';
+$string['configsecondcalldelay'] = 'Delay (in days) for second call after assign';
+$string['configoneweekfromstart'] = 'First call from start';
+$string['configtwoweeksfromstart'] = 'Second call from start';
 $string['configoneweeknearend'] = 'One week near end';
 $string['configtwoweeksnearend'] = 'Two weeks near end';
 $string['configfivedaystoend'] = 'Five days to end';
@@ -174,7 +179,9 @@ $string['supporturl'] = 'Support/contact URL';
 >>>>>>> MOODLE_401_STABLE
 $string['configdefaultfirstassign'] = 'First assign signal (default state)';
 $string['configdefaultfirstcall'] = 'First call signal (default state)';
+$string['configdefaultfirstcalldelay'] = 'First call signal delay (default value)';
 $string['configdefaultsecondcall'] = 'Second call signal (default state)';
+$string['configdefaultsecondcalldelay'] = 'Second call signal delay (default value)';
 $string['configdefaulttwoweeksnearend'] = 'Two weeks near end signal (default state)';
 $string['configdefaultoneweeknearend'] = 'One week near end signal (default state)';
 $string['configdefaultfivedaystoend'] = 'Five days to end signal (default state)';

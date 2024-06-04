@@ -125,11 +125,23 @@ if ($hassiteconfig) {
     $default = 1;
     $settings->add(new admin_setting_configcheckbox($key, $label, $desc, $default));
 
+    $key = 'block_course_notification/defaultfirstcalldelay';
+    $label = get_string('configdefaultfirstcalldelay', 'block_course_notification');
+    $desc = '';
+    $default = 7;
+    $settings->add(new admin_setting_configtext($key, $label, $desc, $default));
+
     $key = 'block_course_notification/defaultsecondcall';
     $label = get_string('configdefaultsecondcall', 'block_course_notification');
     $desc = '';
     $default = 1;
     $settings->add(new admin_setting_configcheckbox($key, $label, $desc, $default));
+
+    $key = 'block_course_notification/defaultsecondcalldelay';
+    $label = get_string('configdefaultsecondcalldelay', 'block_course_notification');
+    $desc = '';
+    $default = 14;
+    $settings->add(new admin_setting_configtext($key, $label, $desc, $default));
 
     $key = 'block_course_notification/defaulttwoweeksnearend';
     $label = get_string('configdefaulttwoweeksnearend', 'block_course_notification');

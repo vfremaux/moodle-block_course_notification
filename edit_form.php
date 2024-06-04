@@ -57,8 +57,11 @@ class block_course_notification_edit_form extends block_edit_form {
 
         $mform->addElement('advcheckbox', 'config_firstcall', get_string('configfirstcall', 'block_course_notification'));
 
+        $mform->addElement('text', 'config_firstcalldelay', get_string('configfirstcalldelay', 'block_course_notification'));
+
         $mform->addElement('advcheckbox', 'config_secondcall', get_string('configsecondcall', 'block_course_notification'));
 
+<<<<<<< HEAD
 <<<<<<< HEAD
         $mform->addElement('header', 'configheader1', get_string('incourse', 'block_course_notification'));
 
@@ -79,6 +82,10 @@ class block_course_notification_edit_form extends block_edit_form {
 
         $mform->addElement('header', 'configheader2', get_string('courseend', 'block_course_notification'));
 =======
+=======
+        $mform->addElement('text', 'config_secondcalldelay', get_string('configsecondcalldelay', 'block_course_notification'));
+
+>>>>>>> MOODLE_401_STABLE
         $mform->addElement('header', 'configheader2', get_string('incourse', 'block_course_notification'));
 
         $mform->addElement('advcheckbox', 'config_inactive', get_string('configinactive', 'block_course_notification'));

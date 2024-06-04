@@ -72,7 +72,7 @@ define(['jquery', 'core/log', 'core/config'], function($, log, cfg) {
                 $(licensekeyid).after(waiticon);
 
                 $.get(url, function(data) {
-                    if (data.match(/SET OK/)) {
+                    if (data.match(/(CHECK|SET) OK/)) {
                         if (found = data.match(/-\d+.*$/)) {
                             $(licensekeyid + ' + img').remove();
                             $(licensekeyid).after(cautionicon);
