@@ -24,7 +24,33 @@
 defined('MOODLE_INTERNAL') or die();
 
 require_once($CFG->dirroot.'/blocks/course_notification/mailtemplatelib.php');
+require_once($CFG->dirroot . '/blocks/course_notification/compatlib.php');
 require_once($CFG->libdir . '/completionlib.php');
+
+use \block_course_notification\compat;
+
+/**
+ * Get course bcn records using static caching per course.
+ *
+ */
+function bcn_get_course_bcns($courseid) {
+    global $DB;
+    static $coursebcns;
+
+    if (is_null($coursebcns) || !array_key_exists($courseid, $coursebcns)) {
+        $coursebcnsarr = [];
+        $coursebcnrecs = $DB->get_records('block_course_notification', ['courseid' => $courseid]);
+        if ($coursebcnrecs) {
+            foreach ($coursebcnrecs as $rec) {
+                $coursebcnsarr[$rec->userid] = $rec;
+            }
+        }
+
+        $coursebcns[$courseid] = $coursebcnsarr;
+    }
+
+    return $coursebcns[$courseid];
+}
 
 /**
  * get list of users matching the event rule condition at start of the course.
@@ -49,6 +75,11 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
 
     $requiredclause = '';
 
+    $firstcalldelay = $config->defaultfirstcalldelay ?? 7;
+    $firstcalldelay = $blockinstance->config->firstcalldelay ?? $firstcalldelay;
+    $secondcalldelay = $config->defaultsecondcallcalldelay ?? 14;
+    $secondcalldelay = $blockinstance->config->secondcalldelay ?? $secondcalldelay;
+
     switch ($event) {
         case 'firstassign': {
             // 'firstassign' event is when course or enrolment starts. It is emited once per user.
@@ -60,17 +91,17 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
         }
         case 'firstcall': {
             // First call is emited once after 7 days of course or enrol start to inactive users.
-            $eventcourseoffset = 7 * DAYSECS;
-            $endrange = $now - DAYSECS * 7;
-            $startrange = $now - DAYSECS * 14;
+            $eventcourseoffset = $firstcalldelay * DAYSECS;
+            $endrange = $now - DAYSECS * $firstcalldelay;
+            $startrange = $now - DAYSECS * $secondcalldelay;
             $eventfield = 'firstcallnotified';
             break;
         }
         case 'secondcall': {
             // First call is emited once after 14 days of course or enrol start to inactive users.
-            $eventcourseoffset = 14 * DAYSECS;
-            $endrange = $now - DAYSECS * 14;
-            $startrange = $now - DAYSECS * 21;
+            $eventcourseoffset = $secondcalldelay * DAYSECS;
+            $endrange = $now - DAYSECS * $secondcalldelay;
+            $startrange = $now - DAYSECS * ($secondcalldelay + 7);
             $eventfield = 'secondcallnotified';
             // $requiredclause = 'AND bcn.firstcallnotified = 1';
             break;
@@ -105,16 +136,15 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
         ";
     }
 
-    // M4.
-    $fields = \core_user\fields::for_name()->excluding('id')->excluding('deleted')->excluding('suspended')->get_required_fields();
-    $fields = 'u.id,'.implode(',', $fields);
-
     // Get all active enrollement records.
     $sql = "
         SELECT DISTINCT
             u.id,
             u.username,
-            ".$fields.",
+            ".compat::user_fields('u').",
+            u.email,
+            u.emailstop,
+            u.mailformat,
             u.deleted,
             u.suspended,
             u.lang,
@@ -145,6 +175,17 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
     $result = [];
     if (!empty($potentials)) {
         $statuslog = '';
+
+        $courseulas = [];
+        $ularecs = $DB->get_records('user_lastaccess', ['courseid' => $course->id]);
+        if ($ularecs) {
+            foreach ($courseulas as $rec) {
+                $courseulas[$rec->userid] = $rec;
+            }
+        }
+
+        $coursebcns = bcn_get_course_bcns($courseid);
+
         foreach ($potentials as $pot) {
 
             if ($completion->is_course_complete($pot->id)) {
@@ -155,8 +196,7 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
                 continue;
             }
 
-            $ula = $DB->get_record('user_lastaccess', ['courseid' => $course->id, 'userid' => $pot->id]);
-            if (!empty($ula) && $ula->timeaccess > 0) {
+            if (array_key_exists($pot->id, $courseulas) && $courseulas[$pot->id]->timeaccess > 0) {
                 // rule A2.
                 if ($event != 'firstassign' || empty($config->sendfirstassignanyway)) {
                     $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule A2 : Already accessed course'."\n";
@@ -165,8 +205,7 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
                 }
             }
 
-            $bcn = $DB->get_record('block_course_notification', ['courseid' => $course->id, 'userid' => $pot->id]);
-            if (!empty($bcn) && $bcn->$eventfield) {
+            if (array_key_exists($pot->id, $coursebcns) && $coursebcns[$pot->id]->$eventfield) {
                 // rule B.
                 $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule B : Already sent'."\n";
                 // Event already sent.
@@ -269,17 +308,17 @@ function bcn_get_end_event_users(&$blockinstance, &$course, $event, $ignoreduser
         ";
     }
 
-    // M4.
-    $fields = \core_user\fields::for_name()->excluding('id')->excluding('deleted')->excluding('suspended')->get_required_fields();
-    $fields = 'u.id,'.implode(',', $fields);
-
     // Get all enrolled users not already notified, and having end date soon,
     // These notifications will be sent to all active or inactive users but not to completed users.
     $sql = "
         SELECT DISTINCT
             u.id,
             u.username,
-            ".$fields.",
+            ".compat::user_fields('u').",
+            u.email,
+            u.lang,
+            u.emailstop,
+            u.mailformat,
             u.deleted,
             u.suspended,
             MIN(ue.timestart) as timestart,
@@ -308,6 +347,10 @@ function bcn_get_end_event_users(&$blockinstance, &$course, $event, $ignoreduser
     $result = [];
     if (!empty($potentials)) {
         $statuslog = '';
+
+        // Get bcn records and arrange by user.
+        $coursebcns = bcn_get_course_bcns($courseid);
+
         foreach ($potentials as $pot) {
             if ($completion->is_course_complete($pot->id)) {
                 // rule A.
@@ -316,8 +359,7 @@ function bcn_get_end_event_users(&$blockinstance, &$course, $event, $ignoreduser
                 continue;
             }
 
-            $bcn = $DB->get_record('block_course_notification', ['courseid' => $course->id, 'userid' => $pot->id]);
-            if (!empty($bcn) && $bcn->$eventfield) {
+            if (array_key_exists($pot->id, $coursebcns) && $coursebcns[$pot->id]->$eventfield) {
                 // rule B.
                 $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule B : already sent'."\n";
                 // Event was already sent.
@@ -437,19 +479,21 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
     // Skip inactives if : start notifications are enabled and start date not far enough
 
     // Select all enrolled users having no logs in the period and .
-    // M4.
-    $fields = \core_user\fields::for_name()->excluding('id')->excluding('deleted')->excluding('suspended')->get_required_fields();
-    $fields = 'u.id,'.implode(',', $fields);
 
     $sql = "
         SELECT
             u.id,
             u.username,
-            ".$fields.",
+            ".compat::user_fields('u').",
+            u.email,
+            u.emailstop,
+            u.mailformat,
+            u.maildigest,
+            u.maildisplay,
             u.deleted,
             u.suspended,
             u.lang,
-            MAX(l.timecreated) as lastlog,
+            ula.timeaccess as lastaccess,
             MIN(ue.timestart) as earlyassign,
             MAX(ue.timeend) as lateend,
             MIN(ue.timeend) as earlyend
@@ -464,10 +508,10 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
         ON
             ue.enrolid = e.id
         LEFT JOIN
-            {logstore_standard_log} l
+            {user_lastaccess} ula
         ON
-            l.courseid = e.courseid AND
-            l.userid = u.id
+            ula.courseid = e.courseid AND
+            ula.userid = u.id
         WHERE
             u.deleted = 0 AND
             u.suspended = 0 AND
@@ -478,7 +522,7 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
         GROUP BY
             u.id
         HAVING
-            (lastlog IS NULL OR lastlog < ?) AND
+            (lastaccess IS NULL OR lastaccess < ?) AND
             earlyassign < ?
         ORDER BY
             lastname,
@@ -492,6 +536,9 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
     $users = [];
     if (!empty($candidates)) {
         $statuslog = '';
+
+        $coursebcns = bcn_get_course_bcns($courseid);
+
         foreach ($candidates as $u) {
 
             if ($completion->is_course_complete($u->id)) {
@@ -508,13 +555,12 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
                 continue;
             }
 
-            $params = ['userid' => $u->id, 'courseid' => $courseid];
-            if ($bcn = $DB->get_record('block_course_notification', $params)) {
+            if (array_key_exists($u->id, $coursebcns)) {
                 if (empty($options['justcheckinactivestatus'])) {
                     if (!array_key_exists('inactivityfrequency', $options)) {
                         $options['inactivityfrequency'] = 1;
                     }
-                    if (!empty($bcn->inactivenotedate) && ((time() - DAYSECS * $options['inactivityfrequency'] + 30) <= $bcn->inactivenotedate)) {
+                    if (!empty($coursebcns[$u->id]->inactivenotedate) && ((time() - DAYSECS * $options['inactivityfrequency'] + 30) <= $coursebcns[$u->id]->inactivenotedate)) {
                         // rule B.
                         // there is already an inactive signal sent in less than past 24 hours. Do not send twice per 24 day.
                         // Let 30 seconds drift incertainty.
@@ -523,15 +569,15 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
                     }
                 }
 
-                if ($bcn->secondcallnotedate) {
-                    if ($fromtime <= $bcn->secondcallnotedate) {
+                if ($coursebcns[$u->id]->secondcallnotedate) {
+                    if ($fromtime <= $coursebcns[$u->id]->secondcallnotedate) {
                         // rule C.
                         // Second call has been sent and send date is recent.
                         $statuslog .= $course->id.' inactive -'.$u->username.' trapped rule C : recently called (2nd)'."\n";
                         continue;
                     }
-                } else if ($bcn->firstcallnotedate) {
-                    if ($fromtime <= $bcn->firstcallnotedate) {
+                } else if ($coursebcns[$u->id]->firstcallnotedate) {
+                    if ($fromtime <= $coursebcns[$u->id]->firstcallnotedate) {
                         // rule D.
                         // First call has been sent and send date is recent.
                         $statuslog .= $course->id.' inactive -'.$u->username.' trapped rule D : recently called (1st)'."\n";
@@ -700,9 +746,7 @@ function bcn_notify_manager(&$blockinstance, &$course, $notified, $eventtype) {
 
     $context = context_block::instance($blockinstance->instance->id);
 
-    // M4.
-    $fields = \core_user\fields::for_name()->including('lang')->get_required_fields();
-    $fields = 'u.id,'.implode(',', $fields);
+    $fields = 'u.id, username, '.compat::user_fields('u').', lang, email, emailstop, mailformat';
     $managers = get_users_by_capability($context, 'block/course_notification:setup', $fields);
 
     $vars = array(
