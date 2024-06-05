@@ -31,7 +31,7 @@ $plugin->release = '4.1.0 (Build 2022021800)';
 $plugin->maturity = MATURITY_STABLE;
 $plugin->supported = [401, 402];
 if (function_exists('block_course_notification_supports_feature') && block_course_notification_supports_feature() === 'pro') {
-    $plugin->dependencies = ['local_vfcore' => '*'];
+    $plugin->dependencies = ['local_vfcore' => 2024053100];
 }
 
 // Non moodle attributes.
