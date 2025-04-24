@@ -99,11 +99,11 @@ $statswrapper->process_scores();
 $finalresults = $statswrapper->export_question_scores();
 
 print_object($statswrapper->results);
-debug_trace("Per choice results");
-debug_trace($statswrapper->results);
+bcn_debug_trace("Per choice results", BCN_TRACE_DEBUG);
+bcn_debug_trace($statswrapper->results, BCN_TRACE_DEBUG);
 print_object($statswrapper->questionresults);
-debug_trace("Question results");
-debug_trace($statswrapper->questionresults);
+bcn_debug_trace("Question results", BCN_TRACE_DEBUG);
+bcn_debug_trace($statswrapper->questionresults, BCN_TRACE_DEBUG);
 
 echo "final scores\n";
 print_object($finalresults);

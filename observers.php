@@ -25,21 +25,6 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot.'/blocks/course_notification/locallib.php');
 
-if (!function_exists('debug_trace')) {
-    @include_once($CFG->dirroot.'/local/advancedperfs/debugtools.php');
-    if (!function_exists('debug_trace')) {
-        function debug_trace($msg, $tracelevel = 0, $label = '', $backtracelevel = 1) {
-            // Fake this function if not existing in the target moodle environment.
-            assert(1);
-        }
-        define('TRACE_ERRORS', 1); // Errors should be always traced when trace is on.
-        define('TRACE_NOTICE', 3); // Notices are important notices in normal execution.
-        define('TRACE_DEBUG', 5); // Debug are debug time notices that should be burried in debug_fine level when debug is ok.
-        define('TRACE_DATA', 8); // Data level is when requiring to see data structures content.
-        define('TRACE_DEBUG_FINE', 10); // Debug fine are control points we want to keep when code is refactored and debug needs to be reactivated.
-    }
-}
-
 /**
  * Event observer for block  course_notification.
  */
@@ -66,9 +51,7 @@ class block_course_notification_observer {
         $instance = block_instance('course_notification', $record);
 
         if (!empty($instance->config->completed)) {
-            if (function_exists('debug_trace')) {
-                debug_trace("Course Notification observer : Send completion message");
-            }
+            bcn_debug_trace("Course Notification observer : Send completion message", BCN_TRACE_NOTICE);
 
             $user = $DB->get_record('user', ['id' => $event->relateduserid]);
             if (!empty($user)) {
@@ -77,13 +60,11 @@ class block_course_notification_observer {
         }
 
         if (block_course_notification_supports_feature('coldfeedback/mail')) {
-            debug_trace("Triggering block_course_notification_observer_extended::on_course_completed in pro zone ");
+            bcn_debug_trace("Triggering block_course_notification_observer_extended::on_course_completed in pro zone ", BCN_TRACE_NOTICE);
             include_once($CFG->dirroot.'/blocks/course_notification/pro/observers.php');
             block_course_notification_observer_extended::on_course_completed($event, $instance);
         } else {
-            if (function_exists('debug_trace')) {
-                debug_trace("Skipping block_course_notification_observer_extended::on_course_completed in pro zone ");
-            }
+            bcn_debug_trace("Skipping block_course_notification_observer_extended::on_course_completed in pro zone ", BCN_TRACE_NOTICE);
         }
     }
 
@@ -94,38 +75,38 @@ class block_course_notification_observer {
     public static function on_course_module_completion_updated(\core\event\course_module_completion_updated $event) {
         global $CFG, $DB;
 
-        debug_trace('course module completion event observer', TRACE_DEBUG_FINE);
-        debug_trace($event, TRACE_DATA);
+        bcn_debug_trace('course module completion event observer', BCN_TRACE_DEBUG_FINE);
+        bcn_debug_trace($event, BCN_TRACE_DATA);
 
         $coursecontext = context_course::instance($event->courseid);
         $params = ['parentcontextid' => $coursecontext->id, 'blockname' => 'course_notification'];
         $blockrecords = $DB->get_records('block_instances', $params);
         if (empty($blockrecords)) {
             // No course notification block.
-            debug_trace("No notification bloc found in course for context id : {$coursecontext->id}", TRACE_DEBUG_FINE);
+            bcn_debug_trace("No notification bloc found in course for context id : {$coursecontext->id}", BCN_TRACE_DEBUG_FINE);
             return;
         }
 
-        debug_trace('We have a course_notification block', TRACE_DEBUG_FINE);
+        bcn_debug_trace('We have a course_notification block', BCN_TRACE_DEBUG_FINE);
 
         // Should be one only. Take first that comes.
         $record = array_shift($blockrecords);
         $instance = block_instance('course_notification', $record);
 
-        debug_trace($instance->config, TRACE_DATA);
+        bcn_debug_trace($instance->config, BCN_TRACE_DATA);
 
         if (empty($instance->config->coldfeedback) || ($instance->config->coldfeedbacktriggerson != 'cm')) {
-            debug_trace('No triggering conditions for coldfeedback', TRACE_DEBUG_FINE);
+            bcn_debug_trace('No triggering conditions for coldfeedback', BCN_TRACE_DEBUG_FINE);
             return;
         }
 
         if ($instance->config->coldfeedbacktriggermodule != $event->contextinstanceid) {
-            debug_trace("Not the triggering expected module {$instance->config->coldfeedbacktriggermodule} : event module : {$event->contextinstanceid} ", TRACE_DEBUG_FINE);
+            bcn_debug_trace("Not the triggering expected module {$instance->config->coldfeedbacktriggermodule} : event module : {$event->contextinstanceid} ", BCN_TRACE_DEBUG_FINE);
             return;
         }
 
         if ($event->other['completionstate'] == 1) {
-            debug_trace("We delegate module completion to pro observer on completion for block instance ".$instance->instance->id, TRACE_DEBUG_FINE);
+            bcn_debug_trace("We delegate module completion to pro observer on completion for block instance ".$instance->instance->id, BCN_TRACE_DEBUG_FINE);
             include_once($CFG->dirroot.'/blocks/course_notification/pro/observers.php');
             block_course_notification_observer_extended::on_course_module_completion_updated($event, $instance);
         }

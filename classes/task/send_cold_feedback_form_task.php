@@ -29,6 +29,7 @@ use moodle_url;
 use context_course;
 
 require_once($CFG->dirroot.'/blocks/course_notification/lib.php');
+require_once($CFG->dirroot.'/blocks/course_notification/locallib.php');
 require_once($CFG->dirroot.'/blocks/course_notification/mailtemplatelib.php');
 require_once($CFG->dirroot.'/auth/ticket/lib.php');
 
@@ -55,7 +56,7 @@ class send_cold_feedback_form_task extends adhoc_task {
 
         $customdata = $this->get_custom_data();
         include_once($CFG->dirroot.'/blocks/course_notification/pro/classes/task/send_cold_feedback_form_task.php');
-        debug_trace("send_cold_feedback_form_task: Deffering sending coldfeedback mail to \"pro\" zone.");
+        bcn_debug_trace("send_cold_feedback_form_task: Deffering sending coldfeedback mail to \"pro\" zone.", BCN_TRACE_DEBUG);
         $sender = new send_cold_feedback_form_task_extended();
         return $sender->execute($customdata);
     }

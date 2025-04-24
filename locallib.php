@@ -29,6 +29,12 @@ require_once($CFG->libdir . '/completionlib.php');
 
 use \block_course_notification\compat;
 
+define('BCN_TRACE_ERRORS', 1); // Errors should be always traced when trace is on.
+define('BCN_TRACE_NOTICE', 3); // Notices are important notices in normal execution.
+define('BCN_TRACE_DEBUG', 5); // Debug are debug time notices that should be burried in debug_fine level when debug is ok.
+define('BCN_TRACE_DATA', 8); // Data level is when requiring to see data structures content.
+define('BCN_TRACE_DEBUG_FINE', 10); // Debug fine are control points we want to keep when code is refactored and debug needs to be reactivated.
+
 /**
  * Get course bcn records using static caching per course.
  *
@@ -65,6 +71,7 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
 
     $config = get_config('block_course_notification');
     $now = time();
+    $DAYSECS = (int) DAYSECS;
 
     if (is_object($course)) {
         $courseid = $course->id;
@@ -84,24 +91,24 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
         case 'firstassign': {
             // 'firstassign' event is when course or enrolment starts. It is emited once per user.
             $eventcourseoffset = 0;
-            $startrange = $now - 7 * DAYSECS;
+            $startrange = $now - 7 * $DAYSECS;
             $endrange = $now;
             $eventfield = 'firstassignnotified';
             break;
         }
         case 'firstcall': {
             // First call is emited once after 7 days of course or enrol start to inactive users.
-            $eventcourseoffset = $firstcalldelay * DAYSECS;
-            $endrange = $now - DAYSECS * $firstcalldelay;
-            $startrange = $now - DAYSECS * $secondcalldelay;
+            $eventcourseoffset = (int)$firstcalldelay * $DAYSECS;
+            $endrange = $now - ($DAYSECS * (int)$firstcalldelay);
+            $startrange = $now - ($DAYSECS * (int)$secondcalldelay);
             $eventfield = 'firstcallnotified';
             break;
         }
         case 'secondcall': {
             // First call is emited once after 14 days of course or enrol start to inactive users.
-            $eventcourseoffset = $secondcalldelay * DAYSECS;
-            $endrange = $now - DAYSECS * $secondcalldelay;
-            $startrange = $now - DAYSECS * ($secondcalldelay + 7);
+            $eventcourseoffset = (int)$secondcalldelay * $DAYSECS;
+            $endrange = $now - $DAYSECS * (int)$secondcalldelay;
+            $startrange = $now - $DAYSECS * ((int)$secondcalldelay + 7);
             $eventfield = 'secondcallnotified';
             // $requiredclause = 'AND bcn.firstcallnotified = 1';
             break;
@@ -110,11 +117,11 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
 
     $startdate = date('Ymd Hms', $startrange);
     $enddate = date('Ymd Hms', $endrange);
-    // debug_trace("Getting start events / Range : [$startdate - $enddate] ", TRACE_DEBUG);
+    // bcn_debug_trace("Getting start events / Range : [$startdate - $enddate] ", BCN_TRACE_DEBUG);
 
     if ($course->startdate > $now) {
         // course not even started yet.
-        debug_trace("Course {$course->id} - $event : Course has not yet started", TRACE_DEBUG_FINE);
+        bcn_debug_trace("Course {$course->id} - $event : Course has not yet started", BCN_TRACE_DEBUG_FINE);
         return [];
     }
 
@@ -122,7 +129,7 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
         if ($course->startdate > $now - $eventcourseoffset) {
             // There cannot be any notified users for first or second call before sufficient time has passed.
             // echo "Startdate too late for offset $eventcourseoffset ";
-            debug_trace("Course {$course->id} - $event : starts foo far ahead", TRACE_DEBUG_FINE);
+            bcn_debug_trace("Course {$course->id} - $event : starts foo far ahead", BCN_TRACE_DEBUG_FINE);
             return [];
         }
     }
@@ -238,7 +245,7 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
             $statuslog .= $course->id.' '.$event.' -'.$pot->username.' Accepted for notification'."\n";
             $result[$pot->id] = $pot;
         }
-        debug_trace($statuslog, TRACE_DEBUG_FINE);
+        bcn_debug_trace($statuslog, BCN_TRACE_DEBUG_FINE);
         if (@$options['verbose'] == 2) {
             mtrace($statuslog);
         }
@@ -258,6 +265,8 @@ function bcn_get_start_event_users(&$blockinstance, &$course, $event = 'firstcal
 function bcn_get_end_event_users(&$blockinstance, &$course, $event, $ignoredusers, $options = []) {
     global $DB;
 
+    $DAYSECS = (int) DAYSECS;
+
     if (is_object($course)) {
         $courseid = $course->id;
     } else {
@@ -267,27 +276,27 @@ function bcn_get_end_event_users(&$blockinstance, &$course, $event, $ignoreduser
 
     switch ($event) {
         case 'twoweeksnearend': {
-            $eventendcourseoffset = DAYSECS * 14;
+            $eventendcourseoffset = $DAYSECS * 14;
             $eventfield = 'twoweeksnearendnotified';
             break;
         }
         case 'oneweeknearend': {
-            $eventendcourseoffset = DAYSECS * 7;
+            $eventendcourseoffset = $DAYSECS * 7;
             $eventfield = 'oneweeknearendnotified';
             break;
         }
         case 'fivedaystoend': {
-            $eventendcourseoffset = DAYSECS * 5;
+            $eventendcourseoffset = $DAYSECS * 5;
             $eventfield = 'fivedaystoendnotified';
             break;
         }
         case 'threedaystoend': {
-            $eventendcourseoffset = DAYSECS * 3;
+            $eventendcourseoffset = $DAYSECS * 3;
             $eventfield = 'threedaystoendnotified';
             break;
         }
         case 'onedaytoend': {
-            $eventendcourseoffset = DAYSECS * 1;
+            $eventendcourseoffset = $DAYSECS * 1;
             $eventfield = 'onedaytoendnotified';
             break;
         }
@@ -392,7 +401,7 @@ function bcn_get_end_event_users(&$blockinstance, &$course, $event, $ignoreduser
                 continue;
             }
 
-            if ($enddate < ($now - DAYSECS * 15)) {
+            if ($enddate < ($now - (int) DAYSECS * 15)) {
                 // rule E.
                 $statuslog .= $course->id.' '.$event.' -'.$pot->username.' trapped rule E : end date is too far in the past. Notification is not consistant.'."\n";
                 // End is later.
@@ -402,7 +411,7 @@ function bcn_get_end_event_users(&$blockinstance, &$course, $event, $ignoreduser
             $statuslog .= $course->id.' '.$event.' -'.$pot->username.' Accepted for notification'."\n";
             $result[$pot->id] = $pot;
         }
-        debug_trace($statuslog, TRACE_DEBUG_FINE);
+        bcn_debug_trace($statuslog, BCN_TRACE_DEBUG_FINE);
         if (@$options['verbose'] == 2) {
             mtrace($statuslog);
         }
@@ -443,19 +452,19 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
                 throw new Exception("Missing course {$courseid}");
             }
             if (function_exists('debug_trace')) {
-                debug_trace("Missing course {$courseid}", TRACE_DEBUG);
+                bcn_debug_trace("Missing course {$courseid}", BCN_TRACE_DEBUG);
             }
             return [];
         }
     }
     $coursecontext = context_course::instance($course->id);
 
-    $fromtime = time() - (DAYSECS * $fromtimerangeindays);
+    $fromtime = time() - ((int) DAYSECS * $fromtimerangeindays);
 
     // If course is too recent for the required inactivity time, do not notify anyone.
     if ($course->startdate > $fromtime) {
         if (function_exists('debug_trace')) {
-            debug_trace("Inactivity : Course not yet started {$courseid}", TRACE_DEBUG);
+            bcn_debug_trace("Inactivity : Course not yet started {$courseid}", BCN_TRACE_DEBUG);
         }
         return [];
     }
@@ -463,7 +472,7 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
     // Course is closed.
     if (!empty($course->enddate) && ($course->enddate < time())) {
         if (function_exists('debug_trace')) {
-            debug_trace("Inactivity : Course is closed {$courseid}", TRACE_DEBUG);
+            bcn_debug_trace("Inactivity : Course is closed {$courseid}", BCN_TRACE_DEBUG);
         }
         return [];
     }
@@ -548,7 +557,7 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
                 continue;
             }
 
-            if ($u->lateend && (time() > $u->lateend + 2 * DAYSECS) && ($u->earlyend > 0)) {
+            if ($u->lateend && (time() > $u->lateend + 2 * (int) DAYSECS) && ($u->earlyend > 0)) {
                 // rule A1.
                 $statuslog .= $course->id.' inactive -'.$u->username.' trapped rule A1 : enrols are over'."\n";
                 // Do not notify inactivity to users out of enrol. User should not have any active infinite enrolment (null end date).
@@ -560,7 +569,7 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
                     if (!array_key_exists('inactivityfrequency', $options)) {
                         $options['inactivityfrequency'] = 1;
                     }
-                    if (!empty($coursebcns[$u->id]->inactivenotedate) && ((time() - DAYSECS * $options['inactivityfrequency'] + 30) <= $coursebcns[$u->id]->inactivenotedate)) {
+                    if (!empty($coursebcns[$u->id]->inactivenotedate) && ((time() - (int) DAYSECS * $options['inactivityfrequency'] + 30) <= $coursebcns[$u->id]->inactivenotedate)) {
                         // rule B.
                         // there is already an inactive signal sent in less than past 24 hours. Do not send twice per 24 day.
                         // Let 30 seconds drift incertainty.
@@ -587,7 +596,7 @@ function bcn_get_inactive(&$course, $fromtimerangeindays = 7, $ignoredusers = []
             }
             $users[$u->id] = $u;
         }
-        debug_trace($statuslog, TRACE_DEBUG_FINE);
+        bcn_debug_trace($statuslog, BCN_TRACE_DEBUG_FINE);
         if (@$options['verbose'] == 2) {
             mtrace($statuslog);
         }
@@ -649,7 +658,7 @@ function bcn_notify_user(block_course_notification $blockinstance, &$course, &$u
 
     if ($bcn && ($bcn->$eventmarkfield == 1) && !$allowiterate) {
         // If there is already a bcn record and event is marked do nothing.
-        debug_trace("Skip as already marked for this event", TRACE_DEBUG);
+        bcn_debug_trace("Skip as already marked for this event", BCN_TRACE_DEBUG);
         return false;
     }
 
@@ -681,7 +690,7 @@ function bcn_notify_user(block_course_notification $blockinstance, &$course, &$u
     $notification_html = format_text($notification_html, FORMAT_HTML, $options);
     // $notification = format_text_email($notification, FORMAT_HTML, $options);
 
-    if ($CFG->debugsmtp) {
+    if ($CFG->debugsmtp ?? false) {
         mtrace("\tSending {$eventtype} Text Mail Notification to " . fullname($user) . "\n####\n".$notification. "\n####");
         mtrace("\tSending {$eventtype} Mail Notification to " . fullname($user) . "\n####\n".$notification_html. "\n####");
     }
@@ -718,7 +727,7 @@ function bcn_notify_user(block_course_notification $blockinstance, &$course, &$u
             bcn_mark_event($eventtype, $user->id, $course->id);
         }
 
-        if ($CFG->debugsmtp || $verbose) {
+        if (!empty($CFG->debugsmtp) || $verbose) {
             if ($dryrun) {
                 mtrace("\tDry Run mode : Should send to user {$user->id} for event 'notify $eventtype' for course {$course->id} ");
             } else if ($markonly) {
@@ -728,7 +737,7 @@ function bcn_notify_user(block_course_notification $blockinstance, &$course, &$u
             }
         }
     } else {
-        debug_trace("Failed sending mail to {$user->username} ", TRACE_DEBUG);
+        bcn_debug_trace("Failed sending mail to {$user->username} ", BCN_TRACE_DEBUG);
     }
 
     return true;
@@ -763,10 +772,9 @@ function bcn_notify_manager(&$blockinstance, &$course, $notified, $eventtype) {
     foreach ($managers as $manager) {
         $notification = bcn_compile_mail_template("{$eventtype}_manager_raw", $vars, null, $manager->lang);
         $notification_html = bcn_compile_mail_template("{$eventtype}_manager_html", $vars, null, $manager->lang);
-        if (!$CFG->debugsmtp) {
-            $subject = 'ADMIN NOTIFY '.get_string("{$eventtype}_object", 'block_course_notification', $SITE->shortname);
-            email_to_user($manager, $admin, $subject, $notification, $notification_html);
-        } else {
+        $subject = 'ADMIN NOTIFY '.get_string("{$eventtype}_object", 'block_course_notification', $SITE->shortname);
+        email_to_user($manager, $admin, $subject, $notification, $notification_html);
+        if ($CFG->debugsmtp ?? false) {
             mtrace("\tADMIN NOTIFIED $eventtype to : ".implode(', ', $notified));
         }
     }
@@ -822,73 +830,75 @@ function bcn_set_test_courses() {
     ];
 
     $now = time();
+    $DAYSECS = (int) DAYSECS;
+    $HOURSECS = (int) HOURSECS;
 
     foreach ($testcourses as $tc) {
         echo "Processing $tc\n";
         switch ($tc) {
             case ('NOTSTARTED'): {
-                $start = $now + DAYSECS;
-                $end = $now + 90 * DAYSECS;
+                $start = $now + $DAYSECS;
+                $end = $now + 90 * $DAYSECS;
                 break;
             }
 
             case ('JUSTSTARTED'): {
-                $start = $now - HOURSECS;
-                $end = $now + 90 * DAYSECS;
+                $start = $now - $HOURSECS;
+                $end = $now + 90 * $DAYSECS;
                 break;
             }
 
             case ('STARTED7DAYS'): {
-                $start = $now - 7 * DAYSECS - HOURSECS;
-                $end = $now + 90 * DAYSECS;
+                $start = $now - 7 * $DAYSECS - $HOURSECS;
+                $end = $now + 90 * $DAYSECS;
                 break;
             }
 
             case ('STARTED14DAYS'): {
-                $start = $now - 14 * DAYSECS - HOURSECS;
-                $end = $now + 90 * DAYSECS;
+                $start = $now - 14 * $DAYSECS - $HOURSECS;
+                $end = $now + 90 * $DAYSECS;
                 break;
             }
 
             case ('14DAYSTOEND'): {
-                $start = $now - 90 * DAYSECS;
-                $end = $now + 14 * DAYSECS - HOURSECS;
+                $start = $now - 90 * $DAYSECS;
+                $end = $now + 14 * $DAYSECS - $HOURSECS;
                 break;
             }
 
             case ('7DAYSTOEND'): {
-                $start = $now - 90 * DAYSECS;
-                $end = $now + 7 * DAYSECS - HOURSECS;
+                $start = $now - 90 * $DAYSECS;
+                $end = $now + 7 * $DAYSECS - $HOURSECS;
                 break;
             }
 
             case ('5DAYSTOEND'): {
-                $start = $now - 90 * DAYSECS;
-                $end = $now + 5 * DAYSECS - HOURSECS;
+                $start = $now - 90 * $DAYSECS;
+                $end = $now + 5 * $DAYSECS - $HOURSECS;
                 break;
             }
 
             case ('3DAYSTOEND'): {
-                $start = $now - 90 * DAYSECS;
-                $end = $now + 3 * DAYSECS - HOURSECS;
+                $start = $now - 90 * $DAYSECS;
+                $end = $now + 3 * $DAYSECS - $HOURSECS;
                 break;
             }
 
             case ('1DAYTOEND'): {
-                $start = $now - 90 * DAYSECS;
-                $end = $now + 1 * DAYSECS - HOURSECS;
+                $start = $now - 90 * $DAYSECS;
+                $end = $now + 1 * $DAYSECS - $HOURSECS;
                 break;
             }
 
             case ('FINISHED'): {
-                $start = $now - 90 * DAYSECS;
-                $end = $now - DAYSECS;
+                $start = $now - 90 * $DAYSECS;
+                $end = $now - $DAYSECS;
                 break;
             }
         }
 
         if (empty($course = $DB->get_record('course', ['idnumber' => $tc]))) {
-            echo ('Test Course '.$tc.' doex not exist'."\n");
+            mtrace('Test Course '.$tc.' doex not exist'."\n");
             continue;
         }
 
@@ -945,7 +955,7 @@ function bcn_set_test_courses() {
             // On JUSTSTARTED course, should NOT appear;
             // On STARTED7DAYS course, should appear in Firstassign count;
             // On STARTED15DAYS course, should appear in firstcall count;
-            $ue->starttime = $course->startdate + 7 * DAYSECS;
+            $ue->starttime = $course->startdate + 7 * (int) DAYSECS;
             $ue->endtime = 0;
             $DB->update_record('user_enrolments', $ue);
             echo "$uname updated\n";
@@ -968,10 +978,22 @@ function bcn_set_test_courses() {
             // On STARTED7DAYS course, should appear in Firstassign count;
             // On STARTED15DAYS course, should appear in firstcall count;
             $ue->starttime = $course->startdate;
-            $ue->endtime = $course->startdate + 70 * DAYSECS;
+            $ue->endtime = $course->startdate + 70 * (int) DAYSECS;
             $DB->update_record('user_enrolments', $ue);
             echo "$uname updated\n";
         }
     }
 }
 
+/**
+ * A wrapper to APL debug. Do not use trace constants here because they may be not installed.
+ * @param string $msg
+ * @param int $level
+ * @param string $label
+ * @param int $backtracelevel
+ */
+function bcn_debug_trace($msg, $level = BCN_TRACE_NOTICE, $label = '', $backtracelevel = 1) {
+    if (function_exists('debug_trace')) {
+        debug_trace($msg, $level, $label, $backtracelevel + 1);
+    }
+}
