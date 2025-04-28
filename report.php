@@ -150,7 +150,7 @@ $ignoreduserids = block_course_notification::add($ignoreduserids, array_keys($on
 $twoweeksnearend = bcn_get_end_event_users($blockobj, $course, 'twoweeksnearend', $ignoreduserids);
 $ignoreduserids = block_course_notification::add($ignoreduserids, array_keys($twoweeksnearend));
 
-if ($blockobj->config->inactivitydelayindays && $course->startdate < time() - (int) DAYSECS * 21 ) {
+if ($blockobj->config->inactivitydelayindays && $course->startdate < time() - DAYSECS * 21 ) {
     $options = [];
     if (!empty($blockobj->config->inactivityfrequency)) {
         $options['inactivityfrequency'] = $blockobj->config->inactivityfrequency;
@@ -354,7 +354,7 @@ if (empty($enrolled)) {
         }
         $row[] = $icon;
 
-        $inactivehorizondate = time() - $blockobj->config->inactivitydelayindays * (int) DAYSECS;
+        $inactivehorizondate = time() - $blockobj->config->inactivitydelayindays * DAYSECS;
         // The inactive signal must be fresh enough to be signalled, either it is a new signal to be sent.
         if ($bcn && $bcn->inactivenotified && $bcn->inactivenotedate > $inactivehorizondate) {
             // Only report inactivity on user who are still inactive. If not any more inactive, just tell we are "not concerned"

@@ -24,16 +24,16 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2022021800;        // The current plugin version (Date: YYYYMMDDXX)
+$plugin->version   = 2025011400;        // The current plugin version (Date: YYYYMMDDXX)
 $plugin->requires  = 2022112801;        // Requires this Moodle version.
 $plugin->component = 'block_course_notification'; // Full name of the plugin (used for diagnostics).
-$plugin->release = '4.1.0 (Build 2022021800)';
+$plugin->release = '4.5.0 (Build 2022021800)';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->supported = [401, 402];
+$plugin->supported = [401, 405];
 if (function_exists('block_course_notification_supports_feature') && block_course_notification_supports_feature() === 'pro') {
     $plugin->dependencies = ['local_vfcore' => 2024053100];
 }
 
 // Non moodle attributes.
-$plugin->codeincrement = '4.1.0009';
+$plugin->codeincrement = '4.5.0009';
 $plugin->privacy = 'dualrelease';
